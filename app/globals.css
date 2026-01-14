@@ -1,26 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
+
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #050745;
+  --primary: #050745;
+  --secondary: #F17E22;
+  --accent: #FF9D4D;
+  --muted: #f4f4f4;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --font-poppins: 'Poppins', sans-serif;
+
+  --spacing-btn-px: 1.5rem;
+  --spacing-btn-py: 0.75rem;
+  --radius-btn: 0.75rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .btn {
+    padding: var(--spacing-btn-py) var(--spacing-btn-px);
+    border-radius: var(--radius-btn);
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-blue {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  .btn-blue:hover {
+    background-color: color-mix(in srgb, var(--primary), transparent 10%);
+    transform: scale(1.05);
+  }
+
+  .btn-blue:active {
+    transform: scale(0.95);
+  }
+
+  .btn-orange {
+    background-color: var(--secondary);
+    color: white;
+  }
+
+  .btn-orange:hover {
+    background-color: color-mix(in srgb, var(--secondary), transparent 10%);
+    transform: scale(1.05);
+  }
+
+  .btn-orange:active {
+    transform: scale(0.95);
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
   }
 }
+
+
+
+
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins);
 }
