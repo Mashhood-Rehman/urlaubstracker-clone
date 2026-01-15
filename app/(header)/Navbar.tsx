@@ -18,11 +18,11 @@ const Navbar = () => {
     }, []);
 
     const navLinks = [
-        { name: 'Reiseschnäppchen', href: '#' },
-        { name: 'Reiseziele', href: '#' },
-        { name: 'Gutscheine', href: '#' },
-        { name: 'Reiseplanung', href: '#' },
-        { name: 'Kreditkarten', href: '#' },
+        { name: 'Travel Deals', href: '#' },
+        { name: 'Destinations', href: '#' },
+        { name: 'Vouchers', href: '#' },
+        { name: 'Travel Planning', href: '#' },
+        { name: 'Credit Cards', href: '#' },
     ];
 
     return (
@@ -61,7 +61,7 @@ const Navbar = () => {
                         <icons.Search className="w-4 h-4" />
                         <input
                             type="text"
-                            placeholder="Suchen..."
+                            placeholder="Search..."
                             className="bg-transparent border-none outline-none text-sm placeholder:text-inherit"
                         />
                     </div>

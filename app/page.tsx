@@ -3,21 +3,26 @@ import DealsGrid from "./components/DealsGrid";
 import DestinationReveal from "./components/DestinationReveal";
 import MoodSelector from "./components/MoodSelector";
 import VoucherShowcase from "./components/VoucherShowcase";
-import AppAndHacks from "./components/AppAndHacks";
+import TravelHacks from "./components/TravelHacks";
+import ExceptionalHotels from "./components/ExceptionalHotels";
+import FollowUs from "./components/FollowUs";
 import Newsletter from "./components/Newsletter";
 import Footer from "./components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-white">
       <Hero />
       <DealsGrid />
       <DestinationReveal />
       <MoodSelector />
       <VoucherShowcase />
-      <AppAndHacks />
+      <TravelHacks />
+      <ExceptionalHotels />
+      <FollowUs />
       <Newsletter />
       <Footer />
     </main>
   );
 }
+

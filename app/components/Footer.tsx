@@ -1,3 +1,5 @@
+'use client';
+
 import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 
@@ -6,16 +8,16 @@ const Footer = () => {
 
     const footerLinks = {
         unternehmen: [
-            { name: 'Über uns', href: '#' },
-            { name: 'Kontakt', href: '#' },
-            { name: 'Kooperation', href: '#' },
-            { name: 'Presse', href: '#' },
-            { name: 'Karriere', href: '#' },
+            { name: 'About Us', href: '#' },
+            { name: 'Contact', href: '#' },
+            { name: 'Cooperation', href: '#' },
+            { name: 'Press', href: '#' },
+            { name: 'Careers', href: '#' },
         ],
         info: [
-            { name: 'Übersicht Gutscheine', href: '#' },
-            { name: 'Reisethemen', href: '#' },
-            { name: 'Schlagworte', href: '#' },
+            { name: 'Voucher Overview', href: '#' },
+            { name: 'Travel Topics', href: '#' },
+            { name: 'Tags', href: '#' },
             { name: 'FAQ', href: '#' },
         ],
         laender: [
@@ -26,11 +28,37 @@ const Footer = () => {
     };
 
     return (
-        <footer className="bg-primary text-white pt-20 pb-10 px-4 md:px-8">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <footer className="relative bg-[#1F2933] text-white pt-16 pb-12 px-4 overflow-hidden">
+
+            <div className="max-w-7xl mx-auto relative z-10">
+                {/* Newsletter Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 items-center p-3 md:p-6 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm">
+                    <div>
+                        <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                            Never miss a <span className="text-[#A3E635]">travel deal</span> again!
+                        </h3>
+                        <p className="text-white/60 text-lg">
+                            Sign up for our newsletter and get the best deals directly in your inbox.
+                        </p>
+                    </div>
+                    <form className="flex flex-col sm:flex-row gap-4" onSubmit={(e) => e.preventDefault()}>
+                        <div className="relative flex-grow">
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
+                            <input
+                                type="email"
+                                placeholder="Your email address"
+                                className="w-full bg-white/5 border border-white/10 rounded-md py-2 pl-12 pr-2 focus:outline-none focus:border-[#0E7C7B] transition-colors"
+                            />
+                        </div>
+                        <button className="bg-[#A3E635] hover:bg-[#8ecb2e] text-[#111827] btn">
+                            Sign up now
+                        </button>
+                    </form>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
                     {/* Brand Section */}
-                    <div className="space-y-6">
+                    <div className="space-y-8">
                         <div className="relative w-48 h-12">
                             <Image
                                 src="https://api.urlaubstracker.de/images/logo/logo-ut-orange.svg"
@@ -39,30 +67,26 @@ const Footer = () => {
                                 className="object-contain brightness-0 invert"
                             />
                         </div>
-                        <p className="text-blue-100/70 text-sm leading-relaxed max-w-xs">
-                            Dein Spezialist für die besten Reiseangebote und Urlaubsschnäppchen. Wir finden für dich täglich die günstigsten Deals.
+                        <p className="text-white/60 text-sm leading-relaxed">
+                            Your specialist for the best travel offers and holiday bargains. We find the cheapest deals worldwide for you every day.
                         </p>
                         <div className="flex gap-4">
-                            <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary transition-colors group">
-                                <Facebook size={18} className="text-white" />
-                            </a>
-                            <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary transition-colors group">
-                                <Instagram size={18} className="text-white" />
-                            </a>
-                            <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary transition-colors group">
-                                <Twitter size={18} className="text-white" />
-                            </a>
+                            {[Facebook, Instagram, Twitter, Youtube].map((Icon, idx) => (
+                                <a key={idx} href="#" className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl hover:bg-[#0E7C7B] transition-all hover:-translate-y-1 group">
+                                    <Icon size={20} className="text-white/70 group-hover:text-white transition-colors" />
+                                </a>
+                            ))}
                         </div>
                     </div>
 
-                    {/* Unternehmen */}
+                    {/* Links - Company */}
                     <div>
-                        <h4 className="text-lg font-bold mb-6 text-white uppercase tracking-wider">Unternehmen</h4>
+                        <h4 className="text-[#0E7C7B] font-bold text-sm uppercase tracking-widest mb-8">Company</h4>
                         <ul className="space-y-4">
                             {footerLinks.unternehmen.map((link) => (
                                 <li key={link.name}>
-                                    <a href={link.href} className="text-blue-100/70 hover:text-secondary transition-colors flex items-center gap-2 group">
-                                        <span className="h-0.5 w-0 bg-secondary transition-all group-hover:w-2"></span>
+                                    <a href={link.href} className="text-white/60 hover:text-white transition-colors text-sm flex items-center group">
+                                        <span className="w-0 group-hover:w-2 h-[1px] bg-[#A3E635] mr-0 group-hover:mr-2 transition-all opacity-0 group-hover:opacity-100"></span>
                                         {link.name}
                                     </a>
                                 </li>
@@ -70,14 +94,14 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    {/* Info */}
+                    {/* Links - Information */}
                     <div>
-                        <h4 className="text-lg font-bold mb-6 text-white uppercase tracking-wider">Informationen</h4>
+                        <h4 className="text-[#0E7C7B] font-bold text-sm uppercase tracking-widest mb-8">Information</h4>
                         <ul className="space-y-4">
                             {footerLinks.info.map((link) => (
                                 <li key={link.name}>
-                                    <a href={link.href} className="text-blue-100/70 hover:text-secondary transition-colors flex items-center gap-2 group">
-                                        <span className="h-0.5 w-0 bg-secondary transition-all group-hover:w-2"></span>
+                                    <a href={link.href} className="text-white/60 hover:text-white transition-colors text-sm flex items-center group">
+                                        <span className="w-0 group-hover:w-2 h-[1px] bg-[#A3E635] mr-0 group-hover:mr-2 transition-all opacity-0 group-hover:opacity-100"></span>
                                         {link.name}
                                     </a>
                                 </li>
@@ -85,35 +109,31 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    {/* Länder & Newsletter Placeholder */}
+                    {/* Links - Countries */}
                     <div>
-                        <h4 className="text-lg font-bold mb-6 text-white uppercase tracking-wider">Länder</h4>
-                        <ul className="space-y-4 mb-8">
+                        <h4 className="text-[#0E7C7B] font-bold text-sm uppercase tracking-widest mb-8">Countries</h4>
+                        <div className="grid grid-cols-1 gap-4">
                             {footerLinks.laender.map((link) => (
-                                <li key={link.name}>
-                                    <a href={link.href} className="text-blue-100/70 hover:text-secondary transition-colors flex items-center gap-3">
-                                        <span>{link.flag}</span>
-                                        {link.name}
-                                    </a>
-                                </li>
+                                <a key={link.name} href={link.href} className="flex items-center gap-3 p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition-colors group">
+                                    <span className="text-2xl">{link.flag}</span>
+                                    <span className="text-sm font-medium text-white/80 group-hover:text-white">{link.name}</span>
+                                    <ExternalLink size={14} className="ml-auto text-white/20 group-hover:text-white/40" />
+                                </a>
                             ))}
-                        </ul>
+                        </div>
                     </div>
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="pt-8 border-t border-white/10">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="flex flex-wrap justify-center md:justify-start gap-x-8 gap-y-2 text-sm text-blue-100/50">
-                            <a href="#" className="hover:text-secondary transition-colors">Cookies</a>
-                            <a href="#" className="hover:text-secondary transition-colors">Datenschutz</a>
-                            <a href="#" className="hover:text-secondary transition-colors">Impressum</a>
-                            <a href="#" className="hover:text-secondary transition-colors">AGB</a>
-                        </div>
-                        <p className="text-sm text-blue-100/30 text-center md:text-right">
-                            © 2013 - {currentYear} Urlaubstracker | Urlaubsschnäppchen & günstige Reiseangebote
-                        </p>
+                <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-medium tracking-wide">
+                    <div className="flex flex-wrap justify-center gap-8 text-white/40">
+                        {['Cookies', 'Privacy Policy', 'Imprint', 'T&C'].map(item => (
+                            <a key={item} href="#" className="hover:text-white transition-colors">{item}</a>
+                        ))}
                     </div>
+                    <p className="text-white/30">
+                        © 2013 - {currentYear} Urlaubstracker. All rights reserved.
+                    </p>
                 </div>
             </div>
         </footer>

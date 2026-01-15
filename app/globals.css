@@ -3,11 +3,12 @@
 
 
 :root {
-  --background: #ffffff;
-  --foreground: #050745;
-  --primary: #050745;
-  --secondary: #F17E22;
-  --accent: #FF9D4D;
+  --background: #F6F8FA;
+  --foreground: #111827;
+  --primary: #0E7C7B;
+  --secondary: #1F2933;
+  --accent: #A3E635;
+  --text-light: #FFFFFF;
   --muted: #f4f4f4;
 }
 
