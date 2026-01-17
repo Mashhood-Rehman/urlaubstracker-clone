@@ -384,7 +384,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  Hotel: 'Hotel'
+  Hotel: 'Hotel',
+  Flight: 'Flight'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -400,7 +401,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "hotel"
+    modelProps: "hotel" | "flight"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -478,6 +479,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Flight: {
+      payload: Prisma.$FlightPayload<ExtArgs>
+      fields: Prisma.FlightFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FlightFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FlightFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload>
+        }
+        findFirst: {
+          args: Prisma.FlightFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FlightFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload>
+        }
+        findMany: {
+          args: Prisma.FlightFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload>[]
+        }
+        create: {
+          args: Prisma.FlightCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload>
+        }
+        createMany: {
+          args: Prisma.FlightCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FlightCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload>[]
+        }
+        delete: {
+          args: Prisma.FlightDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload>
+        }
+        update: {
+          args: Prisma.FlightUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload>
+        }
+        deleteMany: {
+          args: Prisma.FlightDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FlightUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FlightUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload>[]
+        }
+        upsert: {
+          args: Prisma.FlightUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FlightPayload>
+        }
+        aggregate: {
+          args: Prisma.FlightAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFlight>
+        }
+        groupBy: {
+          args: Prisma.FlightGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FlightGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FlightCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FlightCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -542,6 +617,31 @@ export const HotelScalarFieldEnum = {
 export type HotelScalarFieldEnum = (typeof HotelScalarFieldEnum)[keyof typeof HotelScalarFieldEnum]
 
 
+export const FlightScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  airline: 'airline',
+  departureCity: 'departureCity',
+  arrivalCity: 'arrivalCity',
+  duration: 'duration',
+  price: 'price',
+  currency: 'currency',
+  flightClass: 'flightClass',
+  baggage: 'baggage',
+  services: 'services',
+  whyAdore: 'whyAdore',
+  flexibleDates: 'flexibleDates',
+  extras: 'extras',
+  tips: 'tips',
+  offerLink: 'offerLink',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FlightScalarFieldEnum = (typeof FlightScalarFieldEnum)[keyof typeof FlightScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -555,6 +655,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -657,6 +765,13 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -753,6 +868,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   hotel?: Prisma.HotelOmit
+  flight?: Prisma.FlightOmit
 }
 
 /* Types for Logging */

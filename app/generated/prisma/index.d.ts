@@ -18,6 +18,16 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * 
  */
 export type Hotel = $Result.DefaultSelection<Prisma.$HotelPayload>
+/**
+ * Model Flight
+ * 
+ */
+export type Flight = $Result.DefaultSelection<Prisma.$FlightPayload>
+/**
+ * Model Rental
+ * 
+ */
+export type Rental = $Result.DefaultSelection<Prisma.$RentalPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -145,6 +155,26 @@ export class PrismaClient<
     * ```
     */
   get hotel(): Prisma.HotelDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.flight`: Exposes CRUD operations for the **Flight** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Flights
+    * const flights = await prisma.flight.findMany()
+    * ```
+    */
+  get flight(): Prisma.FlightDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.rental`: Exposes CRUD operations for the **Rental** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Rentals
+    * const rentals = await prisma.rental.findMany()
+    * ```
+    */
+  get rental(): Prisma.RentalDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -579,7 +609,9 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    Hotel: 'Hotel'
+    Hotel: 'Hotel',
+    Flight: 'Flight',
+    Rental: 'Rental'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -595,7 +627,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "hotel"
+      modelProps: "hotel" | "flight" | "rental"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -670,6 +702,154 @@ export namespace Prisma {
           count: {
             args: Prisma.HotelCountArgs<ExtArgs>
             result: $Utils.Optional<HotelCountAggregateOutputType> | number
+          }
+        }
+      }
+      Flight: {
+        payload: Prisma.$FlightPayload<ExtArgs>
+        fields: Prisma.FlightFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FlightFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FlightFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload>
+          }
+          findFirst: {
+            args: Prisma.FlightFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FlightFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload>
+          }
+          findMany: {
+            args: Prisma.FlightFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload>[]
+          }
+          create: {
+            args: Prisma.FlightCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload>
+          }
+          createMany: {
+            args: Prisma.FlightCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FlightCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload>[]
+          }
+          delete: {
+            args: Prisma.FlightDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload>
+          }
+          update: {
+            args: Prisma.FlightUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload>
+          }
+          deleteMany: {
+            args: Prisma.FlightDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FlightUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FlightUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload>[]
+          }
+          upsert: {
+            args: Prisma.FlightUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FlightPayload>
+          }
+          aggregate: {
+            args: Prisma.FlightAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFlight>
+          }
+          groupBy: {
+            args: Prisma.FlightGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FlightGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FlightCountArgs<ExtArgs>
+            result: $Utils.Optional<FlightCountAggregateOutputType> | number
+          }
+        }
+      }
+      Rental: {
+        payload: Prisma.$RentalPayload<ExtArgs>
+        fields: Prisma.RentalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RentalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RentalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          findFirst: {
+            args: Prisma.RentalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RentalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          findMany: {
+            args: Prisma.RentalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>[]
+          }
+          create: {
+            args: Prisma.RentalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          createMany: {
+            args: Prisma.RentalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RentalCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>[]
+          }
+          delete: {
+            args: Prisma.RentalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          update: {
+            args: Prisma.RentalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          deleteMany: {
+            args: Prisma.RentalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RentalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RentalUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>[]
+          }
+          upsert: {
+            args: Prisma.RentalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          aggregate: {
+            args: Prisma.RentalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRental>
+          }
+          groupBy: {
+            args: Prisma.RentalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RentalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RentalCountArgs<ExtArgs>
+            result: $Utils.Optional<RentalCountAggregateOutputType> | number
           }
         }
       }
@@ -782,6 +962,8 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     hotel?: HotelOmit
+    flight?: FlightOmit
+    rental?: RentalOmit
   }
 
   /* Types for Logging */
@@ -2086,6 +2268,2326 @@ export namespace Prisma {
 
 
   /**
+   * Model Flight
+   */
+
+  export type AggregateFlight = {
+    _count: FlightCountAggregateOutputType | null
+    _avg: FlightAvgAggregateOutputType | null
+    _sum: FlightSumAggregateOutputType | null
+    _min: FlightMinAggregateOutputType | null
+    _max: FlightMaxAggregateOutputType | null
+  }
+
+  export type FlightAvgAggregateOutputType = {
+    id: number | null
+    price: number | null
+  }
+
+  export type FlightSumAggregateOutputType = {
+    id: number | null
+    price: number | null
+  }
+
+  export type FlightMinAggregateOutputType = {
+    id: number | null
+    title: string | null
+    description: string | null
+    airline: string | null
+    departureCity: string | null
+    arrivalCity: string | null
+    duration: string | null
+    price: number | null
+    currency: string | null
+    flightClass: string | null
+    baggage: string | null
+    flexibleDates: boolean | null
+    offerLink: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FlightMaxAggregateOutputType = {
+    id: number | null
+    title: string | null
+    description: string | null
+    airline: string | null
+    departureCity: string | null
+    arrivalCity: string | null
+    duration: string | null
+    price: number | null
+    currency: string | null
+    flightClass: string | null
+    baggage: string | null
+    flexibleDates: boolean | null
+    offerLink: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FlightCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    airline: number
+    departureCity: number
+    arrivalCity: number
+    duration: number
+    price: number
+    currency: number
+    flightClass: number
+    baggage: number
+    services: number
+    whyAdore: number
+    flexibleDates: number
+    extras: number
+    tips: number
+    offerLink: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FlightAvgAggregateInputType = {
+    id?: true
+    price?: true
+  }
+
+  export type FlightSumAggregateInputType = {
+    id?: true
+    price?: true
+  }
+
+  export type FlightMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    airline?: true
+    departureCity?: true
+    arrivalCity?: true
+    duration?: true
+    price?: true
+    currency?: true
+    flightClass?: true
+    baggage?: true
+    flexibleDates?: true
+    offerLink?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FlightMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    airline?: true
+    departureCity?: true
+    arrivalCity?: true
+    duration?: true
+    price?: true
+    currency?: true
+    flightClass?: true
+    baggage?: true
+    flexibleDates?: true
+    offerLink?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FlightCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    airline?: true
+    departureCity?: true
+    arrivalCity?: true
+    duration?: true
+    price?: true
+    currency?: true
+    flightClass?: true
+    baggage?: true
+    services?: true
+    whyAdore?: true
+    flexibleDates?: true
+    extras?: true
+    tips?: true
+    offerLink?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FlightAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Flight to aggregate.
+     */
+    where?: FlightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Flights to fetch.
+     */
+    orderBy?: FlightOrderByWithRelationInput | FlightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FlightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Flights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Flights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Flights
+    **/
+    _count?: true | FlightCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FlightAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FlightSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FlightMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FlightMaxAggregateInputType
+  }
+
+  export type GetFlightAggregateType<T extends FlightAggregateArgs> = {
+        [P in keyof T & keyof AggregateFlight]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFlight[P]>
+      : GetScalarType<T[P], AggregateFlight[P]>
+  }
+
+
+
+
+  export type FlightGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FlightWhereInput
+    orderBy?: FlightOrderByWithAggregationInput | FlightOrderByWithAggregationInput[]
+    by: FlightScalarFieldEnum[] | FlightScalarFieldEnum
+    having?: FlightScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FlightCountAggregateInputType | true
+    _avg?: FlightAvgAggregateInputType
+    _sum?: FlightSumAggregateInputType
+    _min?: FlightMinAggregateInputType
+    _max?: FlightMaxAggregateInputType
+  }
+
+  export type FlightGroupByOutputType = {
+    id: number
+    title: string
+    description: string
+    airline: string
+    departureCity: string
+    arrivalCity: string
+    duration: string
+    price: number
+    currency: string
+    flightClass: string
+    baggage: string
+    services: JsonValue
+    whyAdore: JsonValue
+    flexibleDates: boolean
+    extras: JsonValue | null
+    tips: JsonValue | null
+    offerLink: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FlightCountAggregateOutputType | null
+    _avg: FlightAvgAggregateOutputType | null
+    _sum: FlightSumAggregateOutputType | null
+    _min: FlightMinAggregateOutputType | null
+    _max: FlightMaxAggregateOutputType | null
+  }
+
+  type GetFlightGroupByPayload<T extends FlightGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FlightGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FlightGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FlightGroupByOutputType[P]>
+            : GetScalarType<T[P], FlightGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FlightSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    airline?: boolean
+    departureCity?: boolean
+    arrivalCity?: boolean
+    duration?: boolean
+    price?: boolean
+    currency?: boolean
+    flightClass?: boolean
+    baggage?: boolean
+    services?: boolean
+    whyAdore?: boolean
+    flexibleDates?: boolean
+    extras?: boolean
+    tips?: boolean
+    offerLink?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["flight"]>
+
+  export type FlightSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    airline?: boolean
+    departureCity?: boolean
+    arrivalCity?: boolean
+    duration?: boolean
+    price?: boolean
+    currency?: boolean
+    flightClass?: boolean
+    baggage?: boolean
+    services?: boolean
+    whyAdore?: boolean
+    flexibleDates?: boolean
+    extras?: boolean
+    tips?: boolean
+    offerLink?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["flight"]>
+
+  export type FlightSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    airline?: boolean
+    departureCity?: boolean
+    arrivalCity?: boolean
+    duration?: boolean
+    price?: boolean
+    currency?: boolean
+    flightClass?: boolean
+    baggage?: boolean
+    services?: boolean
+    whyAdore?: boolean
+    flexibleDates?: boolean
+    extras?: boolean
+    tips?: boolean
+    offerLink?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["flight"]>
+
+  export type FlightSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    airline?: boolean
+    departureCity?: boolean
+    arrivalCity?: boolean
+    duration?: boolean
+    price?: boolean
+    currency?: boolean
+    flightClass?: boolean
+    baggage?: boolean
+    services?: boolean
+    whyAdore?: boolean
+    flexibleDates?: boolean
+    extras?: boolean
+    tips?: boolean
+    offerLink?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FlightOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "airline" | "departureCity" | "arrivalCity" | "duration" | "price" | "currency" | "flightClass" | "baggage" | "services" | "whyAdore" | "flexibleDates" | "extras" | "tips" | "offerLink" | "createdAt" | "updatedAt", ExtArgs["result"]["flight"]>
+
+  export type $FlightPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Flight"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      title: string
+      description: string
+      airline: string
+      departureCity: string
+      arrivalCity: string
+      duration: string
+      price: number
+      currency: string
+      flightClass: string
+      baggage: string
+      services: Prisma.JsonValue
+      whyAdore: Prisma.JsonValue
+      flexibleDates: boolean
+      extras: Prisma.JsonValue | null
+      tips: Prisma.JsonValue | null
+      offerLink: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["flight"]>
+    composites: {}
+  }
+
+  type FlightGetPayload<S extends boolean | null | undefined | FlightDefaultArgs> = $Result.GetResult<Prisma.$FlightPayload, S>
+
+  type FlightCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FlightFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FlightCountAggregateInputType | true
+    }
+
+  export interface FlightDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Flight'], meta: { name: 'Flight' } }
+    /**
+     * Find zero or one Flight that matches the filter.
+     * @param {FlightFindUniqueArgs} args - Arguments to find a Flight
+     * @example
+     * // Get one Flight
+     * const flight = await prisma.flight.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FlightFindUniqueArgs>(args: SelectSubset<T, FlightFindUniqueArgs<ExtArgs>>): Prisma__FlightClient<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Flight that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FlightFindUniqueOrThrowArgs} args - Arguments to find a Flight
+     * @example
+     * // Get one Flight
+     * const flight = await prisma.flight.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FlightFindUniqueOrThrowArgs>(args: SelectSubset<T, FlightFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FlightClient<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Flight that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FlightFindFirstArgs} args - Arguments to find a Flight
+     * @example
+     * // Get one Flight
+     * const flight = await prisma.flight.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FlightFindFirstArgs>(args?: SelectSubset<T, FlightFindFirstArgs<ExtArgs>>): Prisma__FlightClient<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Flight that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FlightFindFirstOrThrowArgs} args - Arguments to find a Flight
+     * @example
+     * // Get one Flight
+     * const flight = await prisma.flight.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FlightFindFirstOrThrowArgs>(args?: SelectSubset<T, FlightFindFirstOrThrowArgs<ExtArgs>>): Prisma__FlightClient<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Flights that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FlightFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Flights
+     * const flights = await prisma.flight.findMany()
+     * 
+     * // Get first 10 Flights
+     * const flights = await prisma.flight.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const flightWithIdOnly = await prisma.flight.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FlightFindManyArgs>(args?: SelectSubset<T, FlightFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Flight.
+     * @param {FlightCreateArgs} args - Arguments to create a Flight.
+     * @example
+     * // Create one Flight
+     * const Flight = await prisma.flight.create({
+     *   data: {
+     *     // ... data to create a Flight
+     *   }
+     * })
+     * 
+     */
+    create<T extends FlightCreateArgs>(args: SelectSubset<T, FlightCreateArgs<ExtArgs>>): Prisma__FlightClient<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Flights.
+     * @param {FlightCreateManyArgs} args - Arguments to create many Flights.
+     * @example
+     * // Create many Flights
+     * const flight = await prisma.flight.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FlightCreateManyArgs>(args?: SelectSubset<T, FlightCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Flights and returns the data saved in the database.
+     * @param {FlightCreateManyAndReturnArgs} args - Arguments to create many Flights.
+     * @example
+     * // Create many Flights
+     * const flight = await prisma.flight.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Flights and only return the `id`
+     * const flightWithIdOnly = await prisma.flight.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FlightCreateManyAndReturnArgs>(args?: SelectSubset<T, FlightCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Flight.
+     * @param {FlightDeleteArgs} args - Arguments to delete one Flight.
+     * @example
+     * // Delete one Flight
+     * const Flight = await prisma.flight.delete({
+     *   where: {
+     *     // ... filter to delete one Flight
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FlightDeleteArgs>(args: SelectSubset<T, FlightDeleteArgs<ExtArgs>>): Prisma__FlightClient<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Flight.
+     * @param {FlightUpdateArgs} args - Arguments to update one Flight.
+     * @example
+     * // Update one Flight
+     * const flight = await prisma.flight.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FlightUpdateArgs>(args: SelectSubset<T, FlightUpdateArgs<ExtArgs>>): Prisma__FlightClient<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Flights.
+     * @param {FlightDeleteManyArgs} args - Arguments to filter Flights to delete.
+     * @example
+     * // Delete a few Flights
+     * const { count } = await prisma.flight.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FlightDeleteManyArgs>(args?: SelectSubset<T, FlightDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Flights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FlightUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Flights
+     * const flight = await prisma.flight.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FlightUpdateManyArgs>(args: SelectSubset<T, FlightUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Flights and returns the data updated in the database.
+     * @param {FlightUpdateManyAndReturnArgs} args - Arguments to update many Flights.
+     * @example
+     * // Update many Flights
+     * const flight = await prisma.flight.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Flights and only return the `id`
+     * const flightWithIdOnly = await prisma.flight.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FlightUpdateManyAndReturnArgs>(args: SelectSubset<T, FlightUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Flight.
+     * @param {FlightUpsertArgs} args - Arguments to update or create a Flight.
+     * @example
+     * // Update or create a Flight
+     * const flight = await prisma.flight.upsert({
+     *   create: {
+     *     // ... data to create a Flight
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Flight we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FlightUpsertArgs>(args: SelectSubset<T, FlightUpsertArgs<ExtArgs>>): Prisma__FlightClient<$Result.GetResult<Prisma.$FlightPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Flights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FlightCountArgs} args - Arguments to filter Flights to count.
+     * @example
+     * // Count the number of Flights
+     * const count = await prisma.flight.count({
+     *   where: {
+     *     // ... the filter for the Flights we want to count
+     *   }
+     * })
+    **/
+    count<T extends FlightCountArgs>(
+      args?: Subset<T, FlightCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FlightCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Flight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FlightAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FlightAggregateArgs>(args: Subset<T, FlightAggregateArgs>): Prisma.PrismaPromise<GetFlightAggregateType<T>>
+
+    /**
+     * Group by Flight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FlightGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FlightGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FlightGroupByArgs['orderBy'] }
+        : { orderBy?: FlightGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FlightGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFlightGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Flight model
+   */
+  readonly fields: FlightFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Flight.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FlightClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Flight model
+   */
+  interface FlightFieldRefs {
+    readonly id: FieldRef<"Flight", 'Int'>
+    readonly title: FieldRef<"Flight", 'String'>
+    readonly description: FieldRef<"Flight", 'String'>
+    readonly airline: FieldRef<"Flight", 'String'>
+    readonly departureCity: FieldRef<"Flight", 'String'>
+    readonly arrivalCity: FieldRef<"Flight", 'String'>
+    readonly duration: FieldRef<"Flight", 'String'>
+    readonly price: FieldRef<"Flight", 'Float'>
+    readonly currency: FieldRef<"Flight", 'String'>
+    readonly flightClass: FieldRef<"Flight", 'String'>
+    readonly baggage: FieldRef<"Flight", 'String'>
+    readonly services: FieldRef<"Flight", 'Json'>
+    readonly whyAdore: FieldRef<"Flight", 'Json'>
+    readonly flexibleDates: FieldRef<"Flight", 'Boolean'>
+    readonly extras: FieldRef<"Flight", 'Json'>
+    readonly tips: FieldRef<"Flight", 'Json'>
+    readonly offerLink: FieldRef<"Flight", 'String'>
+    readonly createdAt: FieldRef<"Flight", 'DateTime'>
+    readonly updatedAt: FieldRef<"Flight", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Flight findUnique
+   */
+  export type FlightFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * Filter, which Flight to fetch.
+     */
+    where: FlightWhereUniqueInput
+  }
+
+  /**
+   * Flight findUniqueOrThrow
+   */
+  export type FlightFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * Filter, which Flight to fetch.
+     */
+    where: FlightWhereUniqueInput
+  }
+
+  /**
+   * Flight findFirst
+   */
+  export type FlightFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * Filter, which Flight to fetch.
+     */
+    where?: FlightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Flights to fetch.
+     */
+    orderBy?: FlightOrderByWithRelationInput | FlightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Flights.
+     */
+    cursor?: FlightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Flights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Flights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Flights.
+     */
+    distinct?: FlightScalarFieldEnum | FlightScalarFieldEnum[]
+  }
+
+  /**
+   * Flight findFirstOrThrow
+   */
+  export type FlightFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * Filter, which Flight to fetch.
+     */
+    where?: FlightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Flights to fetch.
+     */
+    orderBy?: FlightOrderByWithRelationInput | FlightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Flights.
+     */
+    cursor?: FlightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Flights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Flights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Flights.
+     */
+    distinct?: FlightScalarFieldEnum | FlightScalarFieldEnum[]
+  }
+
+  /**
+   * Flight findMany
+   */
+  export type FlightFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * Filter, which Flights to fetch.
+     */
+    where?: FlightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Flights to fetch.
+     */
+    orderBy?: FlightOrderByWithRelationInput | FlightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Flights.
+     */
+    cursor?: FlightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Flights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Flights.
+     */
+    skip?: number
+    distinct?: FlightScalarFieldEnum | FlightScalarFieldEnum[]
+  }
+
+  /**
+   * Flight create
+   */
+  export type FlightCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Flight.
+     */
+    data: XOR<FlightCreateInput, FlightUncheckedCreateInput>
+  }
+
+  /**
+   * Flight createMany
+   */
+  export type FlightCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Flights.
+     */
+    data: FlightCreateManyInput | FlightCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Flight createManyAndReturn
+   */
+  export type FlightCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * The data used to create many Flights.
+     */
+    data: FlightCreateManyInput | FlightCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Flight update
+   */
+  export type FlightUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Flight.
+     */
+    data: XOR<FlightUpdateInput, FlightUncheckedUpdateInput>
+    /**
+     * Choose, which Flight to update.
+     */
+    where: FlightWhereUniqueInput
+  }
+
+  /**
+   * Flight updateMany
+   */
+  export type FlightUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Flights.
+     */
+    data: XOR<FlightUpdateManyMutationInput, FlightUncheckedUpdateManyInput>
+    /**
+     * Filter which Flights to update
+     */
+    where?: FlightWhereInput
+    /**
+     * Limit how many Flights to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Flight updateManyAndReturn
+   */
+  export type FlightUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * The data used to update Flights.
+     */
+    data: XOR<FlightUpdateManyMutationInput, FlightUncheckedUpdateManyInput>
+    /**
+     * Filter which Flights to update
+     */
+    where?: FlightWhereInput
+    /**
+     * Limit how many Flights to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Flight upsert
+   */
+  export type FlightUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Flight to update in case it exists.
+     */
+    where: FlightWhereUniqueInput
+    /**
+     * In case the Flight found by the `where` argument doesn't exist, create a new Flight with this data.
+     */
+    create: XOR<FlightCreateInput, FlightUncheckedCreateInput>
+    /**
+     * In case the Flight was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FlightUpdateInput, FlightUncheckedUpdateInput>
+  }
+
+  /**
+   * Flight delete
+   */
+  export type FlightDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+    /**
+     * Filter which Flight to delete.
+     */
+    where: FlightWhereUniqueInput
+  }
+
+  /**
+   * Flight deleteMany
+   */
+  export type FlightDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Flights to delete
+     */
+    where?: FlightWhereInput
+    /**
+     * Limit how many Flights to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Flight without action
+   */
+  export type FlightDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Flight
+     */
+    select?: FlightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Flight
+     */
+    omit?: FlightOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Rental
+   */
+
+  export type AggregateRental = {
+    _count: RentalCountAggregateOutputType | null
+    _avg: RentalAvgAggregateOutputType | null
+    _sum: RentalSumAggregateOutputType | null
+    _min: RentalMinAggregateOutputType | null
+    _max: RentalMaxAggregateOutputType | null
+  }
+
+  export type RentalAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type RentalSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type RentalMinAggregateOutputType = {
+    id: number | null
+    category: string | null
+    title: string | null
+    description: string | null
+    mainHeading: string | null
+    mainDescription: string | null
+    whySuperDeal: string | null
+    ecoTip: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RentalMaxAggregateOutputType = {
+    id: number | null
+    category: string | null
+    title: string | null
+    description: string | null
+    mainHeading: string | null
+    mainDescription: string | null
+    whySuperDeal: string | null
+    ecoTip: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RentalCountAggregateOutputType = {
+    id: number
+    category: number
+    title: number
+    description: number
+    mainHeading: number
+    mainDescription: number
+    offer: number
+    whySuperDeal: number
+    thingsToDo: number
+    additionalInfo: number
+    ecoTip: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RentalAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type RentalSumAggregateInputType = {
+    id?: true
+  }
+
+  export type RentalMinAggregateInputType = {
+    id?: true
+    category?: true
+    title?: true
+    description?: true
+    mainHeading?: true
+    mainDescription?: true
+    whySuperDeal?: true
+    ecoTip?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RentalMaxAggregateInputType = {
+    id?: true
+    category?: true
+    title?: true
+    description?: true
+    mainHeading?: true
+    mainDescription?: true
+    whySuperDeal?: true
+    ecoTip?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RentalCountAggregateInputType = {
+    id?: true
+    category?: true
+    title?: true
+    description?: true
+    mainHeading?: true
+    mainDescription?: true
+    offer?: true
+    whySuperDeal?: true
+    thingsToDo?: true
+    additionalInfo?: true
+    ecoTip?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RentalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Rental to aggregate.
+     */
+    where?: RentalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rentals to fetch.
+     */
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RentalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rentals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rentals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Rentals
+    **/
+    _count?: true | RentalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RentalAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RentalSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RentalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RentalMaxAggregateInputType
+  }
+
+  export type GetRentalAggregateType<T extends RentalAggregateArgs> = {
+        [P in keyof T & keyof AggregateRental]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRental[P]>
+      : GetScalarType<T[P], AggregateRental[P]>
+  }
+
+
+
+
+  export type RentalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RentalWhereInput
+    orderBy?: RentalOrderByWithAggregationInput | RentalOrderByWithAggregationInput[]
+    by: RentalScalarFieldEnum[] | RentalScalarFieldEnum
+    having?: RentalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RentalCountAggregateInputType | true
+    _avg?: RentalAvgAggregateInputType
+    _sum?: RentalSumAggregateInputType
+    _min?: RentalMinAggregateInputType
+    _max?: RentalMaxAggregateInputType
+  }
+
+  export type RentalGroupByOutputType = {
+    id: number
+    category: string
+    title: string
+    description: string
+    mainHeading: string
+    mainDescription: string
+    offer: JsonValue
+    whySuperDeal: string
+    thingsToDo: JsonValue
+    additionalInfo: JsonValue
+    ecoTip: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: RentalCountAggregateOutputType | null
+    _avg: RentalAvgAggregateOutputType | null
+    _sum: RentalSumAggregateOutputType | null
+    _min: RentalMinAggregateOutputType | null
+    _max: RentalMaxAggregateOutputType | null
+  }
+
+  type GetRentalGroupByPayload<T extends RentalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RentalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RentalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RentalGroupByOutputType[P]>
+            : GetScalarType<T[P], RentalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RentalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    category?: boolean
+    title?: boolean
+    description?: boolean
+    mainHeading?: boolean
+    mainDescription?: boolean
+    offer?: boolean
+    whySuperDeal?: boolean
+    thingsToDo?: boolean
+    additionalInfo?: boolean
+    ecoTip?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["rental"]>
+
+  export type RentalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    category?: boolean
+    title?: boolean
+    description?: boolean
+    mainHeading?: boolean
+    mainDescription?: boolean
+    offer?: boolean
+    whySuperDeal?: boolean
+    thingsToDo?: boolean
+    additionalInfo?: boolean
+    ecoTip?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["rental"]>
+
+  export type RentalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    category?: boolean
+    title?: boolean
+    description?: boolean
+    mainHeading?: boolean
+    mainDescription?: boolean
+    offer?: boolean
+    whySuperDeal?: boolean
+    thingsToDo?: boolean
+    additionalInfo?: boolean
+    ecoTip?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["rental"]>
+
+  export type RentalSelectScalar = {
+    id?: boolean
+    category?: boolean
+    title?: boolean
+    description?: boolean
+    mainHeading?: boolean
+    mainDescription?: boolean
+    offer?: boolean
+    whySuperDeal?: boolean
+    thingsToDo?: boolean
+    additionalInfo?: boolean
+    ecoTip?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RentalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "title" | "description" | "mainHeading" | "mainDescription" | "offer" | "whySuperDeal" | "thingsToDo" | "additionalInfo" | "ecoTip" | "createdAt" | "updatedAt", ExtArgs["result"]["rental"]>
+
+  export type $RentalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Rental"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      category: string
+      title: string
+      description: string
+      mainHeading: string
+      mainDescription: string
+      offer: Prisma.JsonValue
+      whySuperDeal: string
+      thingsToDo: Prisma.JsonValue
+      additionalInfo: Prisma.JsonValue
+      ecoTip: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["rental"]>
+    composites: {}
+  }
+
+  type RentalGetPayload<S extends boolean | null | undefined | RentalDefaultArgs> = $Result.GetResult<Prisma.$RentalPayload, S>
+
+  type RentalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RentalFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RentalCountAggregateInputType | true
+    }
+
+  export interface RentalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Rental'], meta: { name: 'Rental' } }
+    /**
+     * Find zero or one Rental that matches the filter.
+     * @param {RentalFindUniqueArgs} args - Arguments to find a Rental
+     * @example
+     * // Get one Rental
+     * const rental = await prisma.rental.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RentalFindUniqueArgs>(args: SelectSubset<T, RentalFindUniqueArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Rental that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RentalFindUniqueOrThrowArgs} args - Arguments to find a Rental
+     * @example
+     * // Get one Rental
+     * const rental = await prisma.rental.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RentalFindUniqueOrThrowArgs>(args: SelectSubset<T, RentalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Rental that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalFindFirstArgs} args - Arguments to find a Rental
+     * @example
+     * // Get one Rental
+     * const rental = await prisma.rental.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RentalFindFirstArgs>(args?: SelectSubset<T, RentalFindFirstArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Rental that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalFindFirstOrThrowArgs} args - Arguments to find a Rental
+     * @example
+     * // Get one Rental
+     * const rental = await prisma.rental.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RentalFindFirstOrThrowArgs>(args?: SelectSubset<T, RentalFindFirstOrThrowArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Rentals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Rentals
+     * const rentals = await prisma.rental.findMany()
+     * 
+     * // Get first 10 Rentals
+     * const rentals = await prisma.rental.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const rentalWithIdOnly = await prisma.rental.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RentalFindManyArgs>(args?: SelectSubset<T, RentalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Rental.
+     * @param {RentalCreateArgs} args - Arguments to create a Rental.
+     * @example
+     * // Create one Rental
+     * const Rental = await prisma.rental.create({
+     *   data: {
+     *     // ... data to create a Rental
+     *   }
+     * })
+     * 
+     */
+    create<T extends RentalCreateArgs>(args: SelectSubset<T, RentalCreateArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Rentals.
+     * @param {RentalCreateManyArgs} args - Arguments to create many Rentals.
+     * @example
+     * // Create many Rentals
+     * const rental = await prisma.rental.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RentalCreateManyArgs>(args?: SelectSubset<T, RentalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Rentals and returns the data saved in the database.
+     * @param {RentalCreateManyAndReturnArgs} args - Arguments to create many Rentals.
+     * @example
+     * // Create many Rentals
+     * const rental = await prisma.rental.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Rentals and only return the `id`
+     * const rentalWithIdOnly = await prisma.rental.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RentalCreateManyAndReturnArgs>(args?: SelectSubset<T, RentalCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Rental.
+     * @param {RentalDeleteArgs} args - Arguments to delete one Rental.
+     * @example
+     * // Delete one Rental
+     * const Rental = await prisma.rental.delete({
+     *   where: {
+     *     // ... filter to delete one Rental
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RentalDeleteArgs>(args: SelectSubset<T, RentalDeleteArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Rental.
+     * @param {RentalUpdateArgs} args - Arguments to update one Rental.
+     * @example
+     * // Update one Rental
+     * const rental = await prisma.rental.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RentalUpdateArgs>(args: SelectSubset<T, RentalUpdateArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Rentals.
+     * @param {RentalDeleteManyArgs} args - Arguments to filter Rentals to delete.
+     * @example
+     * // Delete a few Rentals
+     * const { count } = await prisma.rental.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RentalDeleteManyArgs>(args?: SelectSubset<T, RentalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Rentals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Rentals
+     * const rental = await prisma.rental.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RentalUpdateManyArgs>(args: SelectSubset<T, RentalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Rentals and returns the data updated in the database.
+     * @param {RentalUpdateManyAndReturnArgs} args - Arguments to update many Rentals.
+     * @example
+     * // Update many Rentals
+     * const rental = await prisma.rental.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Rentals and only return the `id`
+     * const rentalWithIdOnly = await prisma.rental.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RentalUpdateManyAndReturnArgs>(args: SelectSubset<T, RentalUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Rental.
+     * @param {RentalUpsertArgs} args - Arguments to update or create a Rental.
+     * @example
+     * // Update or create a Rental
+     * const rental = await prisma.rental.upsert({
+     *   create: {
+     *     // ... data to create a Rental
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Rental we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RentalUpsertArgs>(args: SelectSubset<T, RentalUpsertArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Rentals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalCountArgs} args - Arguments to filter Rentals to count.
+     * @example
+     * // Count the number of Rentals
+     * const count = await prisma.rental.count({
+     *   where: {
+     *     // ... the filter for the Rentals we want to count
+     *   }
+     * })
+    **/
+    count<T extends RentalCountArgs>(
+      args?: Subset<T, RentalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RentalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Rental.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RentalAggregateArgs>(args: Subset<T, RentalAggregateArgs>): Prisma.PrismaPromise<GetRentalAggregateType<T>>
+
+    /**
+     * Group by Rental.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RentalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RentalGroupByArgs['orderBy'] }
+        : { orderBy?: RentalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RentalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRentalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Rental model
+   */
+  readonly fields: RentalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Rental.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RentalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Rental model
+   */
+  interface RentalFieldRefs {
+    readonly id: FieldRef<"Rental", 'Int'>
+    readonly category: FieldRef<"Rental", 'String'>
+    readonly title: FieldRef<"Rental", 'String'>
+    readonly description: FieldRef<"Rental", 'String'>
+    readonly mainHeading: FieldRef<"Rental", 'String'>
+    readonly mainDescription: FieldRef<"Rental", 'String'>
+    readonly offer: FieldRef<"Rental", 'Json'>
+    readonly whySuperDeal: FieldRef<"Rental", 'String'>
+    readonly thingsToDo: FieldRef<"Rental", 'Json'>
+    readonly additionalInfo: FieldRef<"Rental", 'Json'>
+    readonly ecoTip: FieldRef<"Rental", 'String'>
+    readonly createdAt: FieldRef<"Rental", 'DateTime'>
+    readonly updatedAt: FieldRef<"Rental", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Rental findUnique
+   */
+  export type RentalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Filter, which Rental to fetch.
+     */
+    where: RentalWhereUniqueInput
+  }
+
+  /**
+   * Rental findUniqueOrThrow
+   */
+  export type RentalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Filter, which Rental to fetch.
+     */
+    where: RentalWhereUniqueInput
+  }
+
+  /**
+   * Rental findFirst
+   */
+  export type RentalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Filter, which Rental to fetch.
+     */
+    where?: RentalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rentals to fetch.
+     */
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Rentals.
+     */
+    cursor?: RentalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rentals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rentals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Rentals.
+     */
+    distinct?: RentalScalarFieldEnum | RentalScalarFieldEnum[]
+  }
+
+  /**
+   * Rental findFirstOrThrow
+   */
+  export type RentalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Filter, which Rental to fetch.
+     */
+    where?: RentalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rentals to fetch.
+     */
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Rentals.
+     */
+    cursor?: RentalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rentals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rentals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Rentals.
+     */
+    distinct?: RentalScalarFieldEnum | RentalScalarFieldEnum[]
+  }
+
+  /**
+   * Rental findMany
+   */
+  export type RentalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Filter, which Rentals to fetch.
+     */
+    where?: RentalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rentals to fetch.
+     */
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Rentals.
+     */
+    cursor?: RentalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rentals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rentals.
+     */
+    skip?: number
+    distinct?: RentalScalarFieldEnum | RentalScalarFieldEnum[]
+  }
+
+  /**
+   * Rental create
+   */
+  export type RentalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Rental.
+     */
+    data: XOR<RentalCreateInput, RentalUncheckedCreateInput>
+  }
+
+  /**
+   * Rental createMany
+   */
+  export type RentalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Rentals.
+     */
+    data: RentalCreateManyInput | RentalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Rental createManyAndReturn
+   */
+  export type RentalCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * The data used to create many Rentals.
+     */
+    data: RentalCreateManyInput | RentalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Rental update
+   */
+  export type RentalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Rental.
+     */
+    data: XOR<RentalUpdateInput, RentalUncheckedUpdateInput>
+    /**
+     * Choose, which Rental to update.
+     */
+    where: RentalWhereUniqueInput
+  }
+
+  /**
+   * Rental updateMany
+   */
+  export type RentalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Rentals.
+     */
+    data: XOR<RentalUpdateManyMutationInput, RentalUncheckedUpdateManyInput>
+    /**
+     * Filter which Rentals to update
+     */
+    where?: RentalWhereInput
+    /**
+     * Limit how many Rentals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Rental updateManyAndReturn
+   */
+  export type RentalUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * The data used to update Rentals.
+     */
+    data: XOR<RentalUpdateManyMutationInput, RentalUncheckedUpdateManyInput>
+    /**
+     * Filter which Rentals to update
+     */
+    where?: RentalWhereInput
+    /**
+     * Limit how many Rentals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Rental upsert
+   */
+  export type RentalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Rental to update in case it exists.
+     */
+    where: RentalWhereUniqueInput
+    /**
+     * In case the Rental found by the `where` argument doesn't exist, create a new Rental with this data.
+     */
+    create: XOR<RentalCreateInput, RentalUncheckedCreateInput>
+    /**
+     * In case the Rental was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RentalUpdateInput, RentalUncheckedUpdateInput>
+  }
+
+  /**
+   * Rental delete
+   */
+  export type RentalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Filter which Rental to delete.
+     */
+    where: RentalWhereUniqueInput
+  }
+
+  /**
+   * Rental deleteMany
+   */
+  export type RentalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Rentals to delete
+     */
+    where?: RentalWhereInput
+    /**
+     * Limit how many Rentals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Rental without action
+   */
+  export type RentalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -2124,6 +4626,50 @@ export namespace Prisma {
   export type HotelScalarFieldEnum = (typeof HotelScalarFieldEnum)[keyof typeof HotelScalarFieldEnum]
 
 
+  export const FlightScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    airline: 'airline',
+    departureCity: 'departureCity',
+    arrivalCity: 'arrivalCity',
+    duration: 'duration',
+    price: 'price',
+    currency: 'currency',
+    flightClass: 'flightClass',
+    baggage: 'baggage',
+    services: 'services',
+    whyAdore: 'whyAdore',
+    flexibleDates: 'flexibleDates',
+    extras: 'extras',
+    tips: 'tips',
+    offerLink: 'offerLink',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FlightScalarFieldEnum = (typeof FlightScalarFieldEnum)[keyof typeof FlightScalarFieldEnum]
+
+
+  export const RentalScalarFieldEnum: {
+    id: 'id',
+    category: 'category',
+    title: 'title',
+    description: 'description',
+    mainHeading: 'mainHeading',
+    mainDescription: 'mainDescription',
+    offer: 'offer',
+    whySuperDeal: 'whySuperDeal',
+    thingsToDo: 'thingsToDo',
+    additionalInfo: 'additionalInfo',
+    ecoTip: 'ecoTip',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RentalScalarFieldEnum = (typeof RentalScalarFieldEnum)[keyof typeof RentalScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -2137,6 +4683,14 @@ export namespace Prisma {
   };
 
   export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const QueryMode: {
@@ -2236,6 +4790,13 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
   /**
    * Deep Input Types
@@ -2364,6 +4925,224 @@ export namespace Prisma {
     notes?: StringNullableWithAggregatesFilter<"Hotel"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Hotel"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Hotel"> | Date | string
+  }
+
+  export type FlightWhereInput = {
+    AND?: FlightWhereInput | FlightWhereInput[]
+    OR?: FlightWhereInput[]
+    NOT?: FlightWhereInput | FlightWhereInput[]
+    id?: IntFilter<"Flight"> | number
+    title?: StringFilter<"Flight"> | string
+    description?: StringFilter<"Flight"> | string
+    airline?: StringFilter<"Flight"> | string
+    departureCity?: StringFilter<"Flight"> | string
+    arrivalCity?: StringFilter<"Flight"> | string
+    duration?: StringFilter<"Flight"> | string
+    price?: FloatFilter<"Flight"> | number
+    currency?: StringFilter<"Flight"> | string
+    flightClass?: StringFilter<"Flight"> | string
+    baggage?: StringFilter<"Flight"> | string
+    services?: JsonFilter<"Flight">
+    whyAdore?: JsonFilter<"Flight">
+    flexibleDates?: BoolFilter<"Flight"> | boolean
+    extras?: JsonNullableFilter<"Flight">
+    tips?: JsonNullableFilter<"Flight">
+    offerLink?: StringNullableFilter<"Flight"> | string | null
+    createdAt?: DateTimeFilter<"Flight"> | Date | string
+    updatedAt?: DateTimeFilter<"Flight"> | Date | string
+  }
+
+  export type FlightOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    airline?: SortOrder
+    departureCity?: SortOrder
+    arrivalCity?: SortOrder
+    duration?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    flightClass?: SortOrder
+    baggage?: SortOrder
+    services?: SortOrder
+    whyAdore?: SortOrder
+    flexibleDates?: SortOrder
+    extras?: SortOrderInput | SortOrder
+    tips?: SortOrderInput | SortOrder
+    offerLink?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FlightWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: FlightWhereInput | FlightWhereInput[]
+    OR?: FlightWhereInput[]
+    NOT?: FlightWhereInput | FlightWhereInput[]
+    title?: StringFilter<"Flight"> | string
+    description?: StringFilter<"Flight"> | string
+    airline?: StringFilter<"Flight"> | string
+    departureCity?: StringFilter<"Flight"> | string
+    arrivalCity?: StringFilter<"Flight"> | string
+    duration?: StringFilter<"Flight"> | string
+    price?: FloatFilter<"Flight"> | number
+    currency?: StringFilter<"Flight"> | string
+    flightClass?: StringFilter<"Flight"> | string
+    baggage?: StringFilter<"Flight"> | string
+    services?: JsonFilter<"Flight">
+    whyAdore?: JsonFilter<"Flight">
+    flexibleDates?: BoolFilter<"Flight"> | boolean
+    extras?: JsonNullableFilter<"Flight">
+    tips?: JsonNullableFilter<"Flight">
+    offerLink?: StringNullableFilter<"Flight"> | string | null
+    createdAt?: DateTimeFilter<"Flight"> | Date | string
+    updatedAt?: DateTimeFilter<"Flight"> | Date | string
+  }, "id">
+
+  export type FlightOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    airline?: SortOrder
+    departureCity?: SortOrder
+    arrivalCity?: SortOrder
+    duration?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    flightClass?: SortOrder
+    baggage?: SortOrder
+    services?: SortOrder
+    whyAdore?: SortOrder
+    flexibleDates?: SortOrder
+    extras?: SortOrderInput | SortOrder
+    tips?: SortOrderInput | SortOrder
+    offerLink?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FlightCountOrderByAggregateInput
+    _avg?: FlightAvgOrderByAggregateInput
+    _max?: FlightMaxOrderByAggregateInput
+    _min?: FlightMinOrderByAggregateInput
+    _sum?: FlightSumOrderByAggregateInput
+  }
+
+  export type FlightScalarWhereWithAggregatesInput = {
+    AND?: FlightScalarWhereWithAggregatesInput | FlightScalarWhereWithAggregatesInput[]
+    OR?: FlightScalarWhereWithAggregatesInput[]
+    NOT?: FlightScalarWhereWithAggregatesInput | FlightScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Flight"> | number
+    title?: StringWithAggregatesFilter<"Flight"> | string
+    description?: StringWithAggregatesFilter<"Flight"> | string
+    airline?: StringWithAggregatesFilter<"Flight"> | string
+    departureCity?: StringWithAggregatesFilter<"Flight"> | string
+    arrivalCity?: StringWithAggregatesFilter<"Flight"> | string
+    duration?: StringWithAggregatesFilter<"Flight"> | string
+    price?: FloatWithAggregatesFilter<"Flight"> | number
+    currency?: StringWithAggregatesFilter<"Flight"> | string
+    flightClass?: StringWithAggregatesFilter<"Flight"> | string
+    baggage?: StringWithAggregatesFilter<"Flight"> | string
+    services?: JsonWithAggregatesFilter<"Flight">
+    whyAdore?: JsonWithAggregatesFilter<"Flight">
+    flexibleDates?: BoolWithAggregatesFilter<"Flight"> | boolean
+    extras?: JsonNullableWithAggregatesFilter<"Flight">
+    tips?: JsonNullableWithAggregatesFilter<"Flight">
+    offerLink?: StringNullableWithAggregatesFilter<"Flight"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Flight"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Flight"> | Date | string
+  }
+
+  export type RentalWhereInput = {
+    AND?: RentalWhereInput | RentalWhereInput[]
+    OR?: RentalWhereInput[]
+    NOT?: RentalWhereInput | RentalWhereInput[]
+    id?: IntFilter<"Rental"> | number
+    category?: StringFilter<"Rental"> | string
+    title?: StringFilter<"Rental"> | string
+    description?: StringFilter<"Rental"> | string
+    mainHeading?: StringFilter<"Rental"> | string
+    mainDescription?: StringFilter<"Rental"> | string
+    offer?: JsonFilter<"Rental">
+    whySuperDeal?: StringFilter<"Rental"> | string
+    thingsToDo?: JsonFilter<"Rental">
+    additionalInfo?: JsonFilter<"Rental">
+    ecoTip?: StringNullableFilter<"Rental"> | string | null
+    createdAt?: DateTimeFilter<"Rental"> | Date | string
+    updatedAt?: DateTimeFilter<"Rental"> | Date | string
+  }
+
+  export type RentalOrderByWithRelationInput = {
+    id?: SortOrder
+    category?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    mainHeading?: SortOrder
+    mainDescription?: SortOrder
+    offer?: SortOrder
+    whySuperDeal?: SortOrder
+    thingsToDo?: SortOrder
+    additionalInfo?: SortOrder
+    ecoTip?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RentalWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: RentalWhereInput | RentalWhereInput[]
+    OR?: RentalWhereInput[]
+    NOT?: RentalWhereInput | RentalWhereInput[]
+    category?: StringFilter<"Rental"> | string
+    title?: StringFilter<"Rental"> | string
+    description?: StringFilter<"Rental"> | string
+    mainHeading?: StringFilter<"Rental"> | string
+    mainDescription?: StringFilter<"Rental"> | string
+    offer?: JsonFilter<"Rental">
+    whySuperDeal?: StringFilter<"Rental"> | string
+    thingsToDo?: JsonFilter<"Rental">
+    additionalInfo?: JsonFilter<"Rental">
+    ecoTip?: StringNullableFilter<"Rental"> | string | null
+    createdAt?: DateTimeFilter<"Rental"> | Date | string
+    updatedAt?: DateTimeFilter<"Rental"> | Date | string
+  }, "id">
+
+  export type RentalOrderByWithAggregationInput = {
+    id?: SortOrder
+    category?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    mainHeading?: SortOrder
+    mainDescription?: SortOrder
+    offer?: SortOrder
+    whySuperDeal?: SortOrder
+    thingsToDo?: SortOrder
+    additionalInfo?: SortOrder
+    ecoTip?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RentalCountOrderByAggregateInput
+    _avg?: RentalAvgOrderByAggregateInput
+    _max?: RentalMaxOrderByAggregateInput
+    _min?: RentalMinOrderByAggregateInput
+    _sum?: RentalSumOrderByAggregateInput
+  }
+
+  export type RentalScalarWhereWithAggregatesInput = {
+    AND?: RentalScalarWhereWithAggregatesInput | RentalScalarWhereWithAggregatesInput[]
+    OR?: RentalScalarWhereWithAggregatesInput[]
+    NOT?: RentalScalarWhereWithAggregatesInput | RentalScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Rental"> | number
+    category?: StringWithAggregatesFilter<"Rental"> | string
+    title?: StringWithAggregatesFilter<"Rental"> | string
+    description?: StringWithAggregatesFilter<"Rental"> | string
+    mainHeading?: StringWithAggregatesFilter<"Rental"> | string
+    mainDescription?: StringWithAggregatesFilter<"Rental"> | string
+    offer?: JsonWithAggregatesFilter<"Rental">
+    whySuperDeal?: StringWithAggregatesFilter<"Rental"> | string
+    thingsToDo?: JsonWithAggregatesFilter<"Rental">
+    additionalInfo?: JsonWithAggregatesFilter<"Rental">
+    ecoTip?: StringNullableWithAggregatesFilter<"Rental"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Rental"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Rental"> | Date | string
   }
 
   export type HotelCreateInput = {
@@ -2513,6 +5292,266 @@ export namespace Prisma {
     check_in?: StringFieldUpdateOperationsInput | string
     check_out?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FlightCreateInput = {
+    title: string
+    description: string
+    airline: string
+    departureCity: string
+    arrivalCity: string
+    duration: string
+    price: number
+    currency?: string
+    flightClass: string
+    baggage: string
+    services: JsonNullValueInput | InputJsonValue
+    whyAdore: JsonNullValueInput | InputJsonValue
+    flexibleDates?: boolean
+    extras?: NullableJsonNullValueInput | InputJsonValue
+    tips?: NullableJsonNullValueInput | InputJsonValue
+    offerLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FlightUncheckedCreateInput = {
+    id?: number
+    title: string
+    description: string
+    airline: string
+    departureCity: string
+    arrivalCity: string
+    duration: string
+    price: number
+    currency?: string
+    flightClass: string
+    baggage: string
+    services: JsonNullValueInput | InputJsonValue
+    whyAdore: JsonNullValueInput | InputJsonValue
+    flexibleDates?: boolean
+    extras?: NullableJsonNullValueInput | InputJsonValue
+    tips?: NullableJsonNullValueInput | InputJsonValue
+    offerLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FlightUpdateInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    airline?: StringFieldUpdateOperationsInput | string
+    departureCity?: StringFieldUpdateOperationsInput | string
+    arrivalCity?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    flightClass?: StringFieldUpdateOperationsInput | string
+    baggage?: StringFieldUpdateOperationsInput | string
+    services?: JsonNullValueInput | InputJsonValue
+    whyAdore?: JsonNullValueInput | InputJsonValue
+    flexibleDates?: BoolFieldUpdateOperationsInput | boolean
+    extras?: NullableJsonNullValueInput | InputJsonValue
+    tips?: NullableJsonNullValueInput | InputJsonValue
+    offerLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FlightUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    airline?: StringFieldUpdateOperationsInput | string
+    departureCity?: StringFieldUpdateOperationsInput | string
+    arrivalCity?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    flightClass?: StringFieldUpdateOperationsInput | string
+    baggage?: StringFieldUpdateOperationsInput | string
+    services?: JsonNullValueInput | InputJsonValue
+    whyAdore?: JsonNullValueInput | InputJsonValue
+    flexibleDates?: BoolFieldUpdateOperationsInput | boolean
+    extras?: NullableJsonNullValueInput | InputJsonValue
+    tips?: NullableJsonNullValueInput | InputJsonValue
+    offerLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FlightCreateManyInput = {
+    id?: number
+    title: string
+    description: string
+    airline: string
+    departureCity: string
+    arrivalCity: string
+    duration: string
+    price: number
+    currency?: string
+    flightClass: string
+    baggage: string
+    services: JsonNullValueInput | InputJsonValue
+    whyAdore: JsonNullValueInput | InputJsonValue
+    flexibleDates?: boolean
+    extras?: NullableJsonNullValueInput | InputJsonValue
+    tips?: NullableJsonNullValueInput | InputJsonValue
+    offerLink?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FlightUpdateManyMutationInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    airline?: StringFieldUpdateOperationsInput | string
+    departureCity?: StringFieldUpdateOperationsInput | string
+    arrivalCity?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    flightClass?: StringFieldUpdateOperationsInput | string
+    baggage?: StringFieldUpdateOperationsInput | string
+    services?: JsonNullValueInput | InputJsonValue
+    whyAdore?: JsonNullValueInput | InputJsonValue
+    flexibleDates?: BoolFieldUpdateOperationsInput | boolean
+    extras?: NullableJsonNullValueInput | InputJsonValue
+    tips?: NullableJsonNullValueInput | InputJsonValue
+    offerLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FlightUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    airline?: StringFieldUpdateOperationsInput | string
+    departureCity?: StringFieldUpdateOperationsInput | string
+    arrivalCity?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    flightClass?: StringFieldUpdateOperationsInput | string
+    baggage?: StringFieldUpdateOperationsInput | string
+    services?: JsonNullValueInput | InputJsonValue
+    whyAdore?: JsonNullValueInput | InputJsonValue
+    flexibleDates?: BoolFieldUpdateOperationsInput | boolean
+    extras?: NullableJsonNullValueInput | InputJsonValue
+    tips?: NullableJsonNullValueInput | InputJsonValue
+    offerLink?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RentalCreateInput = {
+    category: string
+    title: string
+    description: string
+    mainHeading: string
+    mainDescription: string
+    offer: JsonNullValueInput | InputJsonValue
+    whySuperDeal: string
+    thingsToDo: JsonNullValueInput | InputJsonValue
+    additionalInfo: JsonNullValueInput | InputJsonValue
+    ecoTip?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RentalUncheckedCreateInput = {
+    id?: number
+    category: string
+    title: string
+    description: string
+    mainHeading: string
+    mainDescription: string
+    offer: JsonNullValueInput | InputJsonValue
+    whySuperDeal: string
+    thingsToDo: JsonNullValueInput | InputJsonValue
+    additionalInfo: JsonNullValueInput | InputJsonValue
+    ecoTip?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RentalUpdateInput = {
+    category?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    mainHeading?: StringFieldUpdateOperationsInput | string
+    mainDescription?: StringFieldUpdateOperationsInput | string
+    offer?: JsonNullValueInput | InputJsonValue
+    whySuperDeal?: StringFieldUpdateOperationsInput | string
+    thingsToDo?: JsonNullValueInput | InputJsonValue
+    additionalInfo?: JsonNullValueInput | InputJsonValue
+    ecoTip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RentalUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    category?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    mainHeading?: StringFieldUpdateOperationsInput | string
+    mainDescription?: StringFieldUpdateOperationsInput | string
+    offer?: JsonNullValueInput | InputJsonValue
+    whySuperDeal?: StringFieldUpdateOperationsInput | string
+    thingsToDo?: JsonNullValueInput | InputJsonValue
+    additionalInfo?: JsonNullValueInput | InputJsonValue
+    ecoTip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RentalCreateManyInput = {
+    id?: number
+    category: string
+    title: string
+    description: string
+    mainHeading: string
+    mainDescription: string
+    offer: JsonNullValueInput | InputJsonValue
+    whySuperDeal: string
+    thingsToDo: JsonNullValueInput | InputJsonValue
+    additionalInfo: JsonNullValueInput | InputJsonValue
+    ecoTip?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RentalUpdateManyMutationInput = {
+    category?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    mainHeading?: StringFieldUpdateOperationsInput | string
+    mainDescription?: StringFieldUpdateOperationsInput | string
+    offer?: JsonNullValueInput | InputJsonValue
+    whySuperDeal?: StringFieldUpdateOperationsInput | string
+    thingsToDo?: JsonNullValueInput | InputJsonValue
+    additionalInfo?: JsonNullValueInput | InputJsonValue
+    ecoTip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RentalUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    category?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    mainHeading?: StringFieldUpdateOperationsInput | string
+    mainDescription?: StringFieldUpdateOperationsInput | string
+    offer?: JsonNullValueInput | InputJsonValue
+    whySuperDeal?: StringFieldUpdateOperationsInput | string
+    thingsToDo?: JsonNullValueInput | InputJsonValue
+    additionalInfo?: JsonNullValueInput | InputJsonValue
+    ecoTip?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2850,6 +5889,186 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type FlightCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    airline?: SortOrder
+    departureCity?: SortOrder
+    arrivalCity?: SortOrder
+    duration?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    flightClass?: SortOrder
+    baggage?: SortOrder
+    services?: SortOrder
+    whyAdore?: SortOrder
+    flexibleDates?: SortOrder
+    extras?: SortOrder
+    tips?: SortOrder
+    offerLink?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FlightAvgOrderByAggregateInput = {
+    id?: SortOrder
+    price?: SortOrder
+  }
+
+  export type FlightMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    airline?: SortOrder
+    departureCity?: SortOrder
+    arrivalCity?: SortOrder
+    duration?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    flightClass?: SortOrder
+    baggage?: SortOrder
+    flexibleDates?: SortOrder
+    offerLink?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FlightMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    airline?: SortOrder
+    departureCity?: SortOrder
+    arrivalCity?: SortOrder
+    duration?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    flightClass?: SortOrder
+    baggage?: SortOrder
+    flexibleDates?: SortOrder
+    offerLink?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FlightSumOrderByAggregateInput = {
+    id?: SortOrder
+    price?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type RentalCountOrderByAggregateInput = {
+    id?: SortOrder
+    category?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    mainHeading?: SortOrder
+    mainDescription?: SortOrder
+    offer?: SortOrder
+    whySuperDeal?: SortOrder
+    thingsToDo?: SortOrder
+    additionalInfo?: SortOrder
+    ecoTip?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RentalAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type RentalMaxOrderByAggregateInput = {
+    id?: SortOrder
+    category?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    mainHeading?: SortOrder
+    mainDescription?: SortOrder
+    whySuperDeal?: SortOrder
+    ecoTip?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RentalMinOrderByAggregateInput = {
+    id?: SortOrder
+    category?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    mainHeading?: SortOrder
+    mainDescription?: SortOrder
+    whySuperDeal?: SortOrder
+    ecoTip?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RentalSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -2892,6 +6111,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -3110,6 +6333,42 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
 

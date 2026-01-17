@@ -1,18 +1,21 @@
-import { 
-  Search, 
-  Menu, 
-  X, 
-  ChevronDown, 
-  Plane, 
-  Hotel, 
-  Car, 
+import {
+  Search,
+  Menu,
+  X,
+  ChevronDown,
+  Plane,
+  Hotel,
+  Car,
   Calendar,
   MapPin,
   Flame,
   Globe,
   Ticket,
   CreditCard,
-  Bell
+  Bell,
+  Star,
+  Check,
+  ArrowRight
 } from 'lucide-react';
 
 export const icons = {
@@ -29,5 +32,8 @@ export const icons = {
   Globe,
   Ticket,
   CreditCard,
-  Bell
+  Bell,
+  Star,
+  Check,
+  ArrowRight
 };

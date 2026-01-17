@@ -114,12 +114,55 @@ exports.Prisma.HotelScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FlightScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  airline: 'airline',
+  departureCity: 'departureCity',
+  arrivalCity: 'arrivalCity',
+  duration: 'duration',
+  price: 'price',
+  currency: 'currency',
+  flightClass: 'flightClass',
+  baggage: 'baggage',
+  services: 'services',
+  whyAdore: 'whyAdore',
+  flexibleDates: 'flexibleDates',
+  extras: 'extras',
+  tips: 'tips',
+  offerLink: 'offerLink',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RentalScalarFieldEnum = {
+  id: 'id',
+  category: 'category',
+  title: 'title',
+  description: 'description',
+  mainHeading: 'mainHeading',
+  mainDescription: 'mainDescription',
+  offer: 'offer',
+  whySuperDeal: 'whySuperDeal',
+  thingsToDo: 'thingsToDo',
+  additionalInfo: 'additionalInfo',
+  ecoTip: 'ecoTip',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
 exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -141,7 +184,9 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Hotel: 'Hotel'
+  Hotel: 'Hotel',
+  Flight: 'Flight',
+  Rental: 'Rental'
 };
 /**
  * Create the Client
@@ -151,10 +196,10 @@ const config = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Hotel {\n  id              Int     @id @default(autoincrement())\n  title           String\n  desc            String\n  title_fr        String\n  desc_fr         String\n  address         String\n  city            String\n  country         String\n  price_per_night Float\n  total_price     Float? // optional, only for mobile-home\n  currency        String\n  rating          Float? // optional\n  review_count    Int? // optional\n  amenities       Json // store array of strings as JSON\n  check_in        String\n  check_out       String\n  notes           String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n"
+  "inlineSchema": "generator client {\n  provider     = \"prisma-client-js\"\n  output       = \"../app/generated/prisma\"\n  moduleFormat = \"esm\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Hotel {\n  id              Int     @id @default(autoincrement())\n  title           String\n  desc            String\n  title_fr        String\n  desc_fr         String\n  address         String\n  city            String\n  country         String\n  price_per_night Float\n  total_price     Float? // optional, only for mobile-home\n  currency        String\n  rating          Float? // optional\n  review_count    Int? // optional\n  amenities       Json // store array of strings as JSON\n  check_in        String\n  check_out       String\n  notes           String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Flight {\n  id            Int     @id @default(autoincrement())\n  title         String\n  description   String\n  airline       String\n  departureCity String\n  arrivalCity   String\n  duration      String\n  price         Float\n  currency      String  @default(\"EUR\")\n  flightClass   String\n  baggage       String\n  services      Json // array of strings\n  whyAdore      Json // array of strings\n  flexibleDates Boolean @default(false)\n  extras        Json?\n  tips          Json?\n  offerLink     String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Rental {\n  id              Int     @id @default(autoincrement())\n  category        String\n  title           String\n  description     String\n  mainHeading     String\n  mainDescription String\n  offer           Json\n  whySuperDeal    String\n  thingsToDo      Json // array of strings\n  additionalInfo  Json\n  ecoTip          String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Hotel\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"desc\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title_fr\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"desc_fr\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"city\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price_per_night\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"total_price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rating\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"review_count\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"amenities\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"check_in\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"check_out\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Hotel\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"desc\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title_fr\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"desc_fr\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"city\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"country\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price_per_night\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"total_price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rating\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"review_count\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"amenities\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"check_in\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"check_out\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Flight\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"airline\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"departureCity\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"arrivalCity\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"duration\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"flightClass\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"baggage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"services\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"whyAdore\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"flexibleDates\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"extras\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"tips\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"offerLink\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Rental\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mainHeading\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mainDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"offer\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"whySuperDeal\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"thingsToDo\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"additionalInfo\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"ecoTip\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
   getRuntime: async () => require('./query_compiler_bg.js'),

@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../app/generated/prisma"
    moduleFormat = "esm" 
 }
@@ -26,6 +26,46 @@ model Hotel {
   check_in       String
   check_out      String
   notes          String?
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Flight {
+  id             Int       @id @default(autoincrement())
+  title          String
+  description    String
+  airline        String
+  departureCity  String
+  arrivalCity    String
+  duration       String
+  price          Float
+  currency       String    @default("EUR")
+  flightClass    String
+  baggage        String
+  services       Json      // array of strings
+  whyAdore       Json      // array of strings
+  flexibleDates  Boolean   @default(false)
+  extras         Json?
+  tips           Json?
+  offerLink      String?
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Rental {
+  id             Int       @id @default(autoincrement())
+  category       String
+  title          String
+  description    String
+  mainHeading    String
+  mainDescription String
+  offer          Json
+  whySuperDeal   String
+  thingsToDo     Json      // array of strings
+  additionalInfo Json
+  ecoTip         String?
 
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt

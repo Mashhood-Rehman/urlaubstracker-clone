@@ -16,13 +16,21 @@ const Hero = () => {
 
     const handleSearch = () => {
         if (activeTab === 'Flights') {
-            const searchParams = `${from || 'any'}-${to || 'any'}-${date || 'any'}`;
-            router.push(`/flights/${searchParams}`);
+            // Updated to use search query params
+            const params = new URLSearchParams();
+            if (from) params.append('from', from);
+            if (to) params.append('to', to);
+            if (date) params.append('date', date);
+            router.push(`/flights/search?${params.toString()}`);
         } else if (activeTab === 'Hotels') {
             const params = new URLSearchParams();
-            if (from) params.append('location', from); // Using 'from' state as location for consistency, though label is destination
+            if (from) params.append('location', from);
             if (date) params.append('date', date);
             router.push(`/search?${params.toString()}`);
+        } else if (activeTab === 'Car Rental') {
+            const params = new URLSearchParams();
+            if (from) params.append('location', from);
+            router.push(`/rentals/search?${params.toString()}`);
         }
     };
 

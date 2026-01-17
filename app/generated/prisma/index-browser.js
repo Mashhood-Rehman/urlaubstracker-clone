@@ -142,12 +142,55 @@ exports.Prisma.HotelScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FlightScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  airline: 'airline',
+  departureCity: 'departureCity',
+  arrivalCity: 'arrivalCity',
+  duration: 'duration',
+  price: 'price',
+  currency: 'currency',
+  flightClass: 'flightClass',
+  baggage: 'baggage',
+  services: 'services',
+  whyAdore: 'whyAdore',
+  flexibleDates: 'flexibleDates',
+  extras: 'extras',
+  tips: 'tips',
+  offerLink: 'offerLink',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RentalScalarFieldEnum = {
+  id: 'id',
+  category: 'category',
+  title: 'title',
+  description: 'description',
+  mainHeading: 'mainHeading',
+  mainDescription: 'mainDescription',
+  offer: 'offer',
+  whySuperDeal: 'whySuperDeal',
+  thingsToDo: 'thingsToDo',
+  additionalInfo: 'additionalInfo',
+  ecoTip: 'ecoTip',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
 exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -169,7 +212,9 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Hotel: 'Hotel'
+  Hotel: 'Hotel',
+  Flight: 'Flight',
+  Rental: 'Rental'
 };
 
 /**

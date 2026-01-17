@@ -5,6 +5,7 @@ import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
 
 export default function ProductsPage() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [categoryFilter, setCategoryFilter] = useState('All');
     const [products, setProducts] = useState<Array<any>>([]);
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -19,6 +20,7 @@ export default function ProductsPage() {
         address: '',
         city: '',
         country: '',
+        category: 'Hotel',
         price_per_night: '',
         total_price: '',
         currency: 'EUR',
@@ -59,6 +61,7 @@ export default function ProductsPage() {
             address: '',
             city: '',
             country: '',
+            category: 'Hotel',
             price_per_night: '',
             total_price: '',
             currency: 'EUR',
@@ -82,6 +85,7 @@ export default function ProductsPage() {
             address: product.address || '',
             city: product.city || '',
             country: product.country || '',
+            category: product.category || 'Hotel',
             price_per_night: product.price_per_night || '',
             total_price: product.total_price || '',
             currency: product.currency || 'EUR',
@@ -176,16 +180,30 @@ export default function ProductsPage() {
             </div>
 
             {/* Actions Bar */}
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 max-w-md">
-                    <Search className="w-4 h-4 text-gray-400" />
-                    <input
-                        type="text"
-                        placeholder="Search products..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="bg-transparent border-none outline-none text-sm flex-1"
-                    />
+            <div className="flex items-center justify-between mb-4 gap-3">
+                <div className="flex items-center gap-3 flex-1">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 max-w-md">
+                        <Search className="w-4 h-4 text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder="Search by name, city, country..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="bg-transparent border-none outline-none text-sm flex-1"
+                        />
+                    </div>
+                    <select
+                        value={categoryFilter}
+                        onChange={(e) => setCategoryFilter(e.target.value)}
+                        className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:border-primary"
+                    >
+                        <option value="All">All Categories</option>
+                        <option value="Hotel">Hotel</option>
+                        <option value="Resort">Resort</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Hostel">Hostel</option>
+                    </select>
                 </div>
                 <button
                     onClick={() => {
@@ -197,7 +215,6 @@ export default function ProductsPage() {
                     <Plus className="w-4 h-4" />
                     Add Product
                 </button>
-
             </div>
 
             {/* Table */}
@@ -207,6 +224,7 @@ export default function ProductsPage() {
                         <tr>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">ID</th>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Hotel Name</th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Category</th>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">City</th>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Price/Night</th>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Rating</th>
@@ -217,50 +235,71 @@ export default function ProductsPage() {
                     </thead>
                     <tbody>
                         {products && products.length > 0 ? (
-                            products.map((product) => (
-                                <tr key={product.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                    <td className="px-4 py-2 text-sm text-gray-600">{product.id}</td>
-                                    <td className="px-4 py-2 text-sm font-medium text-foreground">{product.title}</td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">{product.city}</td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">
-                                        {product.currency} {product.price_per_night}
-                                    </td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">
-                                        <span className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">
-                                            ⭐ {product.rating || 'N/A'}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">{product.review_count || 0}</td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">
-                                        <div className="flex flex-wrap gap-1">
-                                            {Array.isArray(product.amenities) && product.amenities.slice(0, 3).map((amenity: any, idx: any) => (
-                                                <span key={idx} className="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">
-                                                    {amenity}
-                                                </span>
-                                            ))}
-                                            {Array.isArray(product.amenities) && product.amenities.length > 3 && (
-                                                <span className="text-xs text-gray-500">+{product.amenities.length - 3} more</span>
-                                            )}
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <div className="flex items-center gap-2">
-                                            <button
-                                                onClick={() => handleEdit(product)}
-                                                className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
-                                            >
-                                                <Edit className="w-4 h-4 text-blue-600" />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(product.id)}
-                                                className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
-                                            >
-                                                <Trash2 className="w-4 h-4 text-red-600" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
+                            products
+                                .filter(p => {
+                                    const matchesSearch = searchTerm === '' ||
+                                        p.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                        p.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                        p.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                        p.desc?.toLowerCase().includes(searchTerm.toLowerCase());
+
+                                    // If "All" is selected, show everything
+                                    // Otherwise, show items that match the category OR don't have a category set (null/undefined)
+                                    const matchesCategory = categoryFilter === 'All' ||
+                                        !p.category ||
+                                        p.category === categoryFilter;
+
+                                    return matchesSearch && matchesCategory;
+                                })
+                                .map((product) => (
+                                    <tr key={product.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                        <td className="px-4 py-2 text-sm text-gray-600">{product.id}</td>
+                                        <td className="px-4 py-2 text-sm font-medium text-foreground">{product.title}</td>
+                                        <td className="px-4 py-2 text-sm text-gray-600">
+                                            <span className="inline-block bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-xs font-medium">
+                                                {product.category || 'Hotel'}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2 text-sm text-gray-600">{product.city}</td>
+                                        <td className="px-4 py-2 text-sm text-gray-600">
+                                            {product.currency} {product.price_per_night}
+                                        </td>
+                                        <td className="px-4 py-2 text-sm text-gray-600">
+                                            <span className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">
+                                                ⭐ {product.rating || 'N/A'}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2 text-sm text-gray-600">{product.review_count || 0}</td>
+                                        <td className="px-4 py-2 text-sm text-gray-600">
+                                            <div className="flex flex-wrap gap-1">
+                                                {Array.isArray(product.amenities) && product.amenities.slice(0, 3).map((amenity: any, idx: any) => (
+                                                    <span key={idx} className="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">
+                                                        {amenity}
+                                                    </span>
+                                                ))}
+                                                {Array.isArray(product.amenities) && product.amenities.length > 3 && (
+                                                    <span className="text-xs text-gray-500">+{product.amenities.length - 3} more</span>
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    onClick={() => handleEdit(product)}
+                                                    className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
+                                                >
+                                                    <Edit className="w-4 h-4 text-blue-600" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(product.id)}
+                                                    className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4 text-red-600" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
                         ) : (
                             <tr>
                                 <td colSpan={8} className="px-4 py-6 text-center text-sm text-gray-500">
@@ -367,6 +406,23 @@ export default function ProductsPage() {
                                         required
                                         className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
                                     />
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">Category</label>
+                                    <select
+                                        name="category"
+                                        value={formData.category}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
+                                    >
+                                        <option value="Hotel">Hotel</option>
+                                        <option value="Resort">Resort</option>
+                                        <option value="Apartment">Apartment</option>
+                                        <option value="Villa">Villa</option>
+                                        <option value="Hostel">Hostel</option>
+                                    </select>
                                 </div>
 
                                 <div>

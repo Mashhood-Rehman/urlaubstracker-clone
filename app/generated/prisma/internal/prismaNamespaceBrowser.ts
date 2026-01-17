@@ -51,7 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Hotel: 'Hotel'
+  Hotel: 'Hotel',
+  Flight: 'Flight'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -95,6 +96,31 @@ export const HotelScalarFieldEnum = {
 export type HotelScalarFieldEnum = (typeof HotelScalarFieldEnum)[keyof typeof HotelScalarFieldEnum]
 
 
+export const FlightScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  airline: 'airline',
+  departureCity: 'departureCity',
+  arrivalCity: 'arrivalCity',
+  duration: 'duration',
+  price: 'price',
+  currency: 'currency',
+  flightClass: 'flightClass',
+  baggage: 'baggage',
+  services: 'services',
+  whyAdore: 'whyAdore',
+  flexibleDates: 'flexibleDates',
+  extras: 'extras',
+  tips: 'tips',
+  offerLink: 'offerLink',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FlightScalarFieldEnum = (typeof FlightScalarFieldEnum)[keyof typeof FlightScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -108,6 +134,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull'
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
