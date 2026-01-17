@@ -142,6 +142,7 @@ exports.Prisma.HotelScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+<<<<<<< HEAD
 exports.Prisma.FlightScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -180,6 +181,8 @@ exports.Prisma.RentalScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -189,11 +192,14 @@ exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
+<<<<<<< HEAD
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -212,9 +218,13 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
+<<<<<<< HEAD
   Hotel: 'Hotel',
   Flight: 'Flight',
   Rental: 'Rental'
+=======
+  Hotel: 'Hotel'
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 };
 
 /**

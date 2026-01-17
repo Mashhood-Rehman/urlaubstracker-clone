@@ -384,8 +384,12 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+<<<<<<< HEAD
   Hotel: 'Hotel',
   Flight: 'Flight'
+=======
+  Hotel: 'Hotel'
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -401,7 +405,11 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
+<<<<<<< HEAD
     modelProps: "hotel" | "flight"
+=======
+    modelProps: "hotel"
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -479,6 +487,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+<<<<<<< HEAD
     Flight: {
       payload: Prisma.$FlightPayload<ExtArgs>
       fields: Prisma.FlightFieldRefs
@@ -553,6 +562,8 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   }
 } & {
   other: {
@@ -617,6 +628,7 @@ export const HotelScalarFieldEnum = {
 export type HotelScalarFieldEnum = (typeof HotelScalarFieldEnum)[keyof typeof HotelScalarFieldEnum]
 
 
+<<<<<<< HEAD
 export const FlightScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -642,6 +654,8 @@ export const FlightScalarFieldEnum = {
 export type FlightScalarFieldEnum = (typeof FlightScalarFieldEnum)[keyof typeof FlightScalarFieldEnum]
 
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -657,6 +671,7 @@ export const JsonNullValueInput = {
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
+<<<<<<< HEAD
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
@@ -665,6 +680,8 @@ export const NullableJsonNullValueInput = {
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -765,6 +782,7 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
+<<<<<<< HEAD
 
 /**
  * Reference to a field of type 'Boolean'
@@ -772,6 +790,8 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -868,7 +888,10 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   hotel?: Prisma.HotelOmit
+<<<<<<< HEAD
   flight?: Prisma.FlightOmit
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 }
 
 /* Types for Logging */

@@ -51,8 +51,12 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+<<<<<<< HEAD
   Hotel: 'Hotel',
   Flight: 'Flight'
+=======
+  Hotel: 'Hotel'
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -96,6 +100,7 @@ export const HotelScalarFieldEnum = {
 export type HotelScalarFieldEnum = (typeof HotelScalarFieldEnum)[keyof typeof HotelScalarFieldEnum]
 
 
+<<<<<<< HEAD
 export const FlightScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -121,6 +126,8 @@ export const FlightScalarFieldEnum = {
 export type FlightScalarFieldEnum = (typeof FlightScalarFieldEnum)[keyof typeof FlightScalarFieldEnum]
 
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -136,6 +143,7 @@ export const JsonNullValueInput = {
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
+<<<<<<< HEAD
 export const NullableJsonNullValueInput = {
   DbNull: 'DbNull',
   JsonNull: 'JsonNull'
@@ -144,6 +152,8 @@ export const NullableJsonNullValueInput = {
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'

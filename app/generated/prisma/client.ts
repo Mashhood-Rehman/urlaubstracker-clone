@@ -44,8 +44,11 @@ export { Prisma }
  * 
  */
 export type Hotel = Prisma.HotelModel
+<<<<<<< HEAD
 /**
  * Model Flight
  * 
  */
 export type Flight = Prisma.FlightModel
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9

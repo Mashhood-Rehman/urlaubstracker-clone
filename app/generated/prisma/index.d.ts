@@ -18,6 +18,7 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * 
  */
 export type Hotel = $Result.DefaultSelection<Prisma.$HotelPayload>
+<<<<<<< HEAD
 /**
  * Model Flight
  * 
@@ -28,6 +29,8 @@ export type Flight = $Result.DefaultSelection<Prisma.$FlightPayload>
  * 
  */
 export type Rental = $Result.DefaultSelection<Prisma.$RentalPayload>
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 
 /**
  * ##  Prisma Client ʲˢ
@@ -155,6 +158,7 @@ export class PrismaClient<
     * ```
     */
   get hotel(): Prisma.HotelDelegate<ExtArgs, ClientOptions>;
+<<<<<<< HEAD
 
   /**
    * `prisma.flight`: Exposes CRUD operations for the **Flight** model.
@@ -175,6 +179,8 @@ export class PrismaClient<
     * ```
     */
   get rental(): Prisma.RentalDelegate<ExtArgs, ClientOptions>;
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 }
 
 export namespace Prisma {
@@ -609,9 +615,13 @@ export namespace Prisma {
 
 
   export const ModelName: {
+<<<<<<< HEAD
     Hotel: 'Hotel',
     Flight: 'Flight',
     Rental: 'Rental'
+=======
+    Hotel: 'Hotel'
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -627,7 +637,11 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
+<<<<<<< HEAD
       modelProps: "hotel" | "flight" | "rental"
+=======
+      modelProps: "hotel"
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -705,6 +719,7 @@ export namespace Prisma {
           }
         }
       }
+<<<<<<< HEAD
       Flight: {
         payload: Prisma.$FlightPayload<ExtArgs>
         fields: Prisma.FlightFieldRefs
@@ -853,6 +868,8 @@ export namespace Prisma {
           }
         }
       }
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
     }
   } & {
     other: {
@@ -962,8 +979,11 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     hotel?: HotelOmit
+<<<<<<< HEAD
     flight?: FlightOmit
     rental?: RentalOmit
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   }
 
   /* Types for Logging */
@@ -2268,6 +2288,7 @@ export namespace Prisma {
 
 
   /**
+<<<<<<< HEAD
    * Model Flight
    */
 
@@ -4588,6 +4609,8 @@ export namespace Prisma {
 
 
   /**
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
    * Enums
    */
 
@@ -4626,6 +4649,7 @@ export namespace Prisma {
   export type HotelScalarFieldEnum = (typeof HotelScalarFieldEnum)[keyof typeof HotelScalarFieldEnum]
 
 
+<<<<<<< HEAD
   export const FlightScalarFieldEnum: {
     id: 'id',
     title: 'title',
@@ -4670,6 +4694,8 @@ export namespace Prisma {
   export type RentalScalarFieldEnum = (typeof RentalScalarFieldEnum)[keyof typeof RentalScalarFieldEnum]
 
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -4685,6 +4711,7 @@ export namespace Prisma {
   export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
+<<<<<<< HEAD
   export const NullableJsonNullValueInput: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull
@@ -4693,6 +4720,8 @@ export namespace Prisma {
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -4791,6 +4820,7 @@ export namespace Prisma {
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
+<<<<<<< HEAD
 
 
   /**
@@ -4798,6 +4828,8 @@ export namespace Prisma {
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   /**
    * Deep Input Types
    */
@@ -4927,6 +4959,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Hotel"> | Date | string
   }
 
+<<<<<<< HEAD
   export type FlightWhereInput = {
     AND?: FlightWhereInput | FlightWhereInput[]
     OR?: FlightWhereInput[]
@@ -5145,6 +5178,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Rental"> | Date | string
   }
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   export type HotelCreateInput = {
     title: string
     desc: string
@@ -5296,6 +5331,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+<<<<<<< HEAD
   export type FlightCreateInput = {
     title: string
     description: string
@@ -5556,6 +5592,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -5889,6 +5927,7 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+<<<<<<< HEAD
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -6069,6 +6108,8 @@ export namespace Prisma {
     id?: SortOrder
   }
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -6113,10 +6154,13 @@ export namespace Prisma {
     divide?: number
   }
 
+<<<<<<< HEAD
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
   }
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -6335,6 +6379,7 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+<<<<<<< HEAD
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -6371,6 +6416,8 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 
 
   /**

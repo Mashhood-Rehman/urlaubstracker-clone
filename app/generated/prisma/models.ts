@@ -9,5 +9,8 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Hotel'
+<<<<<<< HEAD
 export type * from './models/Flight'
+=======
+>>>>>>> e114137b1f2cab1c4b72a15f84e29fdca8a983c9
 export type * from './commonInputTypes'

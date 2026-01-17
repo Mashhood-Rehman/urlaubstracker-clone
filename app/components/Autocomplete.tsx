@@ -15,9 +15,10 @@ interface AutocompleteProps {
     onSelect: (value: string) => void;
     icon?: React.ReactNode;
     initialValue?: string;
+    type?: 'flights' | 'hotels' | 'rentals';
 }
 
-const Autocomplete: React.FC<AutocompleteProps> = ({ placeholder, onSelect, icon, initialValue = '' }) => {
+const Autocomplete: React.FC<AutocompleteProps> = ({ placeholder, onSelect, icon, initialValue = '', type = 'hotels' }) => {
     const [query, setQuery] = useState(initialValue);
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -37,26 +38,31 @@ const Autocomplete: React.FC<AutocompleteProps> = ({ placeholder, onSelect, icon
 
     useEffect(() => {
         const fetchSuggestions = async () => {
-            if (query.length < 2) {
+            if (query.length < 1) {
                 setSuggestions([]);
+                setIsOpen(false);
                 return;
             }
 
             try {
-                const res = await fetch(`/api/search/suggestions?query=${encodeURIComponent(query)}`);
+                const res = await fetch(`/api/search/suggestions?query=${encodeURIComponent(query)}&type=${type}`);
                 const data = await res.json();
-                if (data.success) {
+                if (data.success && data.data.length > 0) {
                     setSuggestions(data.data);
                     setIsOpen(true);
+                } else {
+                    setSuggestions([]);
+                    setIsOpen(false);
                 }
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
+                setSuggestions([]);
             }
         };
 
-        const timeoutId = setTimeout(fetchSuggestions, 300);
+        const timeoutId = setTimeout(fetchSuggestions, 200);
         return () => clearTimeout(timeoutId);
-    }, [query]);
+    }, [query, type]);
 
     const handleSelect = (suggestion: Suggestion) => {
         setQuery(suggestion.text);
@@ -82,13 +88,13 @@ const Autocomplete: React.FC<AutocompleteProps> = ({ placeholder, onSelect, icon
                     placeholder={placeholder}
                     value={query}
                     onChange={handleInputChange}
-                    onFocus={() => { if (suggestions.length > 0) setIsOpen(true); }}
+                    onFocus={() => setIsOpen(suggestions.length > 0)}
                     className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-xl border border-transparent focus:border-secondary focus:bg-white outline-none transition-all"
                 />
             </div>
 
             {isOpen && suggestions.length > 0 && (
-                <div className="absolute z-50 w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 max-h-60 overflow-y-auto">
+                <div className="absolute z-[9999] w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 max-h-60 overflow-y-auto">
                     {suggestions.map((suggestion) => (
                         <button
                             key={suggestion.id}
