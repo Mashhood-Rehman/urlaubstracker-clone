@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "./(header)/Navbar";
+import ConditionalNavbar from "./components/ConditionalNavbar";
 
 export const metadata: Metadata = {
   title: "Urlaubstracker Clone | Finde echte Urlaubsschnäppchen",
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body className="antialiased font-poppins selection:bg-secondary selection:text-white">
-        <Navbar />
+        <ConditionalNavbar />
         {children}
       </body>
     </html>

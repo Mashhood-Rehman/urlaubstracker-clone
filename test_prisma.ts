@@ -1,9 +1,21 @@
+import "dotenv/config";
+import { PrismaClient } from "./app/generated/prisma";
+import { Pool } from "@neondatabase/serverless";
+import { PrismaNeon } from "@prisma/adapter-neon";
 
-import { PrismaClient } from './app/generated/prisma/client'
+// Create a connection pool for Neon
+const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
 
-try {
-    const prisma = new PrismaClient({} as any)
-    console.log('Successfully instantiated PrismaClient with {}')
-} catch (e) {
-    console.error(e)
+// Create the Neon adapter
+const adapter = new PrismaNeon(pool);
+
+// Instantiate Prisma Client with the adapter
+const prisma = new PrismaClient({ adapter });
+
+async function main() {
+    await prisma.$connect();
+    console.log("✅ Prisma connected successfully");
+    await prisma.$disconnect();
 }
+
+main().catch(console.error);
