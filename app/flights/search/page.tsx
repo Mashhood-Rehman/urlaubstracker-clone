@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { icons } from '@/assets/icons';
 import Link from 'next/link';
 
-export default function FlightSearchResults() {
+function FlightSearchResultsContent() {
     const searchParams = useSearchParams();
     const from = searchParams.get('from') || 'any';
     const to = searchParams.get('to') || 'any';
@@ -163,5 +163,17 @@ export default function FlightSearchResults() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function FlightSearchResults() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gray-50 pt-24 pb-12 flex items-center justify-center">
+                <div className="text-xl font-bold text-primary animate-pulse">Loading search...</div>
+            </div>
+        }>
+            <FlightSearchResultsContent />
+        </Suspense>
     );
 }

@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { icons } from '@/assets/icons';
 import Link from 'next/link';
 
-export default function RentalSearchResults() {
+function RentalSearchResultsContent() {
     const searchParams = useSearchParams();
     const location = searchParams.get('location') || 'any';
 
@@ -118,5 +118,17 @@ export default function RentalSearchResults() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function RentalSearchResults() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gray-50 pt-24 pb-12 flex items-center justify-center">
+                <div className="text-xl font-bold text-primary animate-pulse">Loading search...</div>
+            </div>
+        }>
+            <RentalSearchResultsContent />
+        </Suspense>
     );
 }
