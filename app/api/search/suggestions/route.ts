@@ -43,17 +43,17 @@ export async function GET(request: NextRequest) {
             const flights = await prisma.flight.findMany({
                 where: {
                     OR: [
-                        { departure_city: { contains: query, mode: 'insensitive' } },
+                        { departureCity: { contains: query, mode: 'insensitive' } },
                         { arrival_city: { contains: query, mode: 'insensitive' } },
                         { departure_airport: { contains: query, mode: 'insensitive' } },
                         { arrival_airport: { contains: query, mode: 'insensitive' } },
                     ],
                 },
-                distinct: ['departure_city', 'arrival_city', 'departure_airport', 'arrival_airport'],
+                distinct: ['departureCity', 'arrival_city', 'departure_airport', 'arrival_airport'],
                 take: 8,
                 select: {
                     id: true,
-                    departure_city: true,
+                    departureCity: true,
                     departure_airport: true,
                     arrival_city: true,
                     arrival_airport: true,
@@ -63,19 +63,19 @@ export async function GET(request: NextRequest) {
             // Create unique suggestions from flights
             const seenLocations = new Set<string>();
             flights.forEach((flight: any) => {
-                const departure = `${flight.departure_city} (${flight.departure_airport})`;
+                const departure = `${flight.departureCity} (${flight.departure_airport})`;
                 const arrival = `${flight.arrival_city} (${flight.arrival_airport})`;
-                
+
                 if (!seenLocations.has(departure)) {
                     suggestions.push({
                         id: `dep-${flight.id}`,
                         text: departure,
                         type: 'flight',
-                        data: { city: flight.departure_city, airport: flight.departure_airport }
+                        data: { city: flight.departureCity, airport: flight.departure_airport }
                     });
                     seenLocations.add(departure);
                 }
-                
+
                 if (!seenLocations.has(arrival)) {
                     suggestions.push({
                         id: `arr-${flight.id}`,
