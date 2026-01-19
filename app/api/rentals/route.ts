@@ -22,8 +22,16 @@ export async function POST(request: NextRequest) {
 
         const rental = await prisma.rental.create({
             data: {
-                ...body,
-                // price might be nested in 'offer' or 'additionalInfo' as JSON
+                category: body.category,
+                title: body.title,
+                description: body.description,
+                mainHeading: body.mainHeading,
+                mainDescription: body.mainDescription,
+                offer: body.offer,
+                whySuperDeal: body.whySuperDeal,
+                thingsToDo: body.thingsToDo,
+                additionalInfo: body.additionalInfo,
+                ecoTip: body.ecoTip,
             },
         });
 

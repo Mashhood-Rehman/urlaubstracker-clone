@@ -12,7 +12,9 @@ export default function ProductsPage() {
     const [isEditing, setIsEditing] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState<string | number | null>(null);
 
-    const [formData, setFormData] = useState({
+    const [mainCategory, setMainCategory] = useState<'Hotel' | 'Flight' | 'Rental'>('Hotel');
+    const [formData, setFormData] = useState<any>({
+        // Hotel common fields
         title: '',
         desc: '',
         title_fr: '',
@@ -20,7 +22,7 @@ export default function ProductsPage() {
         address: '',
         city: '',
         country: '',
-        category: 'Hotel',
+        category: 'Hotel', // This is sub-category for hotels or general category
         price_per_night: '',
         total_price: '',
         currency: 'EUR',
@@ -30,6 +32,28 @@ export default function ProductsPage() {
         check_in: '',
         check_out: '',
         notes: '',
+        // Flight fields
+        airline: '',
+        departureCity: '',
+        arrivalCity: '',
+        duration: '',
+        price: '',
+        flightClass: 'Economy',
+        baggage: '',
+        services: '',
+        whyAdore: '',
+        flexibleDates: false,
+        extras: '',
+        tips: '',
+        offerLink: '',
+        // Rental fields
+        mainHeading: '',
+        mainDescription: '',
+        offer: '',
+        whySuperDeal: '',
+        thingsToDo: '',
+        additionalInfo: '',
+        ecoTip: '',
     });
 
 
@@ -47,71 +71,57 @@ export default function ProductsPage() {
         }
         fetchProducts();
     }, [])
-    console.log("Products state:", products);
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const resetForm = () => {
         setFormData({
-            title: '',
-            desc: '',
-            title_fr: '',
-            desc_fr: '',
-            address: '',
-            city: '',
-            country: '',
-            category: 'Hotel',
-            price_per_night: '',
-            total_price: '',
-            currency: 'EUR',
-            rating: '',
-            review_count: '',
-            amenities: '',
-            check_in: '',
-            check_out: '',
-            notes: '',
+            title: '', desc: '', title_fr: '', desc_fr: '', address: '', city: '', country: '', category: 'Hotel',
+            price_per_night: '', total_price: '', currency: 'EUR', rating: '', review_count: '', amenities: '',
+            check_in: '', check_out: '', notes: '',
+            airline: '', departureCity: '', arrivalCity: '', duration: '', price: '', flightClass: 'Economy',
+            baggage: '', services: '', whyAdore: '', flexibleDates: false, extras: '', tips: '', offerLink: '',
+            mainHeading: '', mainDescription: '', offer: '', whySuperDeal: '', thingsToDo: '', additionalInfo: '', ecoTip: '',
         });
+        setMainCategory('Hotel');
         setIsEditing(false);
         setSelectedProductId(null);
     };
 
     const handleEdit = (product: any) => {
+        setMainCategory(product.mainCategory || 'Hotel');
         setFormData({
-            title: product.title || '',
-            desc: product.desc || '',
-            title_fr: product.title_fr || '',
-            desc_fr: product.desc_fr || '',
-            address: product.address || '',
-            city: product.city || '',
-            country: product.country || '',
-            category: product.category || 'Hotel',
-            price_per_night: product.price_per_night || '',
-            total_price: product.total_price || '',
-            currency: product.currency || 'EUR',
-            rating: product.rating || '',
-            review_count: product.review_count || '',
-            amenities: Array.isArray(product.amenities) ? product.amenities.join(', ') : '',
-            check_in: product.check_in || '',
-            check_out: product.check_out || '',
-            notes: product.notes || '',
+            ...product,
+            amenities: Array.isArray(product.amenities) ? product.amenities.join(', ') : (product.amenities || ''),
+            services: Array.isArray(product.services) ? product.services.join(', ') : (product.services || ''),
+            whyAdore: Array.isArray(product.whyAdore) ? product.whyAdore.join(', ') : (product.whyAdore || ''),
+            thingsToDo: Array.isArray(product.thingsToDo) ? product.thingsToDo.join(', ') : (product.thingsToDo || ''),
+            offer: typeof product.offer === 'object' ? JSON.stringify(product.offer) : (product.offer || ''),
+            additionalInfo: typeof product.additionalInfo === 'object' ? JSON.stringify(product.additionalInfo) : (product.additionalInfo || ''),
+            extras: typeof product.extras === 'object' ? JSON.stringify(product.extras) : (product.extras || ''),
+            tips: typeof product.tips === 'object' ? JSON.stringify(product.tips) : (product.tips || ''),
         });
         setSelectedProductId(product.id);
         setIsEditing(true);
         setShowModal(true);
     };
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (product: any) => {
         if (!confirm('Are you sure you want to delete this product?')) return;
 
         try {
-            const response = await fetch(`/api/products/${id}`, {
+            const response = await fetch(`/api/products/${product.id}?category=${product.mainCategory}`, {
                 method: 'DELETE',
             });
             const result = await response.json();
 
             if (result.success) {
-                setProducts(products.filter(p => p.id !== id));
+                setProducts(products.filter(p => p.id !== product.id));
                 alert('Product deleted successfully');
             } else {
                 alert('Failed to delete product');
@@ -128,23 +138,72 @@ export default function ProductsPage() {
         setLoading(true);
 
         try {
-            // Parse amenities as JSON array
-            const amenitiesArray = formData.amenities.split(',').map(item => item.trim()).filter(item => item);
-
-            const url = isEditing ? `/api/products/${selectedProductId}` : '/api/products';
             const method = isEditing ? 'PUT' : 'POST';
 
+            let payload: any = { mainCategory };
+
+            if (mainCategory === 'Flight') {
+                payload = {
+                    mainCategory,
+                    title: formData.title,
+                    description: formData.desc,
+                    airline: formData.airline,
+                    departureCity: formData.departureCity,
+                    arrivalCity: formData.arrivalCity,
+                    duration: formData.duration,
+                    price: formData.price,
+                    currency: formData.currency,
+                    flightClass: formData.flightClass,
+                    baggage: formData.baggage,
+                    services: formData.services.split(',').map((s: string) => s.trim()).filter((s: string) => s),
+                    whyAdore: formData.whyAdore.split(',').map((s: string) => s.trim()).filter((s: string) => s),
+                    flexibleDates: formData.flexibleDates,
+                    extras: formData.extras ? JSON.parse(formData.extras) : null,
+                    tips: formData.tips ? JSON.parse(formData.tips) : null,
+                    offerLink: formData.offerLink,
+                };
+            } else if (mainCategory === 'Rental') {
+                payload = {
+                    mainCategory,
+                    category: formData.category,
+                    title: formData.title,
+                    description: formData.desc,
+                    mainHeading: formData.mainHeading,
+                    mainDescription: formData.mainDescription,
+                    offer: formData.offer ? JSON.parse(formData.offer) : {},
+                    whySuperDeal: formData.whySuperDeal,
+                    thingsToDo: formData.thingsToDo.split(',').map((s: string) => s.trim()).filter((s: string) => s),
+                    additionalInfo: formData.additionalInfo ? JSON.parse(formData.additionalInfo) : {},
+                    ecoTip: formData.ecoTip,
+                };
+            } else {
+                // Hotel
+                payload = {
+                    mainCategory,
+                    title: formData.title,
+                    desc: formData.desc,
+                    title_fr: formData.title_fr,
+                    desc_fr: formData.desc_fr,
+                    address: formData.address,
+                    city: formData.city,
+                    country: formData.country,
+                    price_per_night: formData.price_per_night,
+                    total_price: formData.total_price,
+                    currency: formData.currency,
+                    rating: formData.rating,
+                    review_count: formData.review_count,
+                    amenities: formData.amenities.split(',').map((s: string) => s.trim()).filter((s: string) => s),
+                    check_in: formData.check_in,
+                    check_out: formData.check_out,
+                    notes: formData.notes,
+                };
+            }
+
+            const url = isEditing ? `/api/products/${selectedProductId}` : '/api/products';
             const response = await fetch(url, {
                 method: method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...formData,
-                    amenities: amenitiesArray,
-                    price_per_night: formData.price_per_night,
-                    total_price: formData.total_price || null,
-                    rating: formData.rating || null,
-                    review_count: formData.review_count || null,
-                }),
+                body: JSON.stringify(payload),
             });
 
             const result = await response.json();
@@ -160,7 +219,7 @@ export default function ProductsPage() {
                 setProducts(data.data)
 
             } else {
-                console.log('Failed to save product error frontend:', result.error);
+                console.log('Failed to save product error frontend:', result);
                 alert('Failed to save product');
             }
         } catch (error) {
@@ -197,12 +256,10 @@ export default function ProductsPage() {
                         onChange={(e) => setCategoryFilter(e.target.value)}
                         className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:border-primary"
                     >
-                        <option value="All">All Categories</option>
-                        <option value="Hotel">Hotel</option>
-                        <option value="Resort">Resort</option>
-                        <option value="Apartment">Apartment</option>
-                        <option value="Villa">Villa</option>
-                        <option value="Hostel">Hostel</option>
+                        <option value="All">ALL</option>
+                        <option value="Hotel">Hotels</option>
+                        <option value="Flight">Flight</option>
+                        <option value="Rental">Rentals</option>
                     </select>
                 </div>
                 <button
@@ -223,13 +280,25 @@ export default function ProductsPage() {
                     <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">ID</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Hotel Name</th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                                {categoryFilter === 'Flight' ? 'Flight Title' : categoryFilter === 'Rental' ? 'Rental Name' : 'Hotel Name'}
+                            </th>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Category</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">City</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Price/Night</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Rating</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Reviews</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Amenities</th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                                {categoryFilter === 'Flight' ? 'Route' : 'City'}
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                                {categoryFilter === 'Flight' ? 'Price' : categoryFilter === 'Rental' ? 'Offer' : 'Price/Night'}
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                                {categoryFilter === 'Flight' ? 'Class' : 'Rating'}
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                                {categoryFilter === 'Flight' ? 'Duration' : 'Reviews'}
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                                {categoryFilter === 'Flight' ? 'Airline' : categoryFilter === 'Rental' ? 'Details' : 'Amenities'}
+                            </th>
                             <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Actions</th>
                         </tr>
                     </thead>
@@ -243,26 +312,27 @@ export default function ProductsPage() {
                                         p.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                                         p.desc?.toLowerCase().includes(searchTerm.toLowerCase());
 
-                                    // If "All" is selected, show everything
-                                    // Otherwise, show items that match the category OR don't have a category set (null/undefined)
                                     const matchesCategory = categoryFilter === 'All' ||
-                                        !p.category ||
-                                        p.category === categoryFilter;
+                                        p.mainCategory === categoryFilter ||
+                                        (categoryFilter === 'Hotel' && (!p.mainCategory || p.mainCategory === 'Hotel'));
 
                                     return matchesSearch && matchesCategory;
                                 })
                                 .map((product) => (
-                                    <tr key={product.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <tr key={`${product.mainCategory}-${product.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                                         <td className="px-4 py-2 text-sm text-gray-600">{product.id}</td>
-                                        <td className="px-4 py-2 text-sm font-medium text-foreground">{product.title}</td>
+                                        <td className="px-4 py-2 text-sm font-medium text-foreground">{product.title || product.mainHeading}</td>
                                         <td className="px-4 py-2 text-sm text-gray-600">
-                                            <span className="inline-block bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-xs font-medium">
-                                                {product.category || 'Hotel'}
+                                            <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${product.mainCategory === 'Flight' ? 'bg-blue-100 text-blue-700' :
+                                                product.mainCategory === 'Rental' ? 'bg-green-100 text-green-700' :
+                                                    'bg-purple-100 text-purple-700'
+                                                }`}>
+                                                {product.mainCategory || 'Hotel'}
                                             </span>
                                         </td>
-                                        <td className="px-4 py-2 text-sm text-gray-600">{product.city}</td>
+                                        <td className="px-4 py-2 text-sm text-gray-600">{product.city || product.departureCity || '-'}</td>
                                         <td className="px-4 py-2 text-sm text-gray-600">
-                                            {product.currency} {product.price_per_night}
+                                            {product.currency || 'EUR'} {product.price_per_night || product.price || '-'}
                                         </td>
                                         <td className="px-4 py-2 text-sm text-gray-600">
                                             <span className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">
@@ -277,8 +347,10 @@ export default function ProductsPage() {
                                                         {amenity}
                                                     </span>
                                                 ))}
-                                                {Array.isArray(product.amenities) && product.amenities.length > 3 && (
-                                                    <span className="text-xs text-gray-500">+{product.amenities.length - 3} more</span>
+                                                {product.mainCategory === 'Flight' && (
+                                                    <span className="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">
+                                                        {product.airline}
+                                                    </span>
                                                 )}
                                             </div>
                                         </td>
@@ -291,7 +363,7 @@ export default function ProductsPage() {
                                                     <Edit className="w-4 h-4 text-blue-600" />
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDelete(product.id)}
+                                                    onClick={() => handleDelete(product)}
                                                     className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
                                                 >
                                                     <Trash2 className="w-4 h-4 text-red-600" />
@@ -323,217 +395,149 @@ export default function ProductsPage() {
                         </div>
 
                         <form onSubmit={handleSubmit} className="p-6">
+                            <div className="mb-6">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">Main Category</label>
+                                <div className="flex gap-4">
+                                    {(['Hotel', 'Flight', 'Rental'] as const).map((cat) => (
+                                        <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="mainCategory"
+                                                checked={mainCategory === cat}
+                                                onChange={() => setMainCategory(cat)}
+                                                className="w-4 h-4 text-primary focus:ring-primary"
+                                            />
+                                            <span className={`text-sm ${mainCategory === cat ? 'text-primary font-bold' : 'text-gray-600'}`}>
+                                                {cat}s
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
                             <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Title (EN)</label>
-                                    <input
-                                        type="text"
-                                        name="title"
-                                        value={formData.title}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
+                                {mainCategory === 'Hotel' && (
+                                    <>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Title (EN)</label>
+                                            <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Title (FR)</label>
+                                            <input type="text" name="title_fr" value={formData.title_fr} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Description (EN)</label>
+                                            <textarea name="desc" value={formData.desc} onChange={handleInputChange} required rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Description (FR)</label>
+                                            <textarea name="desc_fr" value={formData.desc_fr} onChange={handleInputChange} required rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Address</label>
+                                            <input type="text" name="address" value={formData.address} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">City</label>
+                                            <input type="text" name="city" value={formData.city} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Country</label>
+                                            <input type="text" name="country" value={formData.country} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Sub-Category</label>
+                                            <select name="category" value={formData.category} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
+                                                <option value="Hotel">Hotel</option>
+                                                <option value="Resort">Resort</option>
+                                                <option value="Apartment">Apartment</option>
+                                                <option value="Villa">Villa</option>
+                                                <option value="Hostel">Hostel</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Price per Night</label>
+                                            <input type="number" step="0.01" name="price_per_night" value={formData.price_per_night} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Amenities (comma-separated)</label>
+                                            <input type="text" name="amenities" value={formData.amenities} onChange={handleInputChange} placeholder="WiFi, Pool, Parking" required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                    </>
+                                )}
 
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Title (FR)</label>
-                                    <input
-                                        type="text"
-                                        name="title_fr"
-                                        value={formData.title_fr}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
+                                {mainCategory === 'Flight' && (
+                                    <>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Flight Title</label>
+                                            <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Airline</label>
+                                            <input type="text" name="airline" value={formData.airline} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Departure City</label>
+                                            <input type="text" name="departureCity" value={formData.departureCity} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Arrival City</label>
+                                            <input type="text" name="arrivalCity" value={formData.arrivalCity} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Price</label>
+                                            <input type="number" step="0.01" name="price" value={formData.price} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Duration</label>
+                                            <input type="text" name="duration" value={formData.duration} onChange={handleInputChange} placeholder="2h 30m" required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Class</label>
+                                            <select name="flightClass" value={formData.flightClass} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
+                                                <option value="Economy">Economy</option>
+                                                <option value="Premium Economy">Premium Economy</option>
+                                                <option value="Business">Business</option>
+                                                <option value="First Class">First Class</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Services (comma-separated)</label>
+                                            <input type="text" name="services" value={formData.services} onChange={handleInputChange} placeholder="Meals, WiFi, USB Power" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                    </>
+                                )}
 
-                                <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Description (EN)</label>
-                                    <textarea
-                                        name="desc"
-                                        value={formData.desc}
-                                        onChange={handleInputChange}
-                                        required
-                                        rows={2}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Description (FR)</label>
-                                    <textarea
-                                        name="desc_fr"
-                                        value={formData.desc_fr}
-                                        onChange={handleInputChange}
-                                        required
-                                        rows={2}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Address</label>
-                                    <input
-                                        type="text"
-                                        name="address"
-                                        value={formData.address}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">City</label>
-                                    <input
-                                        type="text"
-                                        name="city"
-                                        value={formData.city}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Country</label>
-                                    <input
-                                        type="text"
-                                        name="country"
-                                        value={formData.country}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Category</label>
-                                    <select
-                                        name="category"
-                                        value={formData.category}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    >
-                                        <option value="Hotel">Hotel</option>
-                                        <option value="Resort">Resort</option>
-                                        <option value="Apartment">Apartment</option>
-                                        <option value="Villa">Villa</option>
-                                        <option value="Hostel">Hostel</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Currency</label>
-                                    <input
-                                        type="text"
-                                        name="currency"
-                                        value={formData.currency}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Price per Night</label>
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        name="price_per_night"
-                                        value={formData.price_per_night}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Total Price (Optional)</label>
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        name="total_price"
-                                        value={formData.total_price}
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Rating (Optional)</label>
-                                    <input
-                                        type="number"
-                                        step="0.1"
-                                        name="rating"
-                                        value={formData.rating}
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Review Count (Optional)</label>
-                                    <input
-                                        type="number"
-                                        name="review_count"
-                                        value={formData.review_count}
-                                        onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Amenities (comma-separated)</label>
-                                    <input
-                                        type="text"
-                                        name="amenities"
-                                        value={formData.amenities}
-                                        onChange={handleInputChange}
-                                        placeholder="WiFi, Pool, Parking"
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Check-in</label>
-                                    <input
-                                        type="text"
-                                        name="check_in"
-                                        value={formData.check_in}
-                                        onChange={handleInputChange}
-                                        placeholder="14:00"
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Check-out</label>
-                                    <input
-                                        type="text"
-                                        name="check_out"
-                                        value={formData.check_out}
-                                        onChange={handleInputChange}
-                                        placeholder="11:00"
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
-
-                                <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Notes (Optional)</label>
-                                    <textarea
-                                        name="notes"
-                                        value={formData.notes}
-                                        onChange={handleInputChange}
-                                        rows={2}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary"
-                                    />
-                                </div>
+                                {mainCategory === 'Rental' && (
+                                    <>
+                                        <div className="col-span-2">
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Main Heading</label>
+                                            <input type="text" name="mainHeading" value={formData.mainHeading} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Rental Category</label>
+                                            <select name="category" value={formData.category} onChange={handleSelectChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
+                                                <option value="Car">Car</option>
+                                                <option value="Bike">Bike</option>
+                                                <option value="Parking">Parking</option>
+                                                <option value="Equipment">Equipment</option>
+                                            </select>
+                                        </div>
+                                        <div className="col-span-2">
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Main Description</label>
+                                            <textarea name="mainDescription" value={formData.mainDescription} onChange={handleInputChange} required rows={3} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Super Deal Reason</label>
+                                            <input type="text" name="whySuperDeal" value={formData.whySuperDeal} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Offer (JSON)</label>
+                                            <input type="text" name="offer" value={formData.offer} onChange={handleInputChange} placeholder='{"price": 45, "unit": "day"}' className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
                             <div className="flex gap-3 mt-6">

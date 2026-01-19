@@ -8,47 +8,42 @@ export async function PUT(
     try {
         const { id } = await params;
         const body = await request.json();
+        const { mainCategory, ...data } = body;
 
-        const {
-            title,
-            desc,
-            title_fr,
-            desc_fr,
-            address,
-            city,
-            country,
-            price_per_night,
-            total_price,
-            currency,
-            rating,
-            review_count,
-            amenities,
-            check_in,
-            check_out,
-            notes,
-        } = body;
+        let product;
+        const productId = parseInt(id);
 
-        const product = await prisma.hotel.update({
-            where: { id: parseInt(id) },
-            data: {
-                title,
-                desc,
-                title_fr,
-                desc_fr,
-                address,
-                city,
-                country,
-                price_per_night: parseFloat(price_per_night),
-                total_price: total_price ? parseFloat(total_price) : null,
-                currency,
-                rating: rating ? parseFloat(rating) : null,
-                review_count: review_count ? parseInt(review_count) : null,
-                amenities,
-                check_in,
-                check_out,
-                notes: notes || null,
-            },
-        });
+        if (mainCategory === 'Flight') {
+            product = await prisma.flight.update({
+                where: { id: productId },
+                data: {
+                    ...data,
+                    description: data.desc || data.description || '',
+                    price: data.price ? parseFloat(data.price) : undefined,
+                },
+            });
+        } else if (mainCategory === 'Rental') {
+            product = await prisma.rental.update({
+                where: { id: productId },
+                data: {
+                    ...data,
+                    title: data.title || data.mainHeading || undefined,
+                    description: data.desc || data.mainDescription || undefined,
+                },
+            });
+        } else {
+            // Default to Hotel
+            product = await prisma.hotel.update({
+                where: { id: productId },
+                data: {
+                    ...data,
+                    price_per_night: data.price_per_night ? parseFloat(data.price_per_night) : undefined,
+                    total_price: data.total_price ? parseFloat(data.total_price) : null,
+                    rating: data.rating ? parseFloat(data.rating) : null,
+                    review_count: data.review_count ? parseInt(data.review_count) : null,
+                },
+            });
+        }
 
         return NextResponse.json(
             { success: true, data: product },
@@ -69,10 +64,17 @@ export async function DELETE(
 ) {
     try {
         const { id } = await params;
+        const { searchParams } = new URL(request.url);
+        const mainCategory = searchParams.get('category') || 'Hotel';
+        const productId = parseInt(id);
 
-        await prisma.hotel.delete({
-            where: { id: parseInt(id) },
-        });
+        if (mainCategory === 'Flight') {
+            await prisma.flight.delete({ where: { id: productId } });
+        } else if (mainCategory === 'Rental') {
+            await prisma.rental.delete({ where: { id: productId } });
+        } else {
+            await prisma.hotel.delete({ where: { id: productId } });
+        }
 
         return NextResponse.json(
             { success: true, message: 'Product deleted successfully' },
