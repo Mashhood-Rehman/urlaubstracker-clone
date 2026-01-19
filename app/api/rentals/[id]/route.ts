@@ -3,12 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id);
+        const { id } = await context.params;
+        const rentalId = parseInt(id);
+
         const rental = await prisma.rental.findUnique({
-            where: { id },
+            where: { id: rentalId },
         });
 
         if (!rental) {
@@ -29,14 +31,16 @@ export async function GET(
 
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id);
+        const { id } = await context.params;
+        const rentalId = parseInt(id);
+
         const body = await request.json();
 
         const updatedRental = await prisma.rental.update({
-            where: { id },
+            where: { id: rentalId },
             data: body,
         });
 
@@ -51,12 +55,14 @@ export async function PUT(
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const id = parseInt(params.id);
+        const { id } = await context.params;
+        const rentalId = parseInt(id);
+
         await prisma.rental.delete({
-            where: { id },
+            where: { id: rentalId },
         });
 
         return NextResponse.json({ success: true, message: 'Rental deleted successfully' });

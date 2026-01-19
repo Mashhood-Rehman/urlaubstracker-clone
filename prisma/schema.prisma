@@ -78,3 +78,23 @@
     updatedAt      DateTime  @updatedAt
   }
 
+model Blog {
+  id              Int      @id @default(autoincrement())
+  title           String
+  slug            String   @unique
+  content         String   // Rich text content
+  excerpt         String?  // Short summary for lists
+  mainImage       String?  // URL to main header image
+  images          Json?    // Optional gallery or additional assets
+  author          String   @default("Admin")
+  category        String?  @default("Travel")
+  tags            Json?    // Array of strings
+  published       Boolean  @default(false)
+  featured        Boolean  @default(false)
+  
+  metaTitle       String?
+  metaDescription String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
