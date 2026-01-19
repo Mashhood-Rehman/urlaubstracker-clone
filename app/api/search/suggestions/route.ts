@@ -39,49 +39,45 @@ export async function GET(request: NextRequest) {
                 data: hotel
             }));
         } else if (type === 'flights') {
-            // Search for flights - search in city/airport names
+            // Search for flights - search in city names
             const flights = await prisma.flight.findMany({
                 where: {
                     OR: [
                         { departureCity: { contains: query, mode: 'insensitive' } },
                         { arrivalCity: { contains: query, mode: 'insensitive' } },
-                        { departure_airport: { contains: query, mode: 'insensitive' } },
-                        { arrival_airport: { contains: query, mode: 'insensitive' } },
                     ],
                 },
-                distinct: ['departureCity', 'arrivalCity', 'departure_airport', 'arrival_airport'],
+                distinct: ['departureCity', 'arrivalCity'],
                 take: 8,
                 select: {
                     id: true,
                     departureCity: true,
-                    departure_airport: true,
                     arrivalCity: true,
-                    arrival_airport: true,
                 },
             });
 
             // Create unique suggestions from flights
             const seenLocations = new Set<string>();
             flights.forEach((flight: any) => {
-                const departure = `${flight.departureCity} (${flight.departure_airport})`;
-                const arrival = `${flight.arrivalCity} (${flight.arrival_airport})`;
+                const departure = flight.departureCity;
+                const arrival = flight.arrivalCity;
 
-                if (!seenLocations.has(departure)) {
+                if (!seenLocations.has(departure) && departure.toLowerCase().includes(query.toLowerCase())) {
                     suggestions.push({
                         id: `dep-${flight.id}`,
                         text: departure,
                         type: 'flight',
-                        data: { city: flight.departureCity, airport: flight.departure_airport }
+                        data: { city: departure }
                     });
                     seenLocations.add(departure);
                 }
 
-                if (!seenLocations.has(arrival)) {
+                if (!seenLocations.has(arrival) && arrival.toLowerCase().includes(query.toLowerCase())) {
                     suggestions.push({
                         id: `arr-${flight.id}`,
                         text: arrival,
                         type: 'flight',
-                        data: { city: flight.arrivalCity, airport: flight.arrival_airport }
+                        data: { city: arrival }
                     });
                     seenLocations.add(arrival);
                 }
@@ -89,37 +85,28 @@ export async function GET(request: NextRequest) {
 
             suggestions = suggestions.slice(0, 8);
         } else if (type === 'rentals') {
-            // Search for rentals - search in location
+            // Search for rentals - search in title/mainHeading
             const rentals = await prisma.rental.findMany({
                 where: {
                     OR: [
-                        { location: { contains: query, mode: 'insensitive' } },
-                        { city: { contains: query, mode: 'insensitive' } },
+                        { title: { contains: query, mode: 'insensitive' } },
+                        { mainHeading: { contains: query, mode: 'insensitive' } },
                     ],
                 },
-                distinct: ['location', 'city'],
                 take: 8,
                 select: {
                     id: true,
-                    location: true,
-                    city: true,
+                    title: true,
+                    mainHeading: true,
                 },
             });
 
-            // Create unique suggestions from rentals
-            const seenLocations = new Set<string>();
-            rentals.forEach((rental: any) => {
-                const displayText = rental.city || rental.location;
-                if (!seenLocations.has(displayText)) {
-                    suggestions.push({
-                        id: rental.id,
-                        text: displayText,
-                        type: 'rental',
-                        data: { location: rental.location, city: rental.city }
-                    });
-                    seenLocations.add(displayText);
-                }
-            });
+            suggestions = rentals.map((rental: any) => ({
+                id: rental.id,
+                text: rental.title || rental.mainHeading,
+                type: 'rental',
+                data: rental
+            }));
         }
 
         return NextResponse.json({ success: true, data: suggestions });
