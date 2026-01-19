@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Package, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Package, LogOut, FileText } from 'lucide-react';
 
 const AdminSidebar = () => {
     const pathname = usePathname();
@@ -11,6 +11,7 @@ const AdminSidebar = () => {
         { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
         { name: 'Users', href: '/admin/users', icon: Users },
         { name: 'Products', href: '/admin/products', icon: Package },
+        { name: 'Blogs', href: '/admin/blogs', icon: FileText },
     ];
 
     return (
@@ -37,8 +38,8 @@ const AdminSidebar = () => {
                                 <Link
                                     href={item.href}
                                     className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive
-                                            ? 'bg-primary text-white'
-                                            : 'text-white/70 hover:bg-white/5 hover:text-white'
+                                        ? 'bg-primary text-white'
+                                        : 'text-white/70 hover:bg-white/5 hover:text-white'
                                         }`}
                                 >
                                     <Icon className="w-4 h-4" />

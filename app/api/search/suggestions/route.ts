@@ -44,18 +44,18 @@ export async function GET(request: NextRequest) {
                 where: {
                     OR: [
                         { departureCity: { contains: query, mode: 'insensitive' } },
-                        { arrival_city: { contains: query, mode: 'insensitive' } },
+                        { arrivalCity: { contains: query, mode: 'insensitive' } },
                         { departure_airport: { contains: query, mode: 'insensitive' } },
                         { arrival_airport: { contains: query, mode: 'insensitive' } },
                     ],
                 },
-                distinct: ['departureCity', 'arrival_city', 'departure_airport', 'arrival_airport'],
+                distinct: ['departureCity', 'arrivalCity', 'departure_airport', 'arrival_airport'],
                 take: 8,
                 select: {
                     id: true,
                     departureCity: true,
                     departure_airport: true,
-                    arrival_city: true,
+                    arrivalCity: true,
                     arrival_airport: true,
                 },
             });
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
             const seenLocations = new Set<string>();
             flights.forEach((flight: any) => {
                 const departure = `${flight.departureCity} (${flight.departure_airport})`;
-                const arrival = `${flight.arrival_city} (${flight.arrival_airport})`;
+                const arrival = `${flight.arrivalCity} (${flight.arrival_airport})`;
 
                 if (!seenLocations.has(departure)) {
                     suggestions.push({
@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
                         id: `arr-${flight.id}`,
                         text: arrival,
                         type: 'flight',
-                        data: { city: flight.arrival_city, airport: flight.arrival_airport }
+                        data: { city: flight.arrivalCity, airport: flight.arrival_airport }
                     });
                     seenLocations.add(arrival);
                 }
