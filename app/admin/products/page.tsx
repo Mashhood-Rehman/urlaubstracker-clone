@@ -448,7 +448,7 @@ export default function ProductsPage() {
                                         </div>
                                         <div>
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Sub-Category</label>
-                                            <select name="category" value={formData.category} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
+                                            <select name="category" value={formData.category} onChange={handleSelectChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
                                                 <option value="Hotel">Hotel</option>
                                                 <option value="Resort">Resort</option>
                                                 <option value="Apartment">Apartment</option>
@@ -495,7 +495,7 @@ export default function ProductsPage() {
                                         </div>
                                         <div>
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Class</label>
-                                            <select name="flightClass" value={formData.flightClass} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
+                                            <select name="flightClass" value={formData.flightClass} onChange={handleSelectChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
                                                 <option value="Economy">Economy</option>
                                                 <option value="Premium Economy">Premium Economy</option>
                                                 <option value="Business">Business</option>
