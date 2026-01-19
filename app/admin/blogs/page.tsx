@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Search, Plus, Edit, Trash2, X, Eye, FileText, Check, Globe } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, X, Eye, FileText, Check, Globe, Upload, Image as ImageIcon } from 'lucide-react';
 
 export default function BlogsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -22,9 +22,8 @@ export default function BlogsPage() {
         tags: '',
         published: false,
         featured: false,
-        metaTitle: '',
-        metaDescription: '',
     });
+    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
         fetchBlogs();
@@ -71,8 +70,6 @@ export default function BlogsPage() {
             tags: '',
             published: false,
             featured: false,
-            metaTitle: '',
-            metaDescription: '',
         });
         setIsEditing(false);
         setSelectedBlogId(null);
@@ -100,6 +97,33 @@ export default function BlogsPage() {
             }
         } catch (error) {
             console.error('Error deleting blog:', error);
+        }
+    };
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await res.json();
+            if (data.success) {
+                setFormData(prev => ({ ...prev, mainImage: data.url }));
+            } else {
+                alert('Upload failed: ' + data.error);
+            }
+        } catch (error) {
+            console.error('Error uploading:', error);
+            alert('Upload error');
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -303,14 +327,41 @@ export default function BlogsPage() {
                                 <div className="col-span-12 lg:col-span-4 space-y-4">
                                     <div className="bg-slate-50/50 border border-slate-100 rounded-lg p-3 space-y-3">
                                         <div className="space-y-1">
-                                            <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-tight">Cover Image URL</label>
+                                            <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-tight flex items-center justify-between">
+                                                Cover Image
+                                                {uploading && <span className="text-[10px] text-primary animate-pulse italic">Uploading...</span>}
+                                            </label>
+                                            <div className="relative group/img aspect-video bg-white border border-slate-200 rounded-lg overflow-hidden flex items-center justify-center cursor-pointer hover:border-primary transition-all">
+                                                {formData.mainImage ? (
+                                                    <>
+                                                        <img src={formData.mainImage} alt="Preview" className="w-full h-full object-cover" />
+                                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                            <div className="text-white text-[10px] font-bold flex flex-col items-center gap-1">
+                                                                <Upload className="w-4 h-4" />
+                                                                CHANGE IMAGE
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <div className="text-slate-400 flex flex-col items-center gap-2">
+                                                        <ImageIcon className="w-6 h-6 opacity-30" />
+                                                        <span className="text-[10px] font-medium">Click to upload</span>
+                                                    </div>
+                                                )}
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={handleFileUpload}
+                                                    className="absolute inset-0 opacity-0 cursor-pointer"
+                                                />
+                                            </div>
                                             <input
                                                 type="text"
                                                 name="mainImage"
                                                 value={formData.mainImage}
                                                 onChange={handleInputChange}
-                                                placeholder="https://..."
-                                                className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-[11px] focus:outline-none focus:border-primary transition-colors"
+                                                placeholder="Or paste image URL..."
+                                                className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-[11px] focus:outline-none focus:border-primary transition-colors mt-2"
                                             />
                                         </div>
                                         <div className="space-y-1">
@@ -364,32 +415,20 @@ export default function BlogsPage() {
                                         </label>
                                     </div>
 
-                                    {/* SEO Smart Section */}
+                                    {/* Categorization & Visibility */}
                                     <div className="border border-slate-100 rounded-lg p-3 bg-white shadow-sm space-y-3">
                                         <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                                            <Globe className="w-3 h-3 text-slate-300" />
-                                            SEO Optimized
+                                            <Check className="w-3 h-3 text-slate-300" />
+                                            Settings
                                         </h3>
                                         <div className="space-y-1">
-                                            <label className="text-[10px] font-medium text-slate-500">Meta Title</label>
+                                            <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-tight">Author Name</label>
                                             <input
                                                 type="text"
-                                                name="metaTitle"
-                                                value={formData.metaTitle}
+                                                name="author"
+                                                value={formData.author}
                                                 onChange={handleInputChange}
-                                                placeholder="For Google results..."
-                                                className="w-full px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[11px] focus:outline-none focus:border-primary transition-colors"
-                                            />
-                                        </div>
-                                        <div className="space-y-1">
-                                            <label className="text-[10px] font-medium text-slate-500">Meta Description</label>
-                                            <textarea
-                                                name="metaDescription"
-                                                value={formData.metaDescription}
-                                                onChange={handleInputChange}
-                                                rows={2}
-                                                placeholder="Snippet for search engines..."
-                                                className="w-full px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[11px] focus:outline-none focus:border-primary transition-colors"
+                                                className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-[11px] focus:outline-none focus:border-primary transition-colors"
                                             />
                                         </div>
                                     </div>

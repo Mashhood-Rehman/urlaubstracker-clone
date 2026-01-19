@@ -4,6 +4,7 @@ import DestinationReveal from "./components/DestinationReveal";
 import MoodSelector from "./components/MoodSelector";
 import VoucherShowcase from "./components/VoucherShowcase";
 import TravelHacks from "./components/TravelHacks";
+import BlogSection from "./components/BlogSection";
 import ExceptionalHotels from "./components/ExceptionalHotels";
 import FollowUs from "./components/FollowUs";
 import Newsletter from "./components/Newsletter";
@@ -18,6 +19,7 @@ export default function Home() {
       <MoodSelector />
       <VoucherShowcase />
       <TravelHacks />
+      <BlogSection />
       <ExceptionalHotels />
       <FollowUs />
       <Newsletter />
