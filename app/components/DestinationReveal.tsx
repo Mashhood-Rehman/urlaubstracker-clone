@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 
 const destinations = [
@@ -25,7 +26,7 @@ const DestinationReveal = () => {
 
     return (
         <section
-            className="py-32 bg-primary text-white overflow-hidden relative cursor-none"
+            className="py-32 bg-primary text-white overflow-hidden relative"
             onMouseEnter={() => setIsHoveringSection(true)}
             onMouseLeave={() => {
                 setIsHoveringSection(false);
@@ -70,8 +71,8 @@ const DestinationReveal = () => {
                     left: mousePos.x,
                     top: mousePos.y,
                     transform: 'translate(-50%, -50%)',
-                    width: '400px',
-                    height: '550px',
+                    width: '350px',
+                    height: '250px',
                     opacity: isHoveringSection && activeIndex !== null ? 1 : 0,
                     scale: isHoveringSection && activeIndex !== null ? 1 : 0.5,
                     filter: isHoveringSection && activeIndex !== null ? 'blur(0px)' : 'blur(20px)',
@@ -82,10 +83,13 @@ const DestinationReveal = () => {
                         key={dest.name}
                         className={`absolute inset-0 transition-opacity duration-300 ${activeIndex === index ? 'opacity-100' : 'opacity-0'}`}
                     >
-                        <img
+
+                        <Image
+                            width={400}
+                            height={550}
                             src={dest.image}
                             alt={dest.name}
-                            className="w-full h-full object-cover rounded-3xl shadow-2xl"
+                            className=" object-contain rounded-3xl shadow-2xl"
                         />
                         {/* Overlay gradient on image */}
                         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent rounded-3xl" />

@@ -8,9 +8,18 @@ import Link from 'next/link';
 function RentalSearchResultsContent() {
     const searchParams = useSearchParams();
     const location = searchParams.get('location') || 'any';
+    const startDate = searchParams.get('startDate') || 'any';
+    const endDate = searchParams.get('endDate') || 'any';
 
     const [rentals, setRentals] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const formatDisplayDate = (dateStr: string) => {
+        if (!dateStr || dateStr === 'any') return '';
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const date = new Date(year, month - 1, day);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    };
 
     useEffect(() => {
         const fetchResults = async () => {
@@ -34,17 +43,28 @@ function RentalSearchResultsContent() {
             }
         };
         fetchResults();
-    }, [location]);
+    }, [location, startDate, endDate]);
 
     return (
         <div className="min-h-screen bg-gray-50 pt-24 pb-12">
             <div className="container mx-auto px-4">
                 {/* Search Summary Header */}
                 <div className="bg-white rounded-2xl shadow-sm p-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 border border-gray-100">
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-8">
                         <div className="flex flex-col">
                             <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Rental Location</span>
                             <span className="text-lg font-bold text-primary">{location === 'any' ? 'Anywhere' : location}</span>
+                        </div>
+                        <div className="h-10 w-px bg-gray-100"></div>
+                        <div className="flex flex-col">
+                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Travel Dates</span>
+                            <span className="text-lg font-bold text-primary">
+                                {startDate === 'any' ? 'Flexible' : (
+                                    endDate && endDate !== 'any'
+                                        ? `${formatDisplayDate(startDate)} - ${formatDisplayDate(endDate)}`
+                                        : formatDisplayDate(startDate)
+                                )}
+                            </span>
                         </div>
                     </div>
                     <Link href="/" className="px-6 py-2 border-2 border-primary/10 text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all">

@@ -9,10 +9,18 @@ function FlightSearchResultsContent() {
     const searchParams = useSearchParams();
     const from = searchParams.get('from') || 'any';
     const to = searchParams.get('to') || 'any';
-    const date = searchParams.get('date') || 'any';
+    const startDate = searchParams.get('startDate') || 'any';
+    const endDate = searchParams.get('endDate') || 'any';
 
     const [flights, setFlights] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const formatDisplayDate = (dateStr: string) => {
+        if (dateStr === 'any') return null;
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const date = new Date(year, month - 1, day);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    };
 
     useEffect(() => {
         const fetchResults = async () => {
@@ -20,7 +28,6 @@ function FlightSearchResultsContent() {
                 const res = await fetch('/api/flights');
                 const data = await res.json();
                 if (data.success) {
-                    // Simple client-side filtering logic
                     let filtered = data.data;
                     if (from !== 'any') {
                         filtered = filtered.filter((f: any) =>
@@ -41,7 +48,7 @@ function FlightSearchResultsContent() {
             }
         };
         fetchResults();
-    }, [from, to, date]);
+    }, [from, to, startDate, endDate]);
 
     return (
         <div className="min-h-screen bg-gray-50 pt-24 pb-12">
@@ -60,9 +67,15 @@ function FlightSearchResultsContent() {
                         </div>
                     </div>
                     <div className="h-10 w-px bg-gray-100 hidden md:block"></div>
-                    <div className="flex flex-col items-center md:items-start">
-                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Date</span>
-                        <span className="text-lg font-bold text-primary">{date === 'any' ? 'Flexibile' : date}</span>
+                    <div className="flex flex-col items-center md:items-start min-w-[150px]">
+                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Travel Dates</span>
+                        <span className="text-lg font-bold text-primary">
+                            {startDate === 'any' ? 'Flexible' : (
+                                endDate && endDate !== 'any'
+                                    ? `${formatDisplayDate(startDate)} - ${formatDisplayDate(endDate)}`
+                                    : formatDisplayDate(startDate)
+                            )}
+                        </span>
                     </div>
                     <Link href="/" className="px-6 py-2 border-2 border-primary/10 text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all">
                         Change Search

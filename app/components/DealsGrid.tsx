@@ -93,10 +93,6 @@ const DealsGrid = () => {
                         </div>
                     </div>
                 </div>
-
-                <button className="btn btn-blue mt-8 md:hidden">
-                    View All Deals
-                </button>
             </div>
         </section>
     );

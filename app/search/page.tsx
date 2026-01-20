@@ -17,6 +17,15 @@ export default async function SearchPage({
 }) {
     const resolvedSearchParams = await searchParams;
     const location = typeof resolvedSearchParams.location === 'string' ? resolvedSearchParams.location : '';
+    const startDate = typeof resolvedSearchParams.startDate === 'string' ? resolvedSearchParams.startDate : '';
+    const endDate = typeof resolvedSearchParams.endDate === 'string' ? resolvedSearchParams.endDate : '';
+
+    const formatDisplayDate = (dateStr: string) => {
+        if (!dateStr) return '';
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const date = new Date(year, month - 1, day);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    };
 
     // Construct query
     const where: any = {};
@@ -35,21 +44,32 @@ export default async function SearchPage({
 
     return (
         <main className="min-h-screen bg-gray-50">
-            {/* We need a navbar here, assuming one exists or using a layout. 
-                For now, I'll assume we can reuse the ConditionalNavbar logic or just import a Navbar if independent.
-                Checking file structure, `ConditionalNavbar` exists.
-            */}
-
             {/* Setup a simple header for now since Navbar might be active via layout */}
             <div className="bg-white border-b sticky top-0 z-50">
                 <div className="container mx-auto px-4 py-4 flex items-center justify-between">
                     <Link href="/" className="font-bold text-xl text-primary">TravelApp</Link>
-                    <div className="flex-1 max-w-xl mx-auto hidden md:block px-8">
-                        <div className="bg-gray-100 rounded-full px-4 py-2 flex items-center gap-2 text-sm text-gray-500">
-                            <icons.Search className="w-4 h-4" />
-                            <span>{location || 'Anywhere'}</span>
+                    <div className="flex-1 max-w-xl mx-auto flex items-center justify-center gap-8 px-8">
+                        <div className="flex flex-col items-start">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Location</span>
+                            <div className="flex items-center gap-2 text-sm text-gray-900 font-bold">
+                                <icons.MapPin className="w-3 h-3 text-secondary" />
+                                {location || 'Anywhere'}
+                            </div>
+                        </div>
+                        <div className="h-8 w-px bg-gray-100"></div>
+                        <div className="flex flex-col items-start">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Dates</span>
+                            <div className="flex items-center gap-2 text-sm text-gray-900 font-bold">
+                                <icons.Calendar className="w-3 h-3 text-secondary" />
+                                {startDate ? (
+                                    endDate ? `${formatDisplayDate(startDate)} - ${formatDisplayDate(endDate)}` : formatDisplayDate(startDate)
+                                ) : 'Flexible'}
+                            </div>
                         </div>
                     </div>
+                    <Link href="/" className="px-4 py-2 border border-gray-100 rounded-lg text-xs font-bold hover:bg-gray-50 transition-colors uppercase tracking-widest">
+                        New Search
+                    </Link>
                 </div>
             </div>
 

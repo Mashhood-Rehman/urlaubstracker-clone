@@ -57,8 +57,13 @@ export default function ProductsPage() {
     });
 
 
+    const [isFetching, setIsFetching] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+
     useEffect(() => {
         const fetchProducts = async () => {
+            setIsFetching(true);
             try {
                 const res = await fetch("/api/products")
                 const data = await res.json()
@@ -66,11 +71,35 @@ export default function ProductsPage() {
                 console.log("Products fetched:", data);
             } catch (error) {
                 console.error("Error fetching products:", error);
-
+            } finally {
+                setIsFetching(false);
             }
         }
         fetchProducts();
     }, [])
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, categoryFilter]);
+
+    const filteredProducts = products ? products.filter(p => {
+        const matchesSearch = searchTerm === '' ||
+            p.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.desc?.toLowerCase().includes(searchTerm.toLowerCase());
+
+        const matchesCategory = categoryFilter === 'All' ||
+            p.mainCategory === categoryFilter ||
+            (categoryFilter === 'Hotel' && (!p.mainCategory || p.mainCategory === 'Hotel'));
+
+        return matchesSearch && matchesCategory;
+    }) : [];
+
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -262,20 +291,37 @@ export default function ProductsPage() {
                         <option value="Rental">Rentals</option>
                     </select>
                 </div>
-                <button
-                    onClick={() => {
-                        resetForm();
-                        setShowModal(true);
-                    }}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
-                >
-                    <Plus className="w-4 h-4" />
-                    Add Product
-                </button>
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <span>Show:</span>
+                        <select
+                            value={itemsPerPage}
+                            onChange={(e) => {
+                                setItemsPerPage(Number(e.target.value));
+                                setCurrentPage(1);
+                            }}
+                            className="bg-white border border-gray-200 rounded px-2 py-1 outline-none font-medium text-gray-700"
+                        >
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
+                        </select>
+                    </div>
+                    <button
+                        onClick={() => {
+                            resetForm();
+                            setShowModal(true);
+                        }}
+                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
+                    >
+                        <Plus className="w-4 h-4" />
+                        Add Product
+                    </button>
+                </div>
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
                 <table className="w-full">
                     <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
@@ -303,78 +349,83 @@ export default function ProductsPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {products && products.length > 0 ? (
-                            products
-                                .filter(p => {
-                                    const matchesSearch = searchTerm === '' ||
-                                        p.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                        p.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                        p.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                        p.desc?.toLowerCase().includes(searchTerm.toLowerCase());
-
-                                    const matchesCategory = categoryFilter === 'All' ||
-                                        p.mainCategory === categoryFilter ||
-                                        (categoryFilter === 'Hotel' && (!p.mainCategory || p.mainCategory === 'Hotel'));
-
-                                    return matchesSearch && matchesCategory;
-                                })
-                                .map((product) => (
-                                    <tr key={`${product.mainCategory}-${product.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                        <td className="px-4 py-2 text-sm text-gray-600">{product.id}</td>
-                                        <td className="px-4 py-2 text-sm font-medium text-foreground">{product.title || product.mainHeading}</td>
-                                        <td className="px-4 py-2 text-sm text-gray-600">
-                                            <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${product.mainCategory === 'Flight' ? 'bg-blue-100 text-blue-700' :
-                                                product.mainCategory === 'Rental' ? 'bg-green-100 text-green-700' :
-                                                    'bg-purple-100 text-purple-700'
-                                                }`}>
-                                                {product.mainCategory || 'Hotel'}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2 text-sm text-gray-600">{product.city || product.departureCity || '-'}</td>
-                                        <td className="px-4 py-2 text-sm text-gray-600">
-                                            {product.currency || 'EUR'} {product.price_per_night || product.price || '-'}
-                                        </td>
-                                        <td className="px-4 py-2 text-sm text-gray-600">
-                                            <span className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">
-                                                ⭐ {product.rating || 'N/A'}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-2 text-sm text-gray-600">{product.review_count || 0}</td>
-                                        <td className="px-4 py-2 text-sm text-gray-600">
-                                            <div className="flex flex-wrap gap-1">
-                                                {Array.isArray(product.amenities) && product.amenities.slice(0, 3).map((amenity: any, idx: any) => (
-                                                    <span key={idx} className="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">
-                                                        {amenity}
-                                                    </span>
-                                                ))}
-                                                {product.mainCategory === 'Flight' && (
-                                                    <span className="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">
-                                                        {product.airline}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            <div className="flex items-center gap-2">
-                                                <button
-                                                    onClick={() => handleEdit(product)}
-                                                    className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
-                                                >
-                                                    <Edit className="w-4 h-4 text-blue-600" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(product)}
-                                                    className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
-                                                >
-                                                    <Trash2 className="w-4 h-4 text-red-600" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
+                        {isFetching ? (
+                            Array.from({ length: itemsPerPage }).map((_, idx) => (
+                                <tr key={`skeleton-${idx}`} className="border-b border-gray-100 animate-pulse">
+                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-8"></div></td>
+                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-48"></div></td>
+                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-20"></div></td>
+                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-24"></div></td>
+                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-16"></div></td>
+                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-12"></div></td>
+                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-10"></div></td>
+                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-32"></div></td>
+                                    <td className="px-4 py-4">
+                                        <div className="flex gap-2">
+                                            <div className="w-6 h-6 bg-gray-200 rounded"></div>
+                                            <div className="w-6 h-6 bg-gray-200 rounded"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : paginatedProducts.length > 0 ? (
+                            paginatedProducts.map((product) => (
+                                <tr key={`${product.mainCategory}-${product.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td className="px-4 py-2 text-sm text-gray-600">{product.id}</td>
+                                    <td className="px-4 py-2 text-sm font-medium text-foreground">{product.title || product.mainHeading}</td>
+                                    <td className="px-4 py-2 text-sm text-gray-600">
+                                        <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${product.mainCategory === 'Flight' ? 'bg-blue-100 text-blue-700' :
+                                            product.mainCategory === 'Rental' ? 'bg-green-100 text-green-700' :
+                                                'bg-purple-100 text-purple-700'
+                                            }`}>
+                                            {product.mainCategory || 'Hotel'}
+                                        </span>
+                                    </td>
+                                    <td className="px-4 py-2 text-sm text-gray-600">{product.city || product.departureCity || '-'}</td>
+                                    <td className="px-4 py-2 text-sm text-gray-600">
+                                        {product.currency || 'EUR'} {product.price_per_night || product.price || '-'}
+                                    </td>
+                                    <td className="px-4 py-2 text-sm text-gray-600">
+                                        <span className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">
+                                            ⭐ {product.rating ? Number(product.rating).toFixed(1) : 'N/A'}
+                                        </span>
+                                    </td>
+                                    <td className="px-4 py-2 text-sm text-gray-600">{product.review_count || 0}</td>
+                                    <td className="px-4 py-2 text-sm text-gray-600">
+                                        <div className="flex flex-wrap gap-1">
+                                            {Array.isArray(product.amenities) && product.amenities.slice(0, 3).map((amenity: any, idx: any) => (
+                                                <span key={idx} className="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">
+                                                    {amenity}
+                                                </span>
+                                            ))}
+                                            {product.mainCategory === 'Flight' && (
+                                                <span className="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">
+                                                    {product.airline}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={() => handleEdit(product)}
+                                                className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
+                                            >
+                                                <Edit className="w-4 h-4 text-blue-600" />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(product)}
+                                                className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
+                                            >
+                                                <Trash2 className="w-4 h-4 text-red-600" />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
                         ) : (
                             <tr>
-                                <td colSpan={8} className="px-4 py-6 text-center text-sm text-gray-500">
+                                <td colSpan={9} className="px-4 py-6 text-center text-sm text-gray-500">
                                     No products found
                                 </td>
                             </tr>
@@ -382,6 +433,52 @@ export default function ProductsPage() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Pagination Controls */}
+            {!isFetching && filteredProducts.length > 0 && (
+                <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-3 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <div className="text-sm text-gray-500 order-2 sm:order-1">
+                        Showing <span className="font-medium">{startIndex + 1}</span> to <span className="font-medium">{Math.min(startIndex + itemsPerPage, filteredProducts.length)}</span> of <span className="font-medium">{filteredProducts.length}</span> results
+                    </div>
+                    <div className="flex items-center gap-2 order-1 sm:order-2">
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                            className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                            Previous
+                        </button>
+                        <div className="hidden sm:flex items-center gap-1">
+                            {Array.from({ length: totalPages }, (_, i) => i + 1)
+                                .filter(page => {
+                                    if (totalPages <= 7) return true;
+                                    return page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1;
+                                })
+                                .map((page, i, array) => (
+                                    <div key={page}>
+                                        {i > 0 && array[i - 1] !== page - 1 && <span className="px-2 text-gray-400">...</span>}
+                                        <button
+                                            onClick={() => setCurrentPage(page)}
+                                            className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${currentPage === page
+                                                ? 'bg-primary text-white'
+                                                : 'text-gray-700 hover:bg-gray-100'
+                                                }`}
+                                        >
+                                            {page}
+                                        </button>
+                                    </div>
+                                ))}
+                        </div>
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                            disabled={currentPage === totalPages || totalPages === 0}
+                            className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                            Next
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* Add Product Modal */}
             {showModal && (
@@ -555,7 +652,6 @@ export default function ProductsPage() {
                                 >
                                     {loading ? 'Saving...' : (isEditing ? 'Update Product' : 'Create Product')}
                                 </button>
-
                             </div>
                         </form>
                     </div>
