@@ -9,28 +9,51 @@ import Calendar from './Calendar';
 const BookingEngine = () => {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState('Flights');
-    const [from, setFrom] = useState('');
-    const [to, setTo] = useState('');
-    const [date, setDate] = useState('');
+
+    // Tab-specific states
+    const [tabStates, setTabStates] = useState({
+        'Flights': { from: '', to: '', startDate: '', endDate: '' },
+        'Hotels': { from: '', to: '', startDate: '', endDate: '' },
+        'Car Rental': { from: '', to: '', startDate: '', endDate: '' }
+    });
+
+    const updateTabState = (field: string, value: any) => {
+        setTabStates(prev => ({
+            ...prev,
+            [activeTab]: {
+                ...prev[activeTab as keyof typeof prev],
+                [field]: value
+            }
+        }));
+    };
+
+    const currentState = tabStates[activeTab as keyof typeof tabStates];
 
     const handleSearch = () => {
+        const { from, to, startDate, endDate } = currentState;
         if (activeTab === 'Flights') {
             const params = new URLSearchParams();
             if (from) params.append('from', from);
             if (to) params.append('to', to);
-            if (date) params.append('date', date);
+            if (startDate) params.append('startDate', startDate);
+            if (endDate) params.append('endDate', endDate);
             router.push(`/flights/search?${params.toString()}`);
         } else if (activeTab === 'Hotels') {
             const params = new URLSearchParams();
             if (from) params.append('location', from);
-            if (date) params.append('date', date);
+            if (startDate) params.append('startDate', startDate);
+            if (endDate) params.append('endDate', endDate);
             router.push(`/search?${params.toString()}`);
         } else if (activeTab === 'Car Rental') {
             const params = new URLSearchParams();
             if (from) params.append('location', from);
+            if (startDate) params.append('startDate', startDate);
+            if (endDate) params.append('endDate', endDate);
             router.push(`/rentals/search?${params.toString()}`);
         }
     };
+
+
 
     const tabs = [
         { name: 'Flights', icon: icons.Plane },
@@ -60,26 +83,26 @@ const BookingEngine = () => {
 
                 {/* Form */}
                 <div className="p-6 md:p-8 flex flex-col md:flex-row gap-4 items-end">
-                    <div className="flex-1 w-full text-left">
+                    <div className="flex-1 w-full text-left" key={`${activeTab}-from`}>
                         <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">
-                            {activeTab === 'Hotels' ? 'Destination' : 'Departure Airport'}
+                            {activeTab === 'Hotels' ? 'Destination' : activeTab === 'Car Rental' ? 'Pickup Location' : 'Departure Airport'}
                         </label>
                         {activeTab === 'Hotels' ? (
-                            <div className='relative z-40'>
+                            <div className='relative z-50'>
                                 <Autocomplete
                                     placeholder="Where are you going?"
-                                    onSelect={(val) => setFrom(val)}
-                                    initialValue={from}
+                                    onSelect={(val) => updateTabState('from', val)}
+                                    initialValue={currentState.from}
                                     icon={<icons.MapPin className="w-5 h-5" />}
                                     type="hotels"
                                 />
                             </div>
                         ) : (
-                            <div className='relative z-40'>
+                            <div className='relative z-50'>
                                 <Autocomplete
-                                    placeholder="Where are you flying from?"
-                                    onSelect={(val) => setFrom(val)}
-                                    initialValue={from}
+                                    placeholder={activeTab === 'Car Rental' ? 'Pick-up location' : 'Where are you flying from?'}
+                                    onSelect={(val) => updateTabState('from', val)}
+                                    initialValue={currentState.from}
                                     icon={<icons.MapPin className="w-5 h-5" />}
                                     type={activeTab === 'Car Rental' ? 'rentals' : 'flights'}
                                 />
@@ -87,28 +110,34 @@ const BookingEngine = () => {
                         )}
                     </div>
 
-                    {activeTab !== 'Hotels' && (
-                        <div className="flex-1 w-full text-left relative z-40">
+                    {activeTab === 'Flights' && (
+                        <div className="flex-1 w-full text-left relative z-40" key="flights-to">
                             <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">Destination</label>
                             <Autocomplete
                                 placeholder="Where are you going?"
-                                onSelect={(val) => setTo(val)}
-                                initialValue={to}
+                                onSelect={(val) => updateTabState('to', val)}
+                                initialValue={currentState.to}
                                 icon={<icons.Globe className="w-5 h-5" />}
-                                type={activeTab === 'Car Rental' ? 'rentals' : 'flights'}
+                                type="flights"
                             />
                         </div>
                     )}
 
-                    <div className="flex-1 w-full text-left relative z-30">
+                    <div className="flex-1 w-full text-left relative z-30" key={`${activeTab}-date`}>
                         <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">Travel Dates</label>
                         <Calendar
-                            selectedDate={date}
-                            onDateSelect={setDate}
+                            startDate={currentState.startDate}
+                            endDate={currentState.endDate}
+                            onRangeSelect={(start, end) => {
+                                updateTabState('startDate', start);
+                                updateTabState('endDate', end);
+                            }}
+                            isRange={true}
                             placeholder="When are you traveling?"
                             minDate={new Date()}
                         />
                     </div>
+
 
                     <button
                         onClick={handleSearch}
@@ -118,6 +147,7 @@ const BookingEngine = () => {
                         Search
                     </button>
                 </div>
+
             </div>
         </div>
     );

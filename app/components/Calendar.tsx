@@ -4,13 +4,26 @@ import React, { useState, useRef, useEffect } from 'react';
 import { icons } from '@/assets/icons';
 
 interface CalendarProps {
-    selectedDate: string;
-    onDateSelect: (date: string) => void;
+    selectedDate?: string;
+    startDate?: string;
+    endDate?: string;
+    onDateSelect?: (date: string) => void;
+    onRangeSelect?: (start: string, end: string) => void;
     placeholder?: string;
     minDate?: Date;
+    isRange?: boolean;
 }
 
-export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Select date', minDate }: CalendarProps) {
+export default function Calendar({
+    selectedDate,
+    startDate,
+    endDate,
+    onDateSelect,
+    onRangeSelect,
+    placeholder = 'Select date',
+    minDate,
+    isRange = false
+}: CalendarProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
@@ -27,16 +40,20 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
                 const rect = buttonRef.current.getBoundingClientRect();
                 setDropdownPosition({
                     top: rect.bottom + 8,
-                    left: rect.left
+                    left: Math.max(10, Math.min(rect.left, window.innerWidth - 330))
                 });
             }
         };
 
         updatePosition();
-        
+
         if (isOpen) {
             window.addEventListener('scroll', updatePosition);
-            return () => window.removeEventListener('scroll', updatePosition);
+            window.addEventListener('resize', updatePosition);
+            return () => {
+                window.removeEventListener('scroll', updatePosition);
+                window.removeEventListener('resize', updatePosition);
+            };
         }
     }, [isOpen]);
 
@@ -58,15 +75,11 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
     }, [isOpen]);
 
     const getDaysInMonth = (date: Date) => {
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        return new Date(year, month + 1, 0).getDate();
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     };
 
     const getFirstDayOfMonth = (date: Date) => {
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        return new Date(year, month, 1).getDay();
+        return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
     };
 
     const formatDate = (date: Date) => {
@@ -76,7 +89,7 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
         return `${year}-${month}-${day}`;
     };
 
-    const parseDate = (dateStr: string) => {
+    const parseDate = (dateStr?: string) => {
         if (!dateStr) return null;
         const [year, month, day] = dateStr.split('-').map(Number);
         return new Date(year, month - 1, day);
@@ -84,7 +97,8 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
 
     const isDateDisabled = (date: Date) => {
         if (!minDate) return false;
-        return date < minDate;
+        const compareDate = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
+        return date < compareDate;
     };
 
     const isSameDay = (date1: Date, date2: Date | null) => {
@@ -94,6 +108,13 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
             date1.getDate() === date2.getDate();
     };
 
+    const isDateInRange = (date: Date) => {
+        if (!startDate || !endDate) return false;
+        const start = parseDate(startDate)!;
+        const end = parseDate(endDate)!;
+        return date > start && date < end;
+    };
+
     const isToday = (date: Date) => {
         const today = new Date();
         return isSameDay(date, today);
@@ -101,8 +122,22 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
 
     const handleDateClick = (day: number) => {
         const selected = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-        if (!isDateDisabled(selected)) {
-            onDateSelect(formatDate(selected));
+        if (isDateDisabled(selected)) return;
+
+        if (isRange) {
+            if (!startDate || (startDate && endDate)) {
+                onRangeSelect?.(formatDate(selected), '');
+            } else {
+                const currentStart = parseDate(startDate)!;
+                if (selected < currentStart) {
+                    onRangeSelect?.(formatDate(selected), '');
+                } else {
+                    onRangeSelect?.(startDate, formatDate(selected));
+                    setIsOpen(false);
+                }
+            }
+        } else {
+            onDateSelect?.(formatDate(selected));
             setIsOpen(false);
         }
     };
@@ -120,17 +155,20 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
         const firstDay = getFirstDayOfMonth(currentMonth);
         const days = [];
 
-        // Empty cells for days before the first day of the month
         for (let i = 0; i < firstDay; i++) {
             days.push(<div key={`empty-${i}`} className="h-10"></div>);
         }
 
-        // Actual days of the month
         for (let day = 1; day <= daysInMonth; day++) {
             const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-            const isSelected = isSameDay(date, parseDate(selectedDate));
+            const isSelected = isRange
+                ? (isSameDay(date, parseDate(startDate)) || isSameDay(date, parseDate(endDate)))
+                : isSameDay(date, parseDate(selectedDate));
+            const isInRange = isRange && isDateInRange(date);
             const isDisabled = isDateDisabled(date);
             const isTodayDate = isToday(date);
+            const isStart = isRange && isSameDay(date, parseDate(startDate));
+            const isEnd = isRange && isSameDay(date, parseDate(endDate));
 
             days.push(
                 <button
@@ -139,14 +177,21 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
                     onClick={() => handleDateClick(day)}
                     disabled={isDisabled}
                     className={`
-                        h-10 rounded-lg text-sm font-medium transition-all
-                        ${isSelected ? 'bg-primary text-white shadow-lg scale-105' : ''}
-                        ${!isSelected && isTodayDate ? 'bg-secondary/10 text-secondary font-bold' : ''}
-                        ${!isSelected && !isTodayDate && !isDisabled ? 'hover:bg-gray-100 text-gray-700' : ''}
+                        h-10 w-full text-sm font-medium transition-all relative
+                        ${isSelected ? 'bg-primary text-white z-10' : ''}
+                        ${isStart ? 'rounded-l-lg' : ''}
+                        ${isEnd ? 'rounded-r-lg' : ''}
+                        ${!isRange && isSelected ? 'rounded-lg shadow-lg scale-105' : ''}
+                        ${isInRange ? 'bg-primary/10 text-primary' : ''}
+                        ${!isSelected && isTodayDate ? 'text-secondary font-bold' : ''}
+                        ${!isSelected && !isInRange && !isTodayDate && !isDisabled ? 'hover:bg-gray-100 text-gray-700 rounded-lg' : ''}
                         ${isDisabled ? 'text-gray-300 cursor-not-allowed' : 'cursor-pointer'}
                     `}
                 >
                     {day}
+                    {isTodayDate && !isSelected && !isInRange && (
+                        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-secondary rounded-full"></div>
+                    )}
                 </button>
             );
         }
@@ -154,11 +199,20 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
         return days;
     };
 
-    const displayValue = selectedDate ? parseDate(selectedDate)?.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-    }) : placeholder;
+    const formatDisplayDate = (dateStr?: string) => {
+        if (!dateStr) return '';
+        const date = parseDate(dateStr);
+        if (!date) return '';
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    };
+
+    const displayValue = isRange
+        ? (startDate ? `${formatDisplayDate(startDate)}${endDate ? ` - ${formatDisplayDate(endDate)}` : ' - ...'}` : placeholder)
+        : (selectedDate ? parseDate(selectedDate)?.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        }) : placeholder);
 
     return (
         <div ref={calendarRef} className="relative w-full">
@@ -168,7 +222,7 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full px-4 py-3 bg-white/80 backdrop-blur-sm border-2 border-gray-200 rounded-xl text-left flex items-center justify-between hover:border-primary/30 transition-all focus:outline-none focus:border-primary"
             >
-                <span className={`text-sm ${selectedDate ? 'text-gray-900 font-medium' : 'text-gray-400'}`}>
+                <span className={`text-sm ${(isRange ? startDate : selectedDate) ? 'text-gray-900 font-medium' : 'text-gray-400'}`}>
                     {displayValue}
                 </span>
                 <icons.Calendar className="w-5 h-5 text-gray-400" />
@@ -176,65 +230,57 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
 
             {isOpen && (
                 <div
-                    className="fixed bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 z-[9999] w-80"
+                    className="fixed bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 z-9999 w-[265px]"
                     style={{ top: `${dropdownPosition.top}px`, left: `${dropdownPosition.left}px` }}
                 >
-                    {/* Month/Year Header */}
                     <div className="flex items-center justify-between mb-4">
-                        <button
-                            type="button"
-                            onClick={handlePrevMonth}
-                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                        >
+                        <button type="button" onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-lg">
                             <icons.ChevronDown className="w-5 h-5 text-gray-600 rotate-90" />
                         </button>
-                        <div className="text-center">
-                            <div className="text-lg font-bold text-primary">
-                                {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-                            </div>
+                        <div className="text-lg font-bold text-primary">
+                            {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                         </div>
-                        <button
-                            type="button"
-                            onClick={handleNextMonth}
-                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                        >
+                        <button type="button" onClick={handleNextMonth} className="p-2 hover:bg-gray-100 rounded-lg">
                             <icons.ChevronDown className="w-5 h-5 text-gray-600 -rotate-90" />
                         </button>
                     </div>
 
-                    {/* Days of Week */}
                     <div className="grid grid-cols-7 gap-1 mb-2">
                         {daysOfWeek.map(day => (
-                            <div key={day} className="h-8 flex items-center justify-center text-xs font-bold text-gray-400 uppercase">
-                                {day}
-                            </div>
+                            <div key={day} className="h-8 flex items-center justify-center text-xs font-bold text-gray-400 uppercase">{day}</div>
                         ))}
                     </div>
 
-                    {/* Calendar Days */}
                     <div className="grid grid-cols-7 gap-1">
                         {renderCalendarDays()}
                     </div>
 
-                    {/* Footer */}
                     <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
                         <button
                             type="button"
                             onClick={() => {
-                                onDateSelect(formatDate(new Date()));
+                                if (isRange) {
+                                    onRangeSelect?.(formatDate(new Date()), '');
+                                } else {
+                                    onDateSelect?.(formatDate(new Date()));
+                                }
                                 setIsOpen(false);
                             }}
-                            className="text-xs font-semibold text-secondary hover:text-primary transition-colors"
+                            className="text-xs font-semibold text-secondary"
                         >
                             Today
                         </button>
                         <button
                             type="button"
                             onClick={() => {
-                                onDateSelect('');
+                                if (isRange) {
+                                    onRangeSelect?.('', '');
+                                } else {
+                                    onDateSelect?.('');
+                                }
                                 setIsOpen(false);
                             }}
-                            className="text-xs font-semibold text-gray-400 hover:text-gray-600 transition-colors"
+                            className="text-xs font-semibold text-gray-400"
                         >
                             Clear
                         </button>
@@ -244,3 +290,4 @@ export default function Calendar({ selectedDate, onDateSelect, placeholder = 'Se
         </div>
     );
 }
+

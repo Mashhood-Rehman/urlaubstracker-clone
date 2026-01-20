@@ -34,58 +34,41 @@ export async function GET(request: NextRequest) {
 
             suggestions = hotels.map((hotel: any) => ({
                 id: hotel.id,
-                text: `${hotel.title}, ${hotel.city}, ${hotel.country}`,
+                text: hotel.title,
                 type: 'hotel',
                 data: hotel
             }));
         } else if (type === 'flights') {
-            // Search for flights - search in city names
+            // Search for flights matching the query in title, departure, or arrival cities
             const flights = await prisma.flight.findMany({
                 where: {
                     OR: [
+                        { title: { contains: query, mode: 'insensitive' } },
                         { departureCity: { contains: query, mode: 'insensitive' } },
                         { arrivalCity: { contains: query, mode: 'insensitive' } },
                     ],
                 },
-                distinct: ['departureCity', 'arrivalCity'],
                 take: 8,
                 select: {
                     id: true,
+                    title: true,
                     departureCity: true,
                     arrivalCity: true,
                 },
             });
 
-            // Create unique suggestions from flights
-            const seenLocations = new Set<string>();
-            flights.forEach((flight: any) => {
-                const departure = flight.departureCity;
-                const arrival = flight.arrivalCity;
-
-                if (!seenLocations.has(departure) && departure.toLowerCase().includes(query.toLowerCase())) {
-                    suggestions.push({
-                        id: `dep-${flight.id}`,
-                        text: departure,
-                        type: 'flight',
-                        data: { city: departure }
-                    });
-                    seenLocations.add(departure);
+            suggestions = flights.map((flight: any) => ({
+                id: flight.id,
+                text: flight.title,
+                type: 'flight',
+                data: {
+                    title: flight.title,
+                    city: `${flight.departureCity} to ${flight.arrivalCity}`,
+                    country: 'Flight Deal'
                 }
-
-                if (!seenLocations.has(arrival) && arrival.toLowerCase().includes(query.toLowerCase())) {
-                    suggestions.push({
-                        id: `arr-${flight.id}`,
-                        text: arrival,
-                        type: 'flight',
-                        data: { city: arrival }
-                    });
-                    seenLocations.add(arrival);
-                }
-            });
-
-            suggestions = suggestions.slice(0, 8);
+            }));
         } else if (type === 'rentals') {
-            // Search for rentals - search in title/mainHeading
+            // Search for rentals matching the query
             const rentals = await prisma.rental.findMany({
                 where: {
                     OR: [
@@ -105,9 +88,14 @@ export async function GET(request: NextRequest) {
                 id: rental.id,
                 text: rental.title || rental.mainHeading,
                 type: 'rental',
-                data: rental
+                data: {
+                    title: rental.title || rental.mainHeading,
+                    city: 'Rental Deal',
+                    country: ''
+                }
             }));
         }
+
 
         return NextResponse.json({ success: true, data: suggestions });
     } catch (error: any) {

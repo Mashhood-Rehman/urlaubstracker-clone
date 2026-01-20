@@ -1,19 +1,26 @@
-import { Users, Package, TrendingUp, DollarSign, Plane, Car } from 'lucide-react';
+import prisma from '@/lib/prisma';
+import { Package, Plane, Car } from 'lucide-react';
 import Link from 'next/link';
 
-export default function AdminDashboard() {
+
+export default async function AdminDashboard() {
+    // Fetch live counts
+    const [hotelCount, flightCount, rentalCount] = await Promise.all([
+        prisma.hotel.count(),
+        prisma.flight.count(),
+        prisma.rental.count(),
+    ]);
+
     const stats = [
-        { label: 'Total Users', value: '1,234', icon: Users, color: 'bg-blue-500' },
-        { label: 'Hotels', value: '56', icon: Package, color: 'bg-green-500' },
-        { label: 'Flights', value: '124', icon: Plane, color: 'bg-blue-600' },
-        { label: 'Rentals', value: '23', icon: Car, color: 'bg-purple-500' },
+        { label: 'Hotels', value: hotelCount.toString(), icon: Package, color: 'bg-green-500' },
+        { label: 'Flights', value: flightCount.toString(), icon: Plane, color: 'bg-blue-600' },
+        { label: 'Rentals', value: rentalCount.toString(), icon: Car, color: 'bg-purple-500' },
     ];
 
     const actions = [
         { label: 'Manage Hotels', href: '/admin/products', icon: Package, color: 'bg-green-500' },
         { label: 'Manage Flights', href: '/admin/flights', icon: Plane, color: 'bg-blue-600' },
         { label: 'Manage Rentals', href: '/admin/rentals', icon: Car, color: 'bg-purple-500' },
-        { label: 'Manage Users', href: '/admin/users', icon: Users, color: 'bg-blue-500' },
     ];
 
     return (
@@ -24,7 +31,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 {stats.map((stat) => {
                     const Icon = stat.icon;
                     return (
@@ -49,14 +56,14 @@ export default function AdminDashboard() {
             {/* Quick Actions */}
             <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h2 className="text-lg font-semibold text-foreground mb-4">Quick Navigation</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {actions.map((action) => {
                         const Icon = action.icon;
                         return (
                             <Link
                                 key={action.label}
                                 href={action.href}
-                                className="flex items-center gap-3 p-4 rounded-xl border border-gray-100 hover:border-primary/20 hover:bg-primary/5 transition-all group"
+                                className="flex items-center gap-3 p-4 rounded-xl border border-gray-100 hover:border-primary/20 hover:bg-primary/5 transition-all group cursor-pointer"
                             >
                                 <div className={`${action.color} w-10 h-10 rounded-lg flex items-center justify-center shrink-0`}>
                                     <Icon className="w-5 h-5 text-white" />
@@ -73,3 +80,4 @@ export default function AdminDashboard() {
         </div>
     );
 }
+

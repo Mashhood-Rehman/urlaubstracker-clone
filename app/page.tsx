@@ -7,7 +7,6 @@ import TravelHacks from "./components/TravelHacks";
 import BlogSection from "./components/BlogSection";
 import ExceptionalHotels from "./components/ExceptionalHotels";
 import FollowUs from "./components/FollowUs";
-import Newsletter from "./components/Newsletter";
 import Footer from "./components/Footer";
 
 export default function Home() {
@@ -22,7 +21,6 @@ export default function Home() {
       <BlogSection />
       <ExceptionalHotels />
       <FollowUs />
-      <Newsletter />
       <Footer />
     </main>
   );

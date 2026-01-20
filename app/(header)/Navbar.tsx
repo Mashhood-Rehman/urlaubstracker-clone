@@ -4,18 +4,42 @@ import React, { useState, useEffect } from 'react';
 import { icons } from '@/assets/icons';
 import { images } from '@/assets/images';
 import Link from 'next/link';
+import { User, LogOut, LayoutDashboard } from 'lucide-react';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
         };
         window.addEventListener('scroll', handleScroll);
+
+        // Check authentication status
+        const checkAuth = async () => {
+            try {
+                const res = await fetch('/api/auth/session');
+                const data = await res.json();
+                setIsAuthenticated(data.isAuthenticated);
+            } catch (err) {
+                console.error('Session check failed:', err);
+            }
+        };
+        checkAuth();
+
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const handleLogout = async () => {
+        const res = await fetch('/api/auth/logout', { method: 'POST' });
+        if (res.ok) {
+            window.location.href = '/';
+        }
+    };
+
 
     const navLinks = [
         { name: 'Travel Deals', href: '#' },
@@ -66,6 +90,61 @@ const Navbar = () => {
                         />
                     </div>
 
+                    {isAuthenticated ? (
+                        <div className="relative">
+                            <button
+                                onMouseEnter={() => setIsUserMenuOpen(true)}
+                                onMouseLeave={() => setIsUserMenuOpen(false)}
+                                className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all cursor-pointer ${isScrolled ? 'border-gray-200 text-primary' : 'border-white/30 text-white hover:bg-white/10'
+                                    }`}
+                            >
+                                <User className="w-5 h-5" />
+                            </button>
+
+                            {/* User Tooltip Menu */}
+                            <div
+                                onMouseEnter={() => setIsUserMenuOpen(true)}
+                                onMouseLeave={() => setIsUserMenuOpen(false)}
+                                className={`absolute right-0 top-full pt-2 transition-all duration-200 ${isUserMenuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+                                    }`}
+                            >
+                                <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden min-w-[200px]">
+                                    <div className="px-4 py-3 border-b border-gray-50 bg-gray-50/50 text-left">
+                                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Admin Account</p>
+                                        <p className="text-sm font-medium text-primary truncate">admin@gmail.com</p>
+                                    </div>
+                                    <div className="p-1">
+                                        <Link
+                                            href="/admin"
+                                            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-primary/5 hover:text-primary transition-colors cursor-pointer"
+                                        >
+                                            <LayoutDashboard className="w-4 h-4" />
+                                            Admin Panel
+                                        </Link>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer text-left"
+                                        >
+                                            <LogOut className="w-4 h-4" />
+                                            Logout
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <Link
+                            href="/auth/login"
+                            className={`hidden md:block px-6 py-2 rounded-full font-medium transition-all ${isScrolled
+                                ? 'bg-primary text-white hover:bg-primary/90'
+                                : 'bg-white text-primary hover:bg-white/90'
+                                }`}
+                        >
+                            Login
+                        </Link>
+                    )}
+
+
                     <button className="lg:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                         {isMobileMenuOpen ? <icons.X className={isScrolled ? 'text-primary' : 'text-white'} /> : <icons.Menu className={isScrolled ? 'text-primary' : 'text-white'} />}
                     </button>
@@ -85,11 +164,40 @@ const Navbar = () => {
                                 {link.name}
                             </Link>
                         ))}
+                        {isAuthenticated ? (
+                            <>
+                                <Link
+                                    href="/admin"
+                                    className="text-primary font-medium border-b border-gray-100 pb-2 flex items-center gap-2"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <LayoutDashboard className="w-4 h-4" />
+                                    Admin Panel
+                                </Link>
+                                <button
+                                    onClick={handleLogout}
+                                    className="text-red-500 font-bold pt-2 flex items-center gap-2 text-left"
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <Link
+                                href="/auth/login"
+                                className="text-secondary font-bold pt-2"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                Login
+                            </Link>
+                        )}
+
                     </div>
                 </div>
             )}
         </nav>
     );
 };
+
 
 export default Navbar;

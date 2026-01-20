@@ -2,17 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Package, LogOut, FileText } from 'lucide-react';
+import { LayoutDashboard, Users, Package, LogOut, FileText, Globe } from 'lucide-react';
 
 const AdminSidebar = () => {
     const pathname = usePathname();
 
     const navItems = [
         { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-        { name: 'Users', href: '/admin/users', icon: Users },
         { name: 'Products', href: '/admin/products', icon: Package },
         { name: 'Blogs', href: '/admin/blogs', icon: FileText },
     ];
+
 
     return (
         <aside className="w-56 bg-secondary min-h-screen fixed left-0 top-0 flex flex-col">
@@ -52,15 +52,28 @@ const AdminSidebar = () => {
             </nav>
 
             {/* Logout */}
-            <div className="p-3 border-t border-white/10">
+            <div className="p-3 border-t border-white/10 space-y-1">
                 <Link
-                    href="/auth/login"
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+                    href="/"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors cursor-pointer"
+                >
+                    <Globe className="w-4 h-4" />
+                    <span className="text-sm font-medium">Back to Website</span>
+                </Link>
+                <button
+                    onClick={async () => {
+                        const res = await fetch('/api/auth/logout', { method: 'POST' });
+                        if (res.ok) {
+                            window.location.href = '/auth/login';
+                        }
+                    }}
+                    className="w-full h-10 flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors cursor-pointer text-left"
                 >
                     <LogOut className="w-4 h-4" />
                     <span className="text-sm font-medium">Logout</span>
-                </Link>
+                </button>
             </div>
+
         </aside>
     );
 };
