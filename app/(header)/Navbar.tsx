@@ -5,8 +5,11 @@ import { icons } from '@/assets/icons';
 import { images } from '@/assets/images';
 import Link from 'next/link';
 import { User, LogOut, LayoutDashboard } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
+    const pathname = usePathname();
+    const isLandingPage = pathname === '/';
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,17 +52,25 @@ const Navbar = () => {
     ];
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'
-            }`}>
+        <nav
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${!isLandingPage || isScrolled
+                ? 'bg-white shadow-md py-3'
+                : 'bg-transparent py-5'
+                }`}
+        >
             <div className="container mx-auto px-4 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold text-xl">UT</span>
                     </div>
-                    <span className={`font-bold text-xl hidden md:block ${isScrolled ? 'text-primary' : 'text-white'}`}>
+                    <span
+                        className={`font-bold text-xl hidden md:block ${(!isLandingPage || isScrolled) ? 'text-primary' : 'text-white'
+                            }`}
+                    >
                         Urlaubstracker
                     </span>
+
                 </Link>
 
                 {/* Desktop Links */}
@@ -68,7 +79,7 @@ const Navbar = () => {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className={`font-medium hover:text-secondary transition-colors ${isScrolled ? 'text-primary' : 'text-white'
+                            className={`font-medium hover:text-secondary transition-colors ${(!isLandingPage || isScrolled) ? 'text-primary' : 'text-white'
                                 }`}
                         >
                             {link.name}
@@ -79,7 +90,9 @@ const Navbar = () => {
 
                 {/* Actions */}
                 <div className="flex items-center gap-4">
-                    <div className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full border ${isScrolled ? 'border-gray-200 text-primary' : 'border-white/30 text-white'
+                    <div className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full border ${(!isLandingPage || isScrolled)
+                        ? 'border-gray-200 text-primary'
+                        : 'border-white/30 text-white'}white'
                         }`}>
                         <icons.Search className="w-4 h-4" />
                         <input
@@ -94,7 +107,9 @@ const Navbar = () => {
                             <button
                                 onMouseEnter={() => setIsUserMenuOpen(true)}
                                 onMouseLeave={() => setIsUserMenuOpen(false)}
-                                className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all cursor-pointer ${isScrolled ? 'border-gray-200 text-primary' : 'border-white/30 text-white hover:bg-white/10'
+                                className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all cursor-pointer ${(!isLandingPage || isScrolled)
+                                    ? 'border-gray-200 text-primary'
+                                    : 'border-white/30 text-white'}white hover:bg-white/10'
                                     }`}
                             >
                                 <User className="w-5 h-5" />
@@ -134,7 +149,7 @@ const Navbar = () => {
                     ) : (
                         <Link
                             href="/auth/login"
-                            className={`hidden md:block px-6 py-2 rounded-full font-medium transition-all ${isScrolled
+                            className={`hidden md:block px-6 py-2 rounded-full font-medium transition-all ${(!isLandingPage || isScrolled)
                                 ? 'bg-primary text-white hover:bg-primary/90'
                                 : 'bg-white text-primary hover:bg-white/90'
                                 }`}
@@ -145,7 +160,12 @@ const Navbar = () => {
 
 
                     <button className="lg:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                        {isMobileMenuOpen ? <icons.X className={isScrolled ? 'text-primary' : 'text-white'} /> : <icons.Menu className={isScrolled ? 'text-primary' : 'text-white'} />}
+                        {isMobileMenuOpen ? (
+                            <icons.X className={(!isLandingPage || isScrolled) ? 'text-primary' : 'text-white'
+                            } />
+                        ) : (
+                            <icons.Menu className={(!isLandingPage || isScrolled) ? 'text-primary' : 'text-white'} />
+                        )}
                     </button>
                 </div>
             </div>

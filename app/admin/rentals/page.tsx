@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function RentalsAdminPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -81,24 +82,31 @@ export default function RentalsAdminPage() {
     };
 
     const handleDelete = async (id: number) => {
-        if (!confirm('Are you sure you want to delete this rental?')) return;
+        toast.promise(
+            new Promise(async (resolve, reject) => {
+                try {
+                    const response = await fetch(`/api/rentals/${id}`, {
+                        method: 'DELETE',
+                    });
+                    const result = await response.json();
 
-        try {
-            const response = await fetch(`/api/rentals/${id}`, {
-                method: 'DELETE',
-            });
-            const result = await response.json();
-
-            if (result.success) {
-                setRentals(rentals.filter(r => r.id !== id));
-                alert('Rental deleted successfully');
-            } else {
-                alert('Failed to delete rental');
+                    if (result.success) {
+                        setRentals(rentals.filter(r => r.id !== id));
+                        resolve(result);
+                    } else {
+                        reject(new Error('Failed to delete rental'));
+                    }
+                } catch (error) {
+                    console.error('Error deleting rental:', error);
+                    reject(error);
+                }
+            }),
+            {
+                loading: 'Deleting rental...',
+                success: 'Rental deleted successfully!',
+                error: 'Failed to delete rental',
             }
-        } catch (error) {
-            console.error('Error deleting rental:', error);
-            alert('Error deleting rental');
-        }
+        );
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -114,7 +122,7 @@ export default function RentalsAdminPage() {
                 if (formData.offer) offerObj = JSON.parse(formData.offer);
                 if (formData.additionalInfo) additionalInfoObj = JSON.parse(formData.additionalInfo);
             } catch (e) {
-                alert('Invalid JSON in Offer or Additional Info');
+                toast.error('Invalid JSON in Offer or Additional Info');
                 setLoading(false);
                 return;
             }
@@ -136,16 +144,16 @@ export default function RentalsAdminPage() {
             const result = await response.json();
 
             if (result.success) {
-                alert(isEditing ? 'Rental updated successfully!' : 'Rental created successfully!');
+                toast.success(isEditing ? 'Rental updated successfully!' : 'Rental created successfully!');
                 setShowModal(false);
                 resetForm();
                 fetchRentals();
             } else {
-                alert('Failed to save rental');
+                toast.error('Failed to save rental');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error saving rental');
+            toast.error('Error saving rental');
         } finally {
             setLoading(false);
         }
@@ -205,8 +213,8 @@ export default function RentalsAdminPage() {
                                     <td className="px-4 py-3 font-medium text-foreground">{rental.title}</td>
                                     <td className="px-4 py-3">
                                         <span className={`px-2 py-0.5 rounded text-xs capitalize ${rental.category === 'car' ? 'bg-blue-100 text-blue-800' :
-                                                rental.category === 'parking' ? 'bg-gray-100 text-gray-800' :
-                                                    'bg-purple-100 text-purple-800'
+                                            rental.category === 'parking' ? 'bg-gray-100 text-gray-800' :
+                                                'bg-purple-100 text-purple-800'
                                             }`}>
                                             {rental.category}
                                         </span>

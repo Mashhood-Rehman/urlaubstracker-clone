@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function ProductsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +14,7 @@ export default function ProductsPage() {
     const [selectedProductId, setSelectedProductId] = useState<string | number | null>(null);
 
     const [mainCategory, setMainCategory] = useState<'Hotel' | 'Flight' | 'Rental'>('Hotel');
+
     const [formData, setFormData] = useState<any>({
         // Hotel common fields
         title: '',
@@ -141,24 +143,31 @@ export default function ProductsPage() {
     };
 
     const handleDelete = async (product: any) => {
-        if (!confirm('Are you sure you want to delete this product?')) return;
+        toast.promise(
+            new Promise(async (resolve, reject) => {
+                try {
+                    const response = await fetch(`/api/products/${product.id}?category=${product.mainCategory}`, {
+                        method: 'DELETE',
+                    });
+                    const result = await response.json();
 
-        try {
-            const response = await fetch(`/api/products/${product.id}?category=${product.mainCategory}`, {
-                method: 'DELETE',
-            });
-            const result = await response.json();
-
-            if (result.success) {
-                setProducts(products.filter(p => p.id !== product.id));
-                alert('Product deleted successfully');
-            } else {
-                alert('Failed to delete product');
+                    if (result.success) {
+                        setProducts(products.filter(p => p.id !== product.id));
+                        resolve(result);
+                    } else {
+                        reject(new Error('Failed to delete product'));
+                    }
+                } catch (error) {
+                    console.error('Error deleting product:', error);
+                    reject(error);
+                }
+            }),
+            {
+                loading: 'Deleting product...',
+                success: 'Product deleted successfully!',
+                error: 'Failed to delete product',
             }
-        } catch (error) {
-            console.error('Error deleting product:', error);
-            alert('Error deleting product');
-        }
+        );
     };
 
 
@@ -238,7 +247,7 @@ export default function ProductsPage() {
             const result = await response.json();
 
             if (result.success) {
-                alert(isEditing ? 'Product updated successfully!' : 'Product created successfully!');
+                toast.success(isEditing ? 'Product updated successfully!' : 'Product created successfully!');
                 setShowModal(false);
                 resetForm();
 
@@ -249,11 +258,11 @@ export default function ProductsPage() {
 
             } else {
                 console.log('Failed to save product error frontend:', result);
-                alert('Failed to save product');
+                toast.error('Failed to save product');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error saving product');
+            toast.error('Error saving product');
         } finally {
             setLoading(false);
         }
@@ -268,56 +277,58 @@ export default function ProductsPage() {
             </div>
 
             {/* Actions Bar */}
-            <div className="flex items-center justify-between mb-4 gap-3">
-                <div className="flex items-center gap-3 flex-1">
-                    <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 max-w-md">
-                        <Search className="w-4 h-4 text-gray-400" />
+            {/* Actions Bar */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-4 gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 sm:max-w-md">
+                        <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
                         <input
                             type="text"
                             placeholder="Search by name, city, country..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="bg-transparent border-none outline-none text-sm flex-1"
+                            className="bg-transparent border-none outline-none text-sm flex-1 min-w-0"
                         />
                     </div>
-                    <select
-                        value={categoryFilter}
-                        onChange={(e) => setCategoryFilter(e.target.value)}
-                        className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:border-primary"
-                    >
-                        <option value="All">ALL</option>
-                        <option value="Hotel">Hotels</option>
-                        <option value="Flight">Flight</option>
-                        <option value="Rental">Rentals</option>
-                    </select>
-                </div>
-                <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <span>Show:</span>
+                    <div className="flex gap-3">
                         <select
-                            value={itemsPerPage}
-                            onChange={(e) => {
-                                setItemsPerPage(Number(e.target.value));
-                                setCurrentPage(1);
-                            }}
-                            className="bg-white border border-gray-200 rounded px-2 py-1 outline-none font-medium text-gray-700"
+                            value={categoryFilter}
+                            onChange={(e) => setCategoryFilter(e.target.value)}
+                            className="flex-1 sm:flex-none px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:border-primary"
                         >
-                            <option value={10}>10</option>
-                            <option value={20}>20</option>
-                            <option value={50}>50</option>
+                            <option value="All">ALL</option>
+                            <option value="Hotel">Hotels</option>
+                            <option value="Flight">Flight</option>
+                            <option value="Rental">Rentals</option>
                         </select>
+                        <div className="flex items-center gap-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-lg px-3 py-2">
+                            <span className="hidden sm:inline">Show:</span>
+                            <select
+                                value={itemsPerPage}
+                                onChange={(e) => {
+                                    setItemsPerPage(Number(e.target.value));
+                                    setCurrentPage(1);
+                                }}
+                                className="bg-transparent border-none outline-none font-medium text-gray-700"
+                            >
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                                <option value={50}>50</option>
+                            </select>
+                        </div>
                     </div>
-                    <button
-                        onClick={() => {
-                            resetForm();
-                            setShowModal(true);
-                        }}
-                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
-                    >
-                        <Plus className="w-4 h-4" />
-                        Add Product
-                    </button>
                 </div>
+                <button
+                    onClick={() => {
+                        resetForm();
+                        setShowModal(true);
+                    }}
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium whitespace-nowrap"
+                >
+                    <Plus className="w-4 h-4" />
+                    <span className="hidden sm:inline">Add Product</span>
+                    <span className="sm:hidden">Add</span>
+                </button>
             </div>
 
             {/* Table */}
@@ -436,30 +447,42 @@ export default function ProductsPage() {
 
             {/* Pagination Controls */}
             {!isFetching && filteredProducts.length > 0 && (
-                <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-                    <div className="text-sm text-gray-500 order-2 sm:order-1">
-                        Showing <span className="font-medium">{startIndex + 1}</span> to <span className="font-medium">{Math.min(startIndex + itemsPerPage, filteredProducts.length)}</span> of <span className="font-medium">{filteredProducts.length}</span> results
+                <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-4 py-3 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <div className="text-xs sm:text-sm text-gray-500 order-2 sm:order-1">
+                        Showing <span className="font-medium">{startIndex + 1}</span> to{' '}
+                        <span className="font-medium">{Math.min(startIndex + itemsPerPage, filteredProducts.length)}</span> of{' '}
+                        <span className="font-medium">{filteredProducts.length}</span> results
                     </div>
-                    <div className="flex items-center gap-2 order-1 sm:order-2">
+                    <div className="flex items-center gap-1 sm:gap-2 order-1 sm:order-2">
                         <button
                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                             disabled={currentPage === 1}
-                            className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-2 sm:px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
-                            Previous
+                            <span className="hidden sm:inline">Previous</span>
+                            <span className="sm:hidden">Prev</span>
                         </button>
-                        <div className="hidden sm:flex items-center gap-1">
+
+                        {/* Page Numbers - Hidden on very small screens, show 3 on mobile, all on desktop */}
+                        <div className="flex items-center gap-1">
                             {Array.from({ length: totalPages }, (_, i) => i + 1)
                                 .filter(page => {
+                                    // On mobile (< 640px), show first, current-1, current, current+1, last
+                                    if (window.innerWidth < 640) {
+                                        return page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1;
+                                    }
+                                    // On desktop, show all if <= 7, otherwise show first, last, and 2 around current
                                     if (totalPages <= 7) return true;
                                     return page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1;
                                 })
                                 .map((page, i, array) => (
-                                    <div key={page}>
-                                        {i > 0 && array[i - 1] !== page - 1 && <span className="px-2 text-gray-400">...</span>}
+                                    <div key={page} className="flex items-center">
+                                        {i > 0 && array[i - 1] !== page - 1 && (
+                                            <span className="px-1 sm:px-2 text-gray-400 text-xs sm:text-sm">...</span>
+                                        )}
                                         <button
                                             onClick={() => setCurrentPage(page)}
-                                            className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${currentPage === page
+                                            className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-xs sm:text-sm font-medium transition-colors ${currentPage === page
                                                 ? 'bg-primary text-white'
                                                 : 'text-gray-700 hover:bg-gray-100'
                                                 }`}
@@ -469,17 +492,17 @@ export default function ProductsPage() {
                                     </div>
                                 ))}
                         </div>
+
                         <button
                             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                             disabled={currentPage === totalPages || totalPages === 0}
-                            className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-2 sm:px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             Next
                         </button>
                     </div>
                 </div>
             )}
-
             {/* Add Product Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">

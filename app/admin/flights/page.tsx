@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function FlightsAdminPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -100,24 +101,31 @@ export default function FlightsAdminPage() {
     };
 
     const handleDelete = async (id: number) => {
-        if (!confirm('Are you sure you want to delete this flight?')) return;
+        toast.promise(
+            new Promise(async (resolve, reject) => {
+                try {
+                    const response = await fetch(`/api/flights/${id}`, {
+                        method: 'DELETE',
+                    });
+                    const result = await response.json();
 
-        try {
-            const response = await fetch(`/api/flights/${id}`, {
-                method: 'DELETE',
-            });
-            const result = await response.json();
-
-            if (result.success) {
-                setFlights(flights.filter(f => f.id !== id));
-                alert('Flight deleted successfully');
-            } else {
-                alert('Failed to delete flight');
+                    if (result.success) {
+                        setFlights(flights.filter(f => f.id !== id));
+                        resolve(result);
+                    } else {
+                        reject(new Error('Failed to delete flight'));
+                    }
+                } catch (error) {
+                    console.error('Error deleting flight:', error);
+                    reject(error);
+                }
+            }),
+            {
+                loading: 'Deleting flight...',
+                success: 'Flight deleted successfully!',
+                error: 'Failed to delete flight',
             }
-        } catch (error) {
-            console.error('Error deleting flight:', error);
-            alert('Error deleting flight');
-        }
+        );
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -134,7 +142,7 @@ export default function FlightsAdminPage() {
                 if (formData.extras) extrasObj = JSON.parse(formData.extras);
                 if (formData.tips) tipsObj = JSON.parse(formData.tips);
             } catch (e) {
-                alert('Invalid JSON in Extras or Tips');
+                toast.error('Invalid JSON in Extras or Tips');
                 setLoading(false);
                 return;
             }
@@ -158,16 +166,16 @@ export default function FlightsAdminPage() {
             const result = await response.json();
 
             if (result.success) {
-                alert(isEditing ? 'Flight updated successfully!' : 'Flight created successfully!');
+                toast.success(isEditing ? 'Flight updated successfully!' : 'Flight created successfully!');
                 setShowModal(false);
                 resetForm();
                 fetchFlights();
             } else {
-                alert('Failed to save flight');
+                toast.error('Failed to save flight');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error saving flight');
+            toast.error('Error saving flight');
         } finally {
             setLoading(false);
         }

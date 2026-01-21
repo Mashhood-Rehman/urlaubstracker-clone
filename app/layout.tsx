@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import type { Metadata } from "next";
 import "./globals.css";
 import ConditionalNavbar from "./components/ConditionalNavbar";
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body className="antialiased font-poppins selection:bg-secondary selection:text-white">
+        <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
         <ConditionalNavbar />
         {children}
       </body>

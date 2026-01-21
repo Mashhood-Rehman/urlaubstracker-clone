@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Search, Plus, Edit, Trash2, X, Eye, FileText, Check, Globe, Upload, Image as ImageIcon } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function BlogsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -86,18 +87,27 @@ export default function BlogsPage() {
     };
 
     const handleDelete = async (id: number) => {
-        if (!confirm('Are you sure you want to delete this blog?')) return;
-
-        try {
-            const res = await fetch(`/api/blogs/${id}`, { method: 'DELETE' });
-            if (res.ok) {
-                setBlogs(blogs.filter(b => b.id !== id));
-            } else {
-                alert('Failed to delete blog');
+        toast.promise(
+            new Promise(async (resolve, reject) => {
+                try {
+                    const res = await fetch(`/api/blogs/${id}`, { method: 'DELETE' });
+                    if (res.ok) {
+                        setBlogs(blogs.filter(b => b.id !== id));
+                        resolve(res);
+                    } else {
+                        reject(new Error('Failed to delete blog'));
+                    }
+                } catch (error) {
+                    console.error('Error deleting blog:', error);
+                    reject(error);
+                }
+            }),
+            {
+                loading: 'Deleting blog...',
+                success: 'Blog deleted successfully!',
+                error: 'Failed to delete blog',
             }
-        } catch (error) {
-            console.error('Error deleting blog:', error);
-        }
+        );
     };
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,12 +126,13 @@ export default function BlogsPage() {
             const data = await res.json();
             if (data.success) {
                 setFormData(prev => ({ ...prev, mainImage: data.url }));
+                toast.success('Image uploaded successfully!');
             } else {
-                alert('Upload failed: ' + data.error);
+                toast.error('Upload failed: ' + data.error);
             }
         } catch (error) {
             console.error('Error uploading:', error);
-            alert('Upload error');
+            toast.error('Upload error');
         } finally {
             setUploading(false);
         }
@@ -145,15 +156,17 @@ export default function BlogsPage() {
             });
 
             if (res.ok) {
+                toast.success(isEditing ? 'Blog updated successfully!' : 'Blog created successfully!');
                 setShowModal(false);
                 resetForm();
                 fetchBlogs();
             } else {
                 const error = await res.json();
-                alert(error.error || 'Failed to save blog');
+                toast.error(error.error || 'Failed to save blog');
             }
         } catch (error) {
             console.error('Error saving blog:', error);
+            toast.error('Error saving blog');
         } finally {
             setLoading(false);
         }
