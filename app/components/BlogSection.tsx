@@ -24,7 +24,6 @@ const BlogSection = () => {
             try {
                 const res = await fetch('/api/blogs?published=true');
                 const data = await res.json();
-                // Take only the latest 3 for the landing page
                 setBlogs(Array.isArray(data) ? data.slice(0, 3) : []);
             } catch (error) {
                 console.error('Error fetching blogs:', error);

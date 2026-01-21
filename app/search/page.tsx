@@ -27,20 +27,40 @@ export default async function SearchPage({
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     };
 
-    // Construct query
-    const where: any = {};
+    // New Logic: If searching for a specific hotel, find its city and show all hotels in that city
+    let hotels = [];
     if (location) {
-        where.OR = [
-            { city: { contains: location, mode: 'insensitive' } },
-            { country: { contains: location, mode: 'insensitive' } },
-            { title: { contains: location, mode: 'insensitive' } },
-        ];
-    }
+        const specificHotel = await prisma.hotel.findFirst({
+            where: {
+                title: { contains: location, mode: 'insensitive' },
+            },
+        });
 
-    const hotels = await prisma.hotel.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-    });
+        if (specificHotel) {
+            hotels = await prisma.hotel.findMany({
+                where: {
+                    city: { equals: specificHotel.city, mode: 'insensitive' },
+                },
+                orderBy: { createdAt: 'desc' },
+            });
+        } else {
+            // Fallback to general search
+            hotels = await prisma.hotel.findMany({
+                where: {
+                    OR: [
+                        { city: { contains: location, mode: 'insensitive' } },
+                        { country: { contains: location, mode: 'insensitive' } },
+                        { title: { contains: location, mode: 'insensitive' } },
+                    ],
+                },
+                orderBy: { createdAt: 'desc' },
+            });
+        }
+    } else {
+        hotels = await prisma.hotel.findMany({
+            orderBy: { createdAt: 'desc' },
+        });
+    }
 
     return (
         <main className="min-h-screen bg-gray-50">

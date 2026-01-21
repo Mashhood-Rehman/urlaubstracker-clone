@@ -28,15 +28,33 @@ function FlightSearchResultsContent() {
                 const res = await fetch('/api/flights');
                 const data = await res.json();
                 if (data.success) {
-                    let filtered = data.data;
+                    const allFlights = data.data;
+
+                    // Logic: If 'from' or 'to' matches a flight's title, extract the city from that flight
+                    let effectiveFrom = from.toLowerCase();
+                    let effectiveTo = to.toLowerCase();
+
+                    if (from !== 'any') {
+                        const fromMatch = allFlights.find((f: any) => f.title.toLowerCase() === from.toLowerCase());
+                        if (fromMatch) effectiveFrom = fromMatch.departureCity.toLowerCase();
+                    }
+
+                    if (to !== 'any') {
+                        const toMatch = allFlights.find((f: any) => f.title.toLowerCase() === to.toLowerCase());
+                        if (toMatch) effectiveTo = toMatch.arrivalCity.toLowerCase();
+                    }
+
+                    let filtered = allFlights;
                     if (from !== 'any') {
                         filtered = filtered.filter((f: any) =>
-                            f.departureCity.toLowerCase().includes(from.toLowerCase())
+                            f.departureCity.toLowerCase().includes(effectiveFrom) ||
+                            f.title.toLowerCase().includes(from.toLowerCase())
                         );
                     }
                     if (to !== 'any') {
                         filtered = filtered.filter((f: any) =>
-                            f.arrivalCity.toLowerCase().includes(to.toLowerCase())
+                            f.arrivalCity.toLowerCase().includes(effectiveTo) ||
+                            f.title.toLowerCase().includes(to.toLowerCase())
                         );
                     }
                     setFlights(filtered);

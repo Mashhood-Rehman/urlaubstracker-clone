@@ -20,7 +20,61 @@ export async function GET(
             );
         }
 
-        return NextResponse.json({ success: true, data: flight });
+        // Find country/hotels for departure and arrival cities
+        const [departureInfo, arrivalInfo] = await Promise.all([
+            prisma.hotel.findFirst({
+                where: { city: { equals: flight.departureCity, mode: 'insensitive' } },
+                select: { country: true }
+            }),
+            prisma.hotel.findFirst({
+                where: { city: { equals: flight.arrivalCity, mode: 'insensitive' } },
+                select: { country: true }
+            })
+        ]);
+
+        const [departureHotels, arrivalHotels, flightsToArrival, flightsFromDeparture] = await Promise.all([
+            prisma.hotel.findMany({
+                where: { city: { equals: flight.departureCity, mode: 'insensitive' } },
+                take: 4,
+                orderBy: { rating: 'desc' }
+            }),
+            prisma.hotel.findMany({
+                where: { city: { equals: flight.arrivalCity, mode: 'insensitive' } },
+                take: 4,
+                orderBy: { rating: 'desc' }
+            }),
+            prisma.flight.findMany({
+                where: {
+                    arrivalCity: { equals: flight.arrivalCity, mode: 'insensitive' },
+                    id: { not: flightId }
+                },
+                take: 4,
+                orderBy: { createdAt: 'desc' }
+            }),
+            prisma.flight.findMany({
+                where: {
+                    departureCity: { equals: flight.departureCity, mode: 'insensitive' },
+                    id: { not: flightId }
+                },
+                take: 4,
+                orderBy: { createdAt: 'desc' }
+            })
+        ]);
+
+        return NextResponse.json({
+            success: true,
+            data: {
+                ...flight,
+                departureCountry: departureInfo?.country || null,
+                arrivalCountry: arrivalInfo?.country || null,
+                relatedData: {
+                    departureHotels,
+                    arrivalHotels,
+                    flightsToArrival,
+                    flightsFromDeparture
+                }
+            }
+        });
     } catch (error: any) {
         return NextResponse.json(
             { success: false, error: error.message },

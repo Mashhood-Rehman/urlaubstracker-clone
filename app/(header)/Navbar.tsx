@@ -18,7 +18,6 @@ const Navbar = () => {
         };
         window.addEventListener('scroll', handleScroll);
 
-        // Check authentication status
         const checkAuth = async () => {
             try {
                 const res = await fetch('/api/auth/session');
