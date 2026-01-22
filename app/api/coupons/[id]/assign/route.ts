@@ -9,8 +9,7 @@ export async function POST(
     const { id } = await params;
     const couponId = parseInt(id);
     const body = await request.json();
-
-    const { flights = [], hotels = [], rentals = [] } = body;
+    const { flights, hotels, rentals } = body;
 
     const existingCoupon = await prisma.coupon.findUnique({
       where: { id: couponId },
@@ -23,27 +22,33 @@ export async function POST(
       );
     }
 
-    // Replace coupon entity IDs with the new selections (not merge)
-    const updatedFlightIds = flights;
-    const updatedHotelIds = hotels;
-    const updatedRentalIds = rentals;
+    // Build update data dynamically based on what's in the body
+    const updateData: any = {};
+
+    if (flights !== undefined) {
+      updateData.flightIds = flights;
+      updateData.flights = {
+        set: flights.map((id: number) => ({ id })),
+      };
+    }
+
+    if (hotels !== undefined) {
+      updateData.hotelIds = hotels;
+      updateData.hotels = {
+        set: hotels.map((id: number) => ({ id })),
+      };
+    }
+
+    if (rentals !== undefined) {
+      updateData.rentalIds = rentals;
+      updateData.rentals = {
+        set: rentals.map((id: number) => ({ id })),
+      };
+    }
 
     const updatedCoupon = await prisma.coupon.update({
       where: { id: couponId },
-      data: {
-        flightIds: updatedFlightIds,
-        hotelIds: updatedHotelIds,
-        rentalIds: updatedRentalIds,
-        flights: {
-          set: updatedFlightIds.map((id: number) => ({ id })),
-        },
-        hotels: {
-          set: updatedHotelIds.map((id: number) => ({ id })),
-        },
-        rentals: {
-          set: updatedRentalIds.map((id: number) => ({ id })),
-        },
-      },
+      data: updateData,
       include: {
         flights: true,
         hotels: true,

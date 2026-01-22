@@ -29,12 +29,12 @@ export default async function SearchPage({
 
     // Filter hotels by coupon validity if dates are specified
     let validHotelIds: number[] = [];
-    
+
     if (startDate && endDate) {
         try {
             const [startYear, startMonth, startDay] = startDate.split('-').map(Number);
             const [endYear, endMonth, endDay] = endDate.split('-').map(Number);
-            
+
             const searchStartDate = new Date(startYear, startMonth - 1, startDay);
             const searchEndDate = new Date(endYear, endMonth - 1, endDay);
 
@@ -46,7 +46,7 @@ export default async function SearchPage({
             const validCoupons = allCoupons.filter((coupon) => {
                 const validFrom = new Date(coupon.validFrom);
                 const validUntil = new Date(coupon.validUntil);
-                
+
                 validFrom.setHours(0, 0, 0, 0);
                 validUntil.setHours(23, 59, 59, 999);
                 searchStartDate.setHours(0, 0, 0, 0);
@@ -81,7 +81,7 @@ export default async function SearchPage({
             hotels = await prisma.hotel.findMany({
                 where: {
                     city: { equals: specificHotel.city, mode: 'insensitive' },
-                    ...(validHotelIds.length > 0 && { id: { in: validHotelIds } }),
+                    ...(startDate && endDate && { id: { in: validHotelIds } }),
                 },
                 orderBy: { createdAt: 'desc' },
             });
@@ -95,7 +95,7 @@ export default async function SearchPage({
                         { title: { contains: location, mode: 'insensitive' } },
                         { title_fr: { contains: location, mode: 'insensitive' } },
                     ],
-                    ...(validHotelIds.length > 0 && { id: { in: validHotelIds } }),
+                    ...(startDate && endDate && { id: { in: validHotelIds } }),
                 },
                 orderBy: { createdAt: 'desc' },
             });
