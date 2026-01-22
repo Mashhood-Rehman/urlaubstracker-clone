@@ -24,7 +24,6 @@ export async function createCoupon(data: CouponInput) {
         description: data.description,
         discountValue: data.discountValue,
         maxUses: data.maxUses,
-        minPurchaseAmount: data.minPurchaseAmount,
         validFrom: new Date(data.validFrom),
         validUntil: new Date(data.validUntil),
         flightIds: data.flightIds || [],
@@ -131,16 +130,6 @@ export async function validateCoupon(code: string, purchaseAmount?: number) {
       return { valid: false, error: "Coupon usage limit reached" };
     }
 
-    if (
-      coupon.minPurchaseAmount &&
-      purchaseAmount &&
-      purchaseAmount < coupon.minPurchaseAmount
-    ) {
-      return {
-        valid: false,
-        error: `Minimum purchase amount of ${coupon.minPurchaseAmount} required`,
-      };
-    }
 
     return {
       valid: true,
@@ -331,7 +320,7 @@ export const getValidCouponsForDateRange = (
 
 export const parseDateString = (dateStr: string): Date | null => {
   if (!dateStr || dateStr === 'any') return null;
-  
+
   const [year, month, day] = dateStr.split('-').map(Number);
   const date = new Date(year, month - 1, day);
   date.setHours(0, 0, 0, 0);
