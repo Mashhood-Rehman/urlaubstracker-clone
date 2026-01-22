@@ -57,6 +57,29 @@ function FlightSearchResultsContent() {
                             f.title.toLowerCase().includes(to.toLowerCase())
                         );
                     }
+
+                    // Filter by coupon validity if dates are specified
+                    if (startDate !== 'any' && endDate !== 'any') {
+                        try {
+                            const couponRes = await fetch(
+                                `/api/coupons/validate-date-range?entityType=flights&startDate=${startDate}&endDate=${endDate}`
+                            );
+                            const couponData = await couponRes.json();
+                            
+                            if (couponData.validEntityIds && couponData.validEntityIds.length > 0) {
+                                // Only show flights that have valid coupons
+                                filtered = filtered.filter((f: any) =>
+                                  couponData.validEntityIds.includes(f.id)
+                                );
+                            } else {
+                                // No valid coupons for this date range
+                                filtered = [];
+                            }
+                        } catch (error) {
+                            console.error('Error validating coupons:', error);
+                        }
+                    }
+
                     setFlights(filtered);
                 }
             } catch (error) {

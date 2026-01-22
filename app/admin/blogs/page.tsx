@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Search, Plus, Edit, Trash2, X, Eye, FileText, Check, Globe, Upload, Image as ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
+import ImageUpload from '../components/ImageUpload';
 
 export default function BlogsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -18,6 +19,7 @@ export default function BlogsPage() {
         content: '',
         excerpt: '',
         mainImage: '',
+        images: [] as string[],
         author: 'Admin',
         category: 'Travel',
         tags: '',
@@ -66,6 +68,7 @@ export default function BlogsPage() {
             content: '',
             excerpt: '',
             mainImage: '',
+            images: [],
             author: 'Admin',
             category: 'Travel',
             tags: '',
@@ -80,6 +83,7 @@ export default function BlogsPage() {
         setFormData({
             ...blog,
             tags: Array.isArray(blog.tags) ? blog.tags.join(', ') : (blog.tags || ''),
+            images: blog.images || [],
         });
         setSelectedBlogId(blog.id);
         setIsEditing(true);
@@ -442,6 +446,16 @@ export default function BlogsPage() {
                                                 value={formData.author}
                                                 onChange={handleInputChange}
                                                 className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-[11px] focus:outline-none focus:border-primary transition-colors"
+                                            />
+                                        </div>
+
+                                        {/* Multiple Images Upload */}
+                                        <div className="pt-2">
+                                            <ImageUpload
+                                                images={formData.images}
+                                                onImagesChange={(images) => setFormData({ ...formData, images })}
+                                                maxImages={10}
+                                                label="Additional Blog Images"
                                             />
                                         </div>
                                     </div>

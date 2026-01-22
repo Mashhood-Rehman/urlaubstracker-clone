@@ -27,12 +27,53 @@ export default async function SearchPage({
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     };
 
+    // Filter hotels by coupon validity if dates are specified
+    let validHotelIds: number[] = [];
+    
+    if (startDate && endDate) {
+        try {
+            const [startYear, startMonth, startDay] = startDate.split('-').map(Number);
+            const [endYear, endMonth, endDay] = endDate.split('-').map(Number);
+            
+            const searchStartDate = new Date(startYear, startMonth - 1, startDay);
+            const searchEndDate = new Date(endYear, endMonth - 1, endDay);
+
+            const allCoupons = await prisma.coupon.findMany({
+                where: { isActive: true },
+            });
+
+            // Filter coupons that are valid for the date range
+            const validCoupons = allCoupons.filter((coupon) => {
+                const validFrom = new Date(coupon.validFrom);
+                const validUntil = new Date(coupon.validUntil);
+                
+                validFrom.setHours(0, 0, 0, 0);
+                validUntil.setHours(23, 59, 59, 999);
+                searchStartDate.setHours(0, 0, 0, 0);
+                searchEndDate.setHours(23, 59, 59, 999);
+
+                return validFrom <= searchStartDate && validUntil >= searchEndDate;
+            });
+
+            // Get hotel IDs that have valid coupons
+            validHotelIds = validCoupons
+                .flatMap((c) => c.hotelIds || [])
+                .filter((id): id is number => id !== null && id !== undefined);
+            validHotelIds = Array.from(new Set(validHotelIds));
+        } catch (error) {
+            console.error('Error validating coupons:', error);
+        }
+    }
+
     // New Logic: If searching for a specific hotel, find its city and show all hotels in that city
     let hotels = [];
     if (location) {
         const specificHotel = await prisma.hotel.findFirst({
             where: {
-                title: { contains: location, mode: 'insensitive' },
+                OR: [
+                    { title: { contains: location, mode: 'insensitive' } },
+                    { title_fr: { contains: location, mode: 'insensitive' } },
+                ]
             },
         });
 
@@ -40,6 +81,7 @@ export default async function SearchPage({
             hotels = await prisma.hotel.findMany({
                 where: {
                     city: { equals: specificHotel.city, mode: 'insensitive' },
+                    ...(validHotelIds.length > 0 && { id: { in: validHotelIds } }),
                 },
                 orderBy: { createdAt: 'desc' },
             });
@@ -51,13 +93,18 @@ export default async function SearchPage({
                         { city: { contains: location, mode: 'insensitive' } },
                         { country: { contains: location, mode: 'insensitive' } },
                         { title: { contains: location, mode: 'insensitive' } },
+                        { title_fr: { contains: location, mode: 'insensitive' } },
                     ],
+                    ...(validHotelIds.length > 0 && { id: { in: validHotelIds } }),
                 },
                 orderBy: { createdAt: 'desc' },
             });
         }
     } else {
         hotels = await prisma.hotel.findMany({
+            where: {
+                ...(validHotelIds.length > 0 && { id: { in: validHotelIds } }),
+            },
             orderBy: { createdAt: 'desc' },
         });
     }
@@ -102,14 +149,21 @@ export default async function SearchPage({
                     {hotels.map((hotel: any) => (
                         <Link href={`/hotels/${hotel.id}`} key={hotel.id} className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all">
                             <div className="aspect-video bg-gray-200 relative overflow-hidden">
-                                {/* Placeholder for image since we don't have images easily available yet, using a colored block or first image if available */}
-                                <div className="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-100">
-                                    <icons.Hotel className="w-8 h-8 opacity-20" />
-                                </div>
+                                {hotel.images && hotel.images.length > 0 ? (
+                                    <img
+                                        src={hotel.images[0]}
+                                        alt={hotel.title_fr || hotel.title}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                ) : (
+                                    <div className="absolute inset-0 flex items-center justify-center text-gray-400 bg-gradient-to-br from-gray-100 to-gray-200">
+                                        <icons.Hotel className="w-8 h-8 opacity-30" />
+                                    </div>
+                                )}
                             </div>
                             <div className="p-4">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-bold text-lg text-gray-900 line-clamp-1 group-hover:text-primary transition-colors">{hotel.title}</h3>
+                                    <h3 className="font-bold text-lg text-gray-900 line-clamp-1 group-hover:text-primary transition-colors">{hotel.title_fr || hotel.title}</h3>
                                     {hotel.rating && (
                                         <div className="flex items-center gap-1 text-sm font-medium">
                                             <span className="text-yellow-500">★</span>

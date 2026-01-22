@@ -34,6 +34,29 @@ function RentalSearchResultsContent() {
                             r.mainDescription.toLowerCase().includes(location.toLowerCase())
                         );
                     }
+
+                    // Filter by coupon validity if dates are specified
+                    if (startDate !== 'any' && endDate !== 'any') {
+                        try {
+                            const couponRes = await fetch(
+                                `/api/coupons/validate-date-range?entityType=rentals&startDate=${startDate}&endDate=${endDate}`
+                            );
+                            const couponData = await couponRes.json();
+                            
+                            if (couponData.validEntityIds && couponData.validEntityIds.length > 0) {
+                                // Only show rentals that have valid coupons
+                                filtered = filtered.filter((r: any) =>
+                                  couponData.validEntityIds.includes(r.id)
+                                );
+                            } else {
+                                // No valid coupons for this date range
+                                filtered = [];
+                            }
+                        } catch (error) {
+                            console.error('Error validating coupons:', error);
+                        }
+                    }
+
                     setRentals(filtered);
                 }
             } catch (error) {

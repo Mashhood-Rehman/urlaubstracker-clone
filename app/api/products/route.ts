@@ -11,21 +11,39 @@ export async function POST(request: NextRequest) {
         if (mainCategory === 'Flight') {
             product = await prisma.flight.create({
                 data: {
-                    ...data,
-                    description: data.desc || '',
+                    title: data.title,
+                    description: data.description || data.desc || '',
+                    airline: data.airline,
+                    departureCity: data.departureCity,
+                    arrivalCity: data.arrivalCity,
+                    duration: data.duration,
                     price: parseFloat(data.price),
+                    currency: data.currency || 'EUR',
+                    flightClass: data.flightClass || 'Economy',
+                    baggage: data.baggage,
+                    services: data.services || [],
+                    whyAdore: data.whyAdore || [],
                     flexibleDates: Boolean(data.flexibleDates),
+                    extras: data.extras || null,
+                    tips: data.tips || null,
+                    offerLink: data.offerLink,
+                    images: data.images || [],
                 },
             });
         } else if (mainCategory === 'Rental') {
             product = await prisma.rental.create({
                 data: {
-                    ...data,
+                    category: data.category,
                     title: data.title || data.mainHeading || '',
                     description: data.description || data.mainDescription || '',
+                    mainHeading: data.mainHeading,
+                    mainDescription: data.mainDescription,
                     offer: data.offer || {},
-                    additionalInfo: data.additionalInfo || {},
+                    whySuperDeal: data.whySuperDeal,
                     thingsToDo: data.thingsToDo || [],
+                    additionalInfo: data.additionalInfo || {},
+                    ecoTip: data.ecoTip,
+                    images: data.images || [],
                 },
             });
         } else {
@@ -48,6 +66,7 @@ export async function POST(request: NextRequest) {
                     check_in: data.check_in,
                     check_out: data.check_out,
                     notes: data.notes || null,
+                    images: data.images || [],
                 },
             });
         }

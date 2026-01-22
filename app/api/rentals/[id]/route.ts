@@ -41,7 +41,19 @@ export async function PUT(
 
         const updatedRental = await prisma.rental.update({
             where: { id: rentalId },
-            data: body,
+            data: {
+                category: body.category,
+                title: body.title,
+                description: body.description,
+                mainHeading: body.mainHeading,
+                mainDescription: body.mainDescription,
+                offer: body.offer,
+                whySuperDeal: body.whySuperDeal,
+                thingsToDo: body.thingsToDo,
+                additionalInfo: body.additionalInfo,
+                ecoTip: body.ecoTip,
+                images: body.images || [],
+            },
         });
 
         return NextResponse.json({ success: true, data: updatedRental });

@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
                 where: {
                     OR: [
                         { title: { contains: query, mode: 'insensitive' } },
+                        { title_fr: { contains: query, mode: 'insensitive' } },
                         { city: { contains: query, mode: 'insensitive' } },
                         { country: { contains: query, mode: 'insensitive' } },
                     ],
@@ -27,6 +28,7 @@ export async function GET(request: NextRequest) {
                 select: {
                     id: true,
                     title: true,
+                    title_fr: true,
                     city: true,
                     country: true,
                 },
@@ -34,9 +36,13 @@ export async function GET(request: NextRequest) {
 
             suggestions = hotels.map((hotel: any) => ({
                 id: hotel.id,
-                text: hotel.title,
+                text: hotel.title_fr || hotel.title || hotel.city,
                 type: 'hotel',
-                data: hotel
+                data: {
+                    title: hotel.title_fr || hotel.title,
+                    city: hotel.city,
+                    country: hotel.country,
+                }
             }));
         } else if (type === 'flights') {
             // Search for flights matching the query in title, departure, or arrival cities

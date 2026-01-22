@@ -1,0 +1,328 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { X, Loader, Search, Check } from 'lucide-react';
+
+interface Entity {
+  id: number;
+  title?: string;
+  title_fr?: string;
+  mainHeading?: string;
+  name?: string;
+  code?: string;
+}
+
+interface AssignEntitiesModalProps {
+  couponId: number;
+  onClose: () => void;
+  onSubmit: () => void;
+}
+
+export default function AssignEntitiesModal({
+  couponId,
+  onClose,
+  onSubmit,
+}: AssignEntitiesModalProps) {
+  const [entityType, setEntityType] = useState<'flights' | 'hotels' | 'rentals'>('flights');
+  const [entities, setEntities] = useState<Entity[]>([]);
+  const [selectedEntities, setSelectedEntities] = useState<Set<number>>(new Set());
+  const [assignedEntityIds, setAssignedEntityIds] = useState<Set<number>>(new Set());
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [assigning, setAssigning] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  useEffect(() => {
+    fetchCouponData();
+  }, [couponId]);
+
+  useEffect(() => {
+    fetchEntities();
+  }, [entityType]);
+
+  const fetchCouponData = async () => {
+    try {
+      const response = await fetch(`/api/coupons/${couponId}`);
+      const data = await response.json();
+      const coupon = data.coupon || data;
+
+      // Set already assigned entity IDs based on entity type
+      if (entityType === 'flights' && coupon.flightIds) {
+        setAssignedEntityIds(new Set(coupon.flightIds));
+        setSelectedEntities(new Set(coupon.flightIds));
+      } else if (entityType === 'hotels' && coupon.hotelIds) {
+        setAssignedEntityIds(new Set(coupon.hotelIds));
+        setSelectedEntities(new Set(coupon.hotelIds));
+      } else if (entityType === 'rentals' && coupon.rentalIds) {
+        setAssignedEntityIds(new Set(coupon.rentalIds));
+        setSelectedEntities(new Set(coupon.rentalIds));
+      }
+    } catch (err) {
+      console.error('Failed to fetch coupon data:', err);
+    }
+  };
+
+  const fetchEntities = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const response = await fetch(`/api/${entityType}?limit=1000`);
+      const data = await response.json();
+      // Handle different response structures
+      let items = [];
+      if (entityType === 'hotels' || entityType === 'flights' || entityType === 'rentals') {
+        items = data.data || data[entityType] || [];
+      } else {
+        items = data[entityType] || data.data || [];
+      }
+      setEntities(items);
+      
+      // Fetch and update assigned entities when switching tabs
+      await fetchCouponData();
+    } catch (err) {
+      setError(`Failed to fetch ${entityType}`);
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSelectEntity = (id: number) => {
+    const newSelected = new Set(selectedEntities);
+    if (newSelected.has(id)) {
+      newSelected.delete(id);
+    } else {
+      newSelected.add(id);
+    }
+    setSelectedEntities(newSelected);
+  };
+
+  const handleSelectAll = () => {
+    if (selectedEntities.size === filteredEntities.length) {
+      setSelectedEntities(new Set());
+    } else {
+      setSelectedEntities(new Set(filteredEntities.map((e) => e.id)));
+    }
+  };
+
+  const handleAssign = async () => {
+    if (selectedEntities.size === 0) {
+      setError('Please select at least one entity');
+      return;
+    }
+
+    try {
+      setAssigning(true);
+      setError('');
+      setSuccess('');
+
+      const payload = {
+        [entityType]: Array.from(selectedEntities),
+      };
+
+      const response = await fetch(`/api/coupons/${couponId}/assign`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to assign entities');
+      }
+
+      setSuccess(`Successfully assigned ${selectedEntities.size} ${entityType} to coupon`);
+      setTimeout(() => {
+        onSubmit();
+        onClose();
+      }, 1500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setAssigning(false);
+    }
+  };
+
+  const filteredEntities = entities.filter((entity) => {
+    let searchable = '';
+    if (entityType === 'hotels') {
+      searchable = ((entity as any).title_fr || (entity as any).title || '').toLowerCase();
+    } else if (entityType === 'rentals') {
+      searchable = ((entity as any).mainHeading || (entity as any).title || '').toLowerCase();
+    } else {
+      searchable = (entity.title || entity.name || '').toLowerCase();
+    }
+    return searchable.includes(searchTerm.toLowerCase());
+  });
+
+  const getEntityLabel = (entity: Entity) => {
+    if (entityType === 'hotels') {
+      return (entity as any).title_fr || (entity as any).title || entity.name || `ID: ${entity.id}`;
+    } else if (entityType === 'rentals') {
+      return (entity as any).mainHeading || (entity as any).title || entity.name || `ID: ${entity.id}`;
+    }
+    return entity.title || entity.name || `ID: ${entity.id}`;
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center p-6 border-b">
+          <h2 className="text-2xl font-bold text-gray-900">Assign Coupon to {entityType}</h2>
+          <button
+            onClick={onClose}
+            className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
+
+        {/* Entity Type Selector */}
+        <div className="p-6 border-b bg-gray-50">
+          <p className="text-sm font-medium text-gray-700 mb-3">Select Entity Type:</p>
+          <div className="flex gap-3">
+            {(['flights', 'hotels', 'rentals'] as const).map((type) => (
+              <button
+                key={type}
+                onClick={() => {
+                  setEntityType(type);
+                  setSelectedEntities(new Set());
+                  setSearchTerm('');
+                }}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors capitalize ${
+                  entityType === type
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {error && (
+          <div className="mx-6 mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+            {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="mx-6 mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+            {success}
+          </div>
+        )}
+
+        {/* Search */}
+        <div className="p-6 border-b">
+          <div className="relative">
+            <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder={`Search ${entityType}...`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
+        </div>
+
+        {/* Content */}
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader className="w-8 h-8 animate-spin text-blue-600" />
+          </div>
+        ) : (
+          <div className="p-6">
+            {/* Select All */}
+            {filteredEntities.length > 0 && (
+              <div className="mb-4 pb-4 border-b">
+                <button
+                  onClick={handleSelectAll}
+                  className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors w-full"
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      filteredEntities.length > 0 &&
+                      selectedEntities.size === filteredEntities.length
+                    }
+                    readOnly
+                    className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                  />
+                  <span className="font-medium text-gray-900">
+                    Select All ({filteredEntities.length})
+                  </span>
+                </button>
+              </div>
+            )}
+
+            {/* Entity List */}
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {filteredEntities.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-500">No {entityType} found</p>
+                </div>
+              ) : (
+                filteredEntities.map((entity) => (
+                  <div
+                    key={entity.id}
+                    onClick={() => handleSelectEntity(entity.id)}
+                    className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-gray-200 hover:border-blue-300"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedEntities.has(entity.id)}
+                      readOnly
+                      className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                    />
+                    <span className="flex-1 text-gray-900">{getEntityLabel(entity)}</span>
+                    <div className="flex items-center gap-2">
+                      {assignedEntityIds.has(entity.id) && (
+                        <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-medium">
+                          ✓ Assigned
+                        </span>
+                      )}
+                      {selectedEntities.has(entity.id) && (
+                        <Check className="w-5 h-5 text-blue-600" />
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Selection Counter */}
+            {selectedEntities.size > 0 && (
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-blue-900 font-medium">
+                  {selectedEntities.size} {entityType} selected
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="flex justify-end gap-3 p-6 border-t bg-gray-50">
+          <button
+            onClick={onClose}
+            disabled={assigning}
+            className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleAssign}
+            disabled={assigning || selectedEntities.size === 0}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400"
+          >
+            {assigning && <Loader className="w-4 h-4 animate-spin" />}
+            Assign ({selectedEntities.size})
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

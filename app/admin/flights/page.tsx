@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import ImageUpload from '../components/ImageUpload';
 
 export default function FlightsAdminPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,6 +30,7 @@ export default function FlightsAdminPage() {
         extras: '',
         tips: '',
         offerLink: '',
+        images: [] as string[],
     });
 
     useEffect(() => {
@@ -71,6 +73,7 @@ export default function FlightsAdminPage() {
             extras: '',
             tips: '',
             offerLink: '',
+            images: [],
         });
         setIsEditing(false);
         setSelectedFlightId(null);
@@ -94,6 +97,7 @@ export default function FlightsAdminPage() {
             extras: flight.extras ? JSON.stringify(flight.extras, null, 2) : '',
             tips: flight.tips ? JSON.stringify(flight.tips, null, 2) : '',
             offerLink: flight.offerLink || '',
+            images: flight.images || [],
         });
         setSelectedFlightId(flight.id);
         setIsEditing(true);
@@ -475,6 +479,15 @@ export default function FlightsAdminPage() {
                                         rows={2}
                                         placeholder='["Check in 2h before", "Check baggage size"]'
                                         className="w-full px-3 py-2 border border-gray-200 rounded-lg font-mono text-xs focus:outline-none focus:border-primary"
+                                    />
+                                </div>
+
+                                <div className="col-span-2">
+                                    <ImageUpload
+                                        images={formData.images}
+                                        onImagesChange={(images) => setFormData({ ...formData, images })}
+                                        maxImages={10}
+                                        label="Flight Images"
                                     />
                                 </div>
                             </div>

@@ -111,7 +111,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({ placeholder, onSelect, icon
                             <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                             <span className="text-sm font-medium">Searching...</span>
                         </div>
-                    ) : suggestions.filter(s => s.text.toLowerCase() !== query.toLowerCase()).length > 0 ? (
+                    ) : suggestions.length > 0 ? (
                         suggestions
                             .filter(s => s.text.toLowerCase() !== query.toLowerCase())
                             .map((suggestion) => (
@@ -134,7 +134,11 @@ const Autocomplete: React.FC<AutocompleteProps> = ({ placeholder, onSelect, icon
                                     </div>
                                 </button>
                             ))
-                    ) : null}
+                    ) : (
+                        <div className="px-4 py-4 text-center text-gray-500">
+                            <p className="text-sm">No results found</p>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Package, LogOut, FileText, Globe } from 'lucide-react';
+import { LayoutDashboard, Users, Package, LogOut, FileText, Globe, Ticket } from 'lucide-react';
 
 const AdminSidebar = () => {
     const pathname = usePathname();
@@ -11,6 +11,7 @@ const AdminSidebar = () => {
         { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
         { name: 'Products', href: '/admin/products', icon: Package },
         { name: 'Blogs', href: '/admin/blogs', icon: FileText },
+        { name: 'Coupons', href: '/admin/coupons', icon: Ticket },
     ];
 
 

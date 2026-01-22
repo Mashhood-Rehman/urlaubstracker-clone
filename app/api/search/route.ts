@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
                 { city: { contains: location, mode: 'insensitive' } },
                 { country: { contains: location, mode: 'insensitive' } },
                 { title: { contains: location, mode: 'insensitive' } },
+                { title_fr: { contains: location, mode: 'insensitive' } },
             ];
         }
 

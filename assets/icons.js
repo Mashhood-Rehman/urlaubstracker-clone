@@ -15,10 +15,12 @@ import {
   Bell,
   Star,
   Check,
-  ArrowRight
+  ArrowRight,
+  Gift
 } from 'lucide-react';
 
 export const icons = {
+  Gift,
   Search,
   Menu,
   X,

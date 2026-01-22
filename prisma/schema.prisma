@@ -1,94 +1,91 @@
-  // This is your Prisma schema file,
-  // learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
 
-  // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-  // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-  generator client {
-    provider = "prisma-client"
-    output   = "../app/generated/prisma"
-  }
-
-  datasource db {
-    provider = "postgresql"
-  }
+datasource db {
+  provider = "postgresql"
+}
 
 
 
-  model Hotel {
-    id             Int       @id @default(autoincrement())
-    title          String
-    desc           String
-    title_fr       String
-    desc_fr        String
-    address        String
-    city           String
-    country        String
-    price_per_night Float
-    total_price    Float?     // optional, only for mobile-home
-    currency       String
-    rating         Float?     // optional
-    review_count   Int?       // optional
-    amenities      Json       // store array of strings as JSON
-    check_in       String
-    check_out      String
-    notes          String?
+model Hotel {
+  id              Int       @id @default(autoincrement())
+  title           String
+  desc            String
+  title_fr        String
+  desc_fr         String
+  address         String
+  city            String
+  country         String
+  price_per_night Float
+  total_price     Float?
+  currency        String
+  rating          Float?
+  review_count    Int?
+  amenities       Json
+  check_in        String
+  check_out       String
+  notes           String?
+  images          String[]
+  coupons         Coupon[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
 
-    createdAt      DateTime  @default(now())
-    updatedAt      DateTime  @updatedAt
-  }
+model Flight {
+  id              Int       @id @default(autoincrement())
+  title           String
+  description     String
+  airline         String
+  departureCity   String
+  arrivalCity     String
+  duration        String
+  price           Float
+  currency        String    @default("EUR")
+  flightClass     String
+  baggage         String
+  services        Json
+  whyAdore        Json
+  flexibleDates   Boolean   @default(false)
+  extras          Json?
+  tips            Json?
+  offerLink       String?
+  images          String[]
+  coupons         Coupon[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
 
-  model Flight {
-    id             Int       @id @default(autoincrement())
-    title          String
-    description    String
-    airline        String
-    departureCity  String
-    arrivalCity    String
-    duration       String
-    price          Float
-    currency       String    @default("EUR")
-    flightClass    String
-    baggage        String
-    services       Json      // array of strings
-    whyAdore       Json      // array of strings
-    flexibleDates  Boolean   @default(false)
-    extras         Json?
-    tips           Json?
-    offerLink      String?
-
-    createdAt      DateTime  @default(now())
-    updatedAt      DateTime  @updatedAt
-  }
-
-  model Rental {
-    id             Int       @id @default(autoincrement())
-    category       String
-    title          String
-    description    String?
-    mainHeading    String
-    mainDescription String
-    offer          Json
-    whySuperDeal   String
-    thingsToDo     Json      // array of strings
-    additionalInfo Json
-    ecoTip         String?
-
-    createdAt      DateTime  @default(now())
-    updatedAt      DateTime  @updatedAt
-  }
+model Rental {
+  id                Int       @id @default(autoincrement())
+  category          String
+  title             String
+  description       String?
+  mainHeading       String
+  mainDescription   String
+  offer             Json
+  whySuperDeal      String
+  thingsToDo        Json
+  additionalInfo    Json
+  ecoTip            String?
+  images            String[]
+  coupons           Coupon[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
 
 model Blog {
   id              Int      @id @default(autoincrement())
   title           String
   slug            String   @unique
-  content         String   // Rich text content
-  excerpt         String?  // Short summary for lists
-  mainImage       String?  // URL to main header image
-  images          Json?    // Optional gallery or additional assets
+  content         String
+  excerpt         String?
+  mainImage       String?
+  images          String[]
   author          String   @default("Admin")
   category        String?  @default("Travel")
-  tags            Json?    // Array of strings
+  tags            Json?
   published       Boolean  @default(false)
   featured        Boolean  @default(false)
   
@@ -97,4 +94,25 @@ model Blog {
   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+model Coupon {
+  id                Int       @id @default(autoincrement())
+  code              String    @unique
+  name              String
+  description       String?
+  discountValue     Float
+  maxUses           Int?
+  currentUses       Int       @default(0)
+  validFrom         DateTime
+  validUntil        DateTime
+  isActive          Boolean   @default(true)
+  flightIds         Int[]     @default([])
+  flights           Flight[]
+  hotelIds          Int[]     @default([])
+  hotels            Hotel[]
+  rentalIds         Int[]     @default([])
+  rentals           Rental[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }

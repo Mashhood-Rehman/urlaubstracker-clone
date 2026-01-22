@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import ImageUpload from '../components/ImageUpload';
 
 export default function ProductsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,8 +18,6 @@ export default function ProductsPage() {
 
     const [formData, setFormData] = useState<any>({
         // Hotel common fields
-        title: '',
-        desc: '',
         title_fr: '',
         desc_fr: '',
         address: '',
@@ -56,6 +55,8 @@ export default function ProductsPage() {
         thingsToDo: '',
         additionalInfo: '',
         ecoTip: '',
+        // Images
+        images: [] as string[],
     });
 
 
@@ -86,10 +87,10 @@ export default function ProductsPage() {
 
     const filteredProducts = products ? products.filter(p => {
         const matchesSearch = searchTerm === '' ||
-            p.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.title_fr?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             p.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             p.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            p.desc?.toLowerCase().includes(searchTerm.toLowerCase());
+            p.desc_fr?.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesCategory = categoryFilter === 'All' ||
             p.mainCategory === categoryFilter ||
@@ -112,12 +113,13 @@ export default function ProductsPage() {
 
     const resetForm = () => {
         setFormData({
-            title: '', desc: '', title_fr: '', desc_fr: '', address: '', city: '', country: '', category: 'Hotel',
+            title_fr: '', desc_fr: '', address: '', city: '', country: '', category: 'Hotel',
             price_per_night: '', total_price: '', currency: 'EUR', rating: '', review_count: '', amenities: '',
             check_in: '', check_out: '', notes: '',
             airline: '', departureCity: '', arrivalCity: '', duration: '', price: '', flightClass: 'Economy',
             baggage: '', services: '', whyAdore: '', flexibleDates: false, extras: '', tips: '', offerLink: '',
             mainHeading: '', mainDescription: '', offer: '', whySuperDeal: '', thingsToDo: '', additionalInfo: '', ecoTip: '',
+            images: [],
         });
         setMainCategory('Hotel');
         setIsEditing(false);
@@ -136,6 +138,7 @@ export default function ProductsPage() {
             additionalInfo: typeof product.additionalInfo === 'object' ? JSON.stringify(product.additionalInfo) : (product.additionalInfo || ''),
             extras: typeof product.extras === 'object' ? JSON.stringify(product.extras) : (product.extras || ''),
             tips: typeof product.tips === 'object' ? JSON.stringify(product.tips) : (product.tips || ''),
+            images: Array.isArray(product.images) ? product.images : [],
         });
         setSelectedProductId(product.id);
         setIsEditing(true);
@@ -146,7 +149,13 @@ export default function ProductsPage() {
         toast.promise(
             new Promise(async (resolve, reject) => {
                 try {
-                    const response = await fetch(`/api/products/${product.id}?category=${product.mainCategory}`, {
+                    const endpoint = (() => {
+                        if (product.mainCategory === 'Flight') return `/api/flights/${product.id}`;
+                        if (product.mainCategory === 'Rental') return `/api/rentals/${product.id}`;
+                        return `/api/hotels/${product.id}`;
+                    })();
+
+                    const response = await fetch(endpoint, {
                         method: 'DELETE',
                     });
                     const result = await response.json();
@@ -183,8 +192,8 @@ export default function ProductsPage() {
             if (mainCategory === 'Flight') {
                 payload = {
                     mainCategory,
-                    title: formData.title,
-                    description: formData.desc,
+                    title: formData.title_fr,
+                    description: formData.desc_fr,
                     airline: formData.airline,
                     departureCity: formData.departureCity,
                     arrivalCity: formData.arrivalCity,
@@ -199,13 +208,14 @@ export default function ProductsPage() {
                     extras: formData.extras ? JSON.parse(formData.extras) : null,
                     tips: formData.tips ? JSON.parse(formData.tips) : null,
                     offerLink: formData.offerLink,
+                    images: formData.images,
                 };
             } else if (mainCategory === 'Rental') {
                 payload = {
                     mainCategory,
                     category: formData.category,
-                    title: formData.title,
-                    description: formData.desc,
+                    title: formData.title_fr,
+                    description: formData.desc_fr,
                     mainHeading: formData.mainHeading,
                     mainDescription: formData.mainDescription,
                     offer: formData.offer ? JSON.parse(formData.offer) : {},
@@ -213,13 +223,14 @@ export default function ProductsPage() {
                     thingsToDo: formData.thingsToDo.split(',').map((s: string) => s.trim()).filter((s: string) => s),
                     additionalInfo: formData.additionalInfo ? JSON.parse(formData.additionalInfo) : {},
                     ecoTip: formData.ecoTip,
+                    images: formData.images,
                 };
             } else {
                 // Hotel
                 payload = {
                     mainCategory,
-                    title: formData.title,
-                    desc: formData.desc,
+                    title: formData.title_fr,
+                    desc: formData.desc_fr,
                     title_fr: formData.title_fr,
                     desc_fr: formData.desc_fr,
                     address: formData.address,
@@ -234,11 +245,21 @@ export default function ProductsPage() {
                     check_in: formData.check_in,
                     check_out: formData.check_out,
                     notes: formData.notes,
+                    images: formData.images,
                 };
             }
 
-            const url = isEditing ? `/api/products/${selectedProductId}` : '/api/products';
-            const response = await fetch(url, {
+            const endpoint = (() => {
+                if (isEditing) {
+                    if (mainCategory === 'Flight') return `/api/flights/${selectedProductId}`;
+                    if (mainCategory === 'Rental') return `/api/rentals/${selectedProductId}`;
+                    return `/api/hotels/${selectedProductId}`;
+                } else {
+                    return '/api/products';
+                }
+            })();
+
+            const response = await fetch(endpoint, {
                 method: method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
@@ -383,7 +404,7 @@ export default function ProductsPage() {
                             paginatedProducts.map((product) => (
                                 <tr key={`${product.mainCategory}-${product.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                                     <td className="px-4 py-2 text-sm text-gray-600">{product.id}</td>
-                                    <td className="px-4 py-2 text-sm font-medium text-foreground">{product.title || product.mainHeading}</td>
+                                    <td className="px-4 py-2 text-sm font-medium text-foreground">{product.title_fr || product.mainHeading}</td>
                                     <td className="px-4 py-2 text-sm text-gray-600">
                                         <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${product.mainCategory === 'Flight' ? 'bg-blue-100 text-blue-700' :
                                             product.mainCategory === 'Rental' ? 'bg-green-100 text-green-700' :
@@ -539,17 +560,10 @@ export default function ProductsPage() {
                                 {mainCategory === 'Hotel' && (
                                     <>
                                         <div>
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Title (EN)</label>
-                                            <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
-                                        </div>
-                                        <div>
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Title (FR)</label>
                                             <input type="text" name="title_fr" value={formData.title_fr} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                         </div>
-                                        <div className="col-span-2">
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Description (EN)</label>
-                                            <textarea name="desc" value={formData.desc} onChange={handleInputChange} required rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
-                                        </div>
+                            
                                         <div className="col-span-2">
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Description (FR)</label>
                                             <textarea name="desc_fr" value={formData.desc_fr} onChange={handleInputChange} required rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
@@ -590,8 +604,12 @@ export default function ProductsPage() {
                                 {mainCategory === 'Flight' && (
                                     <>
                                         <div>
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Flight Title</label>
-                                            <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Flight Title (FR)</label>
+                                            <input type="text" name="title_fr" value={formData.title_fr} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Description (FR)</label>
+                                            <textarea name="desc_fr" value={formData.desc_fr} onChange={handleInputChange} required rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                         </div>
                                         <div>
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Airline</label>
@@ -658,6 +676,16 @@ export default function ProductsPage() {
                                         </div>
                                     </>
                                 )}
+
+                                {/* Images for all categories */}
+                                <div className="col-span-2">
+                                    <ImageUpload
+                                        images={formData.images}
+                                        onImagesChange={(images) => setFormData({ ...formData, images })}
+                                        maxImages={10}
+                                        label={`${mainCategory} Images`}
+                                    />
+                                </div>
                             </div>
 
                             <div className="flex gap-3 mt-6">

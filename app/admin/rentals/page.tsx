@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import ImageUpload from '../components/ImageUpload';
 
 export default function RentalsAdminPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -23,6 +24,7 @@ export default function RentalsAdminPage() {
         thingsToDo: '',
         additionalInfo: '',
         ecoTip: '',
+        images: [] as string[],
     });
 
     useEffect(() => {
@@ -58,6 +60,7 @@ export default function RentalsAdminPage() {
             thingsToDo: '',
             additionalInfo: '',
             ecoTip: '',
+            images: [],
         });
         setIsEditing(false);
         setSelectedRentalId(null);
@@ -75,6 +78,7 @@ export default function RentalsAdminPage() {
             thingsToDo: Array.isArray(rental.thingsToDo) ? rental.thingsToDo.join(', ') : '',
             additionalInfo: rental.additionalInfo ? JSON.stringify(rental.additionalInfo, null, 2) : '',
             ecoTip: rental.ecoTip || '',
+            images: rental.images || [],
         });
         setSelectedRentalId(rental.id);
         setIsEditing(true);
@@ -382,6 +386,15 @@ export default function RentalsAdminPage() {
                                         value={formData.ecoTip}
                                         onChange={handleInputChange}
                                         className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                    />
+                                </div>
+
+                                <div className="col-span-2">
+                                    <ImageUpload
+                                        images={formData.images}
+                                        onImagesChange={(images) => setFormData({ ...formData, images })}
+                                        maxImages={10}
+                                        label="Rental Images"
                                     />
                                 </div>
                             </div>

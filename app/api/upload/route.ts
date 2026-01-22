@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
     try {
         const formData = await request.formData();
         const file = formData.get('file') as File;
+        const folder = formData.get('folder') as string || 'blogs';
 
         if (!file) {
             return NextResponse.json({ success: false, error: 'No file uploaded' }, { status: 400 });
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
         const result = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
-                    folder: 'blogs',
+                    folder: folder,
                     resource_type: 'auto',
                 },
                 (error, result) => {

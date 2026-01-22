@@ -96,12 +96,23 @@ export async function PUT(
         const updatedFlight = await prisma.flight.update({
             where: { id: flightId },
             data: {
-                ...body,
+                title: body.title,
+                description: body.description,
+                airline: body.airline,
+                departureCity: body.departureCity,
+                arrivalCity: body.arrivalCity,
+                duration: body.duration,
                 price: body.price ? parseFloat(body.price) : undefined,
-                flexibleDates:
-                    body.flexibleDates !== undefined
-                        ? Boolean(body.flexibleDates)
-                        : undefined,
+                currency: body.currency,
+                flightClass: body.flightClass,
+                baggage: body.baggage,
+                services: body.services,
+                whyAdore: body.whyAdore,
+                flexibleDates: body.flexibleDates !== undefined ? Boolean(body.flexibleDates) : undefined,
+                extras: body.extras,
+                tips: body.tips,
+                offerLink: body.offerLink,
+                images: body.images || [],
             },
         });
 
