@@ -172,9 +172,9 @@ export default function HotelDetailClient({ hotel, coupons }: HotelDetailClientP
                     </div>
 
                     {/* Sidebar - Pricing and Coupons */}
-                    <div className="space-y-6 relative">
+                    <div className="space-y-6">
                         {/* Price Card */}
-                        <div className="bg-white rounded-xl p-6 sticky top-24">
+                        <div className="bg-white rounded-xl p-6 top-24">
                             <div className="space-y-4">
                                 <div>
                                     <p className="text-sm text-gray-600 mb-1">Price per night</p>
