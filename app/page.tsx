@@ -13,14 +13,17 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       <Hero />
-      <DealsGrid />
-      <DestinationReveal />
-      <MoodSelector />
-      <VoucherShowcase />
-      <TravelHacks />
-      <BlogSection />
-      <ExceptionalHotels />
-      <FollowUs />
+      <div className="px-24">
+
+        <DealsGrid />
+        <DestinationReveal />
+        <MoodSelector />
+        <VoucherShowcase />
+        <TravelHacks />
+        <BlogSection />
+        <ExceptionalHotels />
+        <FollowUs />
+      </div>
       <Footer />
     </main>
   );
