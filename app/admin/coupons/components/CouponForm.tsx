@@ -14,6 +14,7 @@ interface Coupon {
   currentUses?: number;
   validFrom: string;
   validUntil: string;
+  brandId?: number | null;
   isActive?: boolean;
 }
 
@@ -29,12 +30,28 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
   const [formData, setFormData] = useState<Coupon>({
     code: '',
     name: '',
+    brandId: null,
     description: '',
     discountValue: 10,
     maxUses: null,
     validFrom: format(new Date(), 'yyyy-MM-dd'),
     validUntil: format(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd'),
   });
+
+  const [brands, setBrands] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await fetch('/api/brands');
+        const data = await response.json();
+        setBrands(data);
+      } catch (error) {
+        console.error('Failed to fetch brands:', error);
+      }
+    };
+    fetchBrands();
+  }, []);
 
   useEffect(() => {
     if (coupon) {
@@ -95,6 +112,7 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
         maxUses: formData.maxUses || null,
         validFrom: validFromDate.toISOString(),
         validUntil: validUntilDate.toISOString(),
+        brandId: formData.brandId || null,
       };
 
       if (coupon && coupon.id) {
@@ -179,6 +197,26 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
           </div>
+        </div>
+
+        {/* Brand Selection */}
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            Select Brand
+          </label>
+          <select
+            name="brandId"
+            value={formData.brandId || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, brandId: e.target.value ? parseInt(e.target.value) : null }))}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+          >
+            <option value="">No Brand (Generic)</option>
+            {brands.map((brand) => (
+              <option key={brand.id} value={brand.id}>
+                {brand.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Description */}

@@ -14,7 +14,19 @@ export default function ProductsPage() {
     const [isEditing, setIsEditing] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState<string | number | null>(null);
 
-    const [mainCategory, setMainCategory] = useState<'Hotel' | 'Flight' | 'Rental'>('Hotel');
+    const [categories, setCategories] = useState<any[]>([]);
+    const [mainCategory, setMainCategory] = useState<string>('Hotel');
+
+    useEffect(() => {
+        fetch("/api/categories")
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    setCategories(data.data);
+                }
+            })
+            .catch(err => console.error("Failed to load categories", err));
+    }, []);
 
     const [formData, setFormData] = useState<any>({
         // Hotel common fields
@@ -539,17 +551,17 @@ export default function ProductsPage() {
                             <div className="mb-6">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">Main Category</label>
                                 <div className="flex gap-4">
-                                    {(['Hotel', 'Flight', 'Rental'] as const).map((cat) => (
-                                        <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                                    {categories.map((cat) => (
+                                        <label key={cat.name} className="flex items-center gap-2 cursor-pointer">
                                             <input
                                                 type="radio"
                                                 name="mainCategory"
-                                                checked={mainCategory === cat}
-                                                onChange={() => setMainCategory(cat)}
+                                                checked={mainCategory === cat.name}
+                                                onChange={() => setMainCategory(cat.name)}
                                                 className="w-4 h-4 text-primary focus:ring-primary"
                                             />
-                                            <span className={`text-sm ${mainCategory === cat ? 'text-primary font-bold' : 'text-gray-600'}`}>
-                                                {cat}s
+                                            <span className={`text-sm ${mainCategory === cat.name ? 'text-primary font-bold' : 'text-gray-600'}`}>
+                                                {cat.name}
                                             </span>
                                         </label>
                                     ))}
@@ -563,7 +575,7 @@ export default function ProductsPage() {
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Title (FR)</label>
                                             <input type="text" name="title_fr" value={formData.title_fr} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                         </div>
-                            
+
                                         <div className="col-span-2">
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Description (FR)</label>
                                             <textarea name="desc_fr" value={formData.desc_fr} onChange={handleInputChange} required rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
@@ -677,16 +689,58 @@ export default function ProductsPage() {
                                     </>
                                 )}
 
-                                {/* Images for all categories */}
-                                <div className="col-span-2">
-                                    <ImageUpload
-                                        images={formData.images}
-                                        onImagesChange={(images) => setFormData({ ...formData, images })}
-                                        maxImages={10}
-                                        label={`${mainCategory} Images`}
-                                    />
-                                </div>
+                                {/* Images for Hotel/Flight/Rental */}
+                                {(mainCategory === 'Hotel' || mainCategory === 'Flight' || mainCategory === 'Rental') && (
+                                    <div className="col-span-2">
+                                        <ImageUpload
+                                            images={formData.images}
+                                            onImagesChange={(images) => setFormData({ ...formData, images })}
+                                            maxImages={10}
+                                            label={`${mainCategory} Images`}
+                                        />
+                                    </div>
+                                )}
                             </div>
+
+                            {mainCategory !== 'Hotel' && mainCategory !== 'Flight' && mainCategory !== 'Rental' && (
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Title</label>
+                                        <input type="text" name="title" value={formData.title || formData.title_fr || ''} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Description</label>
+                                        <textarea name="description" value={formData.description || formData.desc_fr || ''} onChange={handleInputChange} required rows={3} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Price</label>
+                                        <input type="number" step="0.01" name="price" value={formData.price} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Currency</label>
+                                        <input type="text" name="currency" value={formData.currency} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">Additional Details (JSON)</label>
+                                        <textarea
+                                            name="details"
+                                            value={typeof formData.details === 'object' ? JSON.stringify(formData.details) : formData.details || ''}
+                                            onChange={handleInputChange}
+                                            rows={2}
+                                            placeholder='{"key": "value"}'
+                                            className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary font-mono"
+                                        />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <ImageUpload
+                                            images={formData.images}
+                                            onImagesChange={(images) => setFormData({ ...formData, images })}
+                                            maxImages={10}
+                                            label={`${mainCategory} Images`}
+                                        />
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="flex gap-3 mt-6">
                                 <button

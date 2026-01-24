@@ -9,13 +9,22 @@ export async function GET(request: Request) {
     const limit = parseInt(url.searchParams.get("limit") || "10");
     const skip = (page - 1) * limit;
 
+    const isShowcased = url.searchParams.get("showcased") === "true";
+
+    const where: any = {};
+    if (url.searchParams.get("showcased") !== null) {
+      where.isShowcased = isShowcased;
+    }
+
     const coupons = await prisma.coupon.findMany({
+      where,
       skip,
       take: limit,
       include: {
         flights: true,
         hotels: true,
         rentals: true,
+        brand: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -60,6 +69,7 @@ export async function POST(request: Request) {
       flightIds = [],
       hotelIds = [],
       rentalIds = [],
+      brandId,
     } = body;
 
     if (!code || !name || !discountValue || !validFrom || !validUntil) {
@@ -91,6 +101,7 @@ export async function POST(request: Request) {
         flightIds,
         hotelIds,
         rentalIds,
+        brandId,
         flights: {
           connect: flightIds.map((id: number) => ({ id })),
         },

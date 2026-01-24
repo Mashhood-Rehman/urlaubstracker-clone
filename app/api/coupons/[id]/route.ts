@@ -16,6 +16,7 @@ export async function GET(
         flights: true,
         hotels: true,
         rentals: true,
+        brand: true,
       },
     });
 
@@ -54,9 +55,11 @@ export async function PUT(
       validFrom,
       validUntil,
       isActive,
+      isShowcased,
       flightIds,
       hotelIds,
       rentalIds,
+      brandId,
     } = body;
 
     const existingCoupon = await prisma.coupon.findUnique({
@@ -92,9 +95,11 @@ export async function PUT(
         ...(validFrom && { validFrom: new Date(validFrom) }),
         ...(validUntil && { validUntil: new Date(validUntil) }),
         ...(isActive !== undefined && { isActive }),
+        ...(isShowcased !== undefined && { isShowcased }),
         ...(flightIds !== undefined && { flightIds }),
         ...(hotelIds !== undefined && { hotelIds }),
         ...(rentalIds !== undefined && { rentalIds }),
+        ...(brandId !== undefined && { brandId }),
         ...(flightIds !== undefined && {
           flights: {
             set: flightIds.map((id: number) => ({ id })),

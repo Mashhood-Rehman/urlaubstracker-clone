@@ -17,6 +17,7 @@ interface Coupon {
   validFrom: string;
   validUntil: string;
   isActive: boolean;
+  isShowcased: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -36,9 +37,14 @@ export default function CouponsPage() {
   const fetchCoupons = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/coupons?page=1&limit=100');
+      const response = await fetch('/api/coupons');
       const data = await response.json();
-      setCoupons(data.coupons);
+      if (response.ok) {
+        setCoupons(data.coupons || []);
+      } else {
+        console.error('API Error:', data.error);
+        setCoupons([]);
+      }
     } catch (error) {
       console.error('Failed to fetch coupons:', error);
     } finally {
@@ -75,7 +81,27 @@ export default function CouponsPage() {
     fetchCoupons();
   };
 
-  const filteredCoupons = coupons.filter((coupon) =>
+  const handleToggleShowcase = async (coupon: Coupon) => {
+    try {
+      const response = await fetch(`/api/coupons/${coupon.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isShowcased: !coupon.isShowcased }),
+      });
+      if (response.ok) {
+        setCoupons(coupons.map(c => c.id === coupon.id ? { ...c, isShowcased: !c.isShowcased } : c));
+      } else {
+        alert('Failed to update showcase status');
+      }
+    } catch (error) {
+      console.error('Error toggling showcase:', error);
+      alert('Error toggling showcase');
+    }
+  };
+
+  const filteredCoupons = (coupons || []).filter((coupon) =>
     coupon.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
     coupon.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -145,6 +171,7 @@ export default function CouponsPage() {
             setShowForm(true);
           }}
           onDelete={handleDelete}
+          onToggleShowcase={handleToggleShowcase}
         />
       )}
 

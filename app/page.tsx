@@ -16,14 +16,14 @@ export default function Home() {
       <div className="px-24">
 
         <DealsGrid />
-        <DestinationReveal />
-        <MoodSelector />
-        <VoucherShowcase />
-        <TravelHacks />
-        <BlogSection />
-        <ExceptionalHotels />
-        <FollowUs />
       </div>
+      <DestinationReveal />
+      <MoodSelector />
+      <VoucherShowcase />
+      <TravelHacks />
+      <BlogSection />
+      <ExceptionalHotels />
+      <FollowUs />
       <Footer />
     </main>
   );

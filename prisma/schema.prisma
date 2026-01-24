@@ -107,12 +107,50 @@ model Coupon {
   validFrom         DateTime
   validUntil        DateTime
   isActive          Boolean   @default(true)
+  isShowcased       Boolean   @default(false)
   flightIds         Int[]     @default([])
   flights           Flight[]
   hotelIds          Int[]     @default([])
   hotels            Hotel[]
   rentalIds         Int[]     @default([])
   rentals           Rental[]
+  brandId           Int?
+  brand             Brand?    @relation(fields: [brandId], references: [id])
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+}
+
+model Brand {
+  id              Int       @id @default(autoincrement())
+  name            String    @unique
+  websiteLink     String?
+  images          String[]
+  description     String?
+  coupons         Coupon[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Category {
+  id          Int              @id @default(autoincrement())
+  name        String           @unique
+  slug        String           @unique
+  description String?
+  products    DynamicProduct[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model DynamicProduct {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  price       Float
+  currency    String   @default("EUR")
+  images      String[]
+  details     Json? // Flexible field for category-specific attributes
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

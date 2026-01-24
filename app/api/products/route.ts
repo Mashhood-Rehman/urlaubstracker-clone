@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
                     images: data.images || [],
                 },
             });
-        } else {
+        } else if (mainCategory === 'Hotel') {
             // Default to Hotel (current behavior)
             product = await prisma.hotel.create({
                 data: {
@@ -69,10 +69,34 @@ export async function POST(request: NextRequest) {
                     images: data.images || [],
                 },
             });
+        } else {
+            // Try to find if it's a dynamic category
+            const category = await prisma.category.findFirst({
+                where: { name: { equals: mainCategory, mode: 'insensitive' } }
+            });
+
+            if (category) {
+                product = await prisma.dynamicProduct.create({
+                    data: {
+                        categoryId: category.id,
+                        title: data.title || '',
+                        description: data.description || data.desc || '',
+                        price: parseFloat(data.price) || parseFloat(data.price_per_night) || 0,
+                        currency: data.currency || 'EUR',
+                        images: data.images || [],
+                        details: data, // Store all other fields in details
+                    }
+                });
+            } else {
+                return NextResponse.json(
+                    { success: false, error: 'Invalid category' },
+                    { status: 400 }
+                );
+            }
         }
 
         return NextResponse.json(
-            { success: true, data: { ...product, mainCategory: mainCategory || 'Hotel' } },
+            { success: true, data: { ...product, mainCategory: mainCategory } },
             { status: 201 }
         );
     } catch (error: any) {
@@ -86,16 +110,20 @@ export async function POST(request: NextRequest) {
 
 export async function GET(req: NextRequest) {
     try {
-        const [hotels, flights, rentals] = await Promise.all([
+        const [hotels, flights, rentals, dynamicProducts] = await Promise.all([
             prisma.hotel.findMany(),
             prisma.flight.findMany(),
             prisma.rental.findMany(),
+            prisma.dynamicProduct.findMany({
+                include: { category: true }
+            })
         ]);
 
         const unifiedProducts = [
             ...hotels.map((h: any) => ({ ...h, mainCategory: 'Hotel' })),
             ...flights.map((f: any) => ({ ...f, mainCategory: 'Flight' })),
             ...rentals.map((r: any) => ({ ...r, mainCategory: 'Rental' })),
+            ...dynamicProducts.map((d: any) => ({ ...d, mainCategory: d.category.name, ...d.details })),
         ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
         return NextResponse.json({ success: true, data: unifiedProducts }, { status: 200 });

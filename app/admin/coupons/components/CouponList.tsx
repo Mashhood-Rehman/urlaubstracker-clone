@@ -14,6 +14,7 @@ interface Coupon {
   validFrom: string;
   validUntil: string;
   isActive: boolean;
+  isShowcased: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -23,9 +24,10 @@ interface CouponListProps {
   onEdit: (coupon: Coupon) => void;
   onDelete: (id: number) => void;
   onAssign: (coupon: Coupon) => void;
+  onToggleShowcase: (coupon: Coupon) => void;
 }
 
-export default function CouponList({ coupons, onEdit, onDelete, onAssign }: CouponListProps) {
+export default function CouponList({ coupons, onEdit, onDelete, onAssign, onToggleShowcase }: CouponListProps) {
   const isExpired = (validUntil: string) => new Date(validUntil) < new Date();
   const isNotStarted = (validFrom: string) => new Date(validFrom) > new Date();
 
@@ -40,6 +42,7 @@ export default function CouponList({ coupons, onEdit, onDelete, onAssign }: Coup
             <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Usage</th>
             <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Valid Period</th>
             <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Status</th>
+            <th className="px-6 py-3 text-sm font-semibold text-gray-900 text-center">Showcase</th>
             <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
           </tr>
         </thead>
@@ -78,7 +81,7 @@ export default function CouponList({ coupons, onEdit, onDelete, onAssign }: Coup
                   <div>
                     <p className="font-medium text-gray-900">{coupon.name}</p>
                     {coupon.description && (
-                      <p className="text-sm text-gray-600">{coupon.description}</p>
+                      <p className="text-sm text-gray-600">{coupon?.description.length > 15 ? coupon.description.substring(0, 15) + '...' : coupon.description}</p>
                     )}
                   </div>
                 </td>
@@ -107,6 +110,14 @@ export default function CouponList({ coupons, onEdit, onDelete, onAssign }: Coup
                   <span className={`text-sm font-medium ${statusColor}`}>
                     {statusText}
                   </span>
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <input
+                    type="checkbox"
+                    checked={coupon.isShowcased}
+                    onChange={() => onToggleShowcase(coupon)}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
+                  />
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
