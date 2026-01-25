@@ -27,23 +27,29 @@ import Loading from './Loading';
 const DealsGrid = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [blogs, setBlogs] = useState<Blog[]>([]);
+    const [banner, setBanner] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [productsRes, blogsRes] = await Promise.all([
+                const [productsRes, blogsRes, bannerRes] = await Promise.all([
                     fetch('/api/products'),
-                    fetch('/api/blogs?published=true')
+                    fetch('/api/blogs?published=true'),
+                    fetch('/api/banners')
                 ]);
 
                 const productsData = await productsRes.json();
                 const blogsData = await blogsRes.json();
+                const bannerData = await bannerRes.json();
 
                 if (productsData.success) {
                     setProducts(productsData.data.slice(0, 9));
                 }
                 setBlogs(Array.isArray(blogsData) ? blogsData.slice(0, 3) : []);
+                if (bannerData.success && bannerData.data.length > 0) {
+                    setBanner(bannerData.data.find((b: any) => b.isActive) || bannerData.data[0]);
+                }
             } catch (error) {
                 console.error('Error fetching landing data:', error);
             } finally {
@@ -63,11 +69,11 @@ const DealsGrid = () => {
 
     if (loading) return <Loading variant="container" />;
     return (
-        <section className="py-12 bg-(--white)">
+        <section className="py-8 md:py-12 bg-white">
             <div className="container mx-auto px-4">
                 <div className="mb-8 flex flex-col gap-2">
-                    <h2 className="text-3xl md:text-4xl font-bold text-(--primary)">Latest Travel Deals</h2>
-                    <p className="text-(--gray-500) text-sm max-w-lg">Handpicked offers for your next unforgettable journey.</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-primary">Latest Travel Deals</h2>
+                    <p className="text-gray-500 text-sm max-w-lg">Handpicked offers for your next unforgettable journey.</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -76,9 +82,9 @@ const DealsGrid = () => {
                             <Link
                                 key={product.id}
                                 href={getLink(product)}
-                                className="flex flex-col items-center text-center group hover:bg-(--gray-50)  rounded-lg transition-all border border-transparent hover:border-(--gray-100)"
+                                className="flex flex-col items-center text-center group hover:bg-gray-50  rounded-lg transition-all border border-transparent hover:border-gray-100"
                             >
-                                <div className="w-24 h-24 rounded-full overflow-hidden shrink-0 border-2 border-(--white) shadow-sm mb-4">
+                                <div className="w-24 h-24 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-sm mb-4">
                                     <img
                                         src={product.images[0] || 'https://images.unsplash.com/photo-1506929113670-07bf3b4ae5f1?auto=format&fit=crop&q=80'}
                                         alt={product.title}
@@ -86,28 +92,26 @@ const DealsGrid = () => {
                                     />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <span className="text-(--secondary)/60 font-bold text-[9px] uppercase tracking-widest mb-1 block">
+                                    <span className="text-secondary/60 font-bold text-[9px] uppercase tracking-widest mb-1 block">
                                         {product.mainCategory}
                                     </span>
-                                    <h4 className="text-sm font-bold text-(--gray-900) leading-tight line-clamp-2 italic h-10">
+                                    <h4 className="text-sm font-bold text-gray-900 leading-tight line-clamp-2 italic h-10">
                                         {product.title}
                                     </h4>
-                                    <div className="text-(--primary) text-xs font-semibold mt-2">
+                                    <div className="text-primary text-xs font-semibold mt-2">
                                         from <span className="font-bold">€{product.price || product.price_per_night || '---'}</span>
                                     </div>
                                 </div>
                             </Link>
                         ))}
 
-                        {/* Placeholder slots if less than 9 products to maintain 3x3 structure if desired,
-                            but standard grid will just show what's there. */}
                     </div>
 
                     <div className="flex flex-col gap-8">
                         {/* Blog Box */}
-                        <div className="bg-(--white) rounded-lg p-5 flex flex-col border border-(--gray-100) shadow-sm">
-                            <h4 className="text-lg font-bold text-(--primary) mb-5 flex items-center gap-2">
-                                <span className="w-1 h-5 bg-(--secondary) rounded-full"></span>
+                        <div className="bg-white rounded-lg p-5 flex flex-col border border-gray-100 shadow-sm">
+                            <h4 className="text-lg font-bold text-primary mb-5 flex items-center gap-2">
+                                <span className="w-1 h-5 bg-secondary rounded-full"></span>
                                 Latest Blogs
                             </h4>
                             <div className="space-y-4">
@@ -117,25 +121,41 @@ const DealsGrid = () => {
                                         href={`/blogs/${blog.slug}`}
                                         className="flex items-center gap-3 group cursor-pointer"
                                     >
-                                        <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-(--gray-50) shadow-xs">
+                                        <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-gray-50 shadow-xs">
                                             <img src={blog.mainImage} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <h5 className="font-bold text-(--gray-800) text-xs leading-tight group-hover:text-(--secondary) transition-colors line-clamp-2 italic">
+                                            <h5 className="font-bold text-gray-800 text-xs leading-tight group-hover:text-secondary transition-colors line-clamp-2 italic">
                                                 {blog.title}
                                             </h5>
                                         </div>
-                                        <icons.ArrowRight className="w-3 h-3 text-(--gray-100) group-hover:text-(--secondary) translate-x-0 group-hover:translate-x-0.5 transition-all" />
+                                        <icons.ArrowRight className="w-3 h-3 text-gray-100 group-hover:text-secondary translate-x-0 group-hover:translate-x-0.5 transition-all" />
                                     </Link>
                                 ))}
                             </div>
-                            <Link href="/blogs" className="mt-5 pt-4 border-t border-(--gray-50) text-[10px] font-black uppercase tracking-widest text-(--secondary) hover:text-(--primary) transition-colors flex items-center gap-1 group">
+                            <Link href="/blogs" className="mt-5 pt-4 border-t border-gray-50 text-[10px] font-black uppercase tracking-widest text-secondary hover:text-primary transition-colors flex items-center gap-1 group">
                                 View all stories <icons.ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                             </Link>
                         </div>
 
-                        <div className="flex-1 min-h-[200px]">
-                        </div>
+                        {banner && (
+                            <Link
+                                href={banner.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="relative rounded-2xl overflow-hidden shadow-lg group hover:shadow-2xl transition-all duration-500"
+                            >
+                                <img
+                                    src={banner.image}
+                                    alt="Promotional Banner"
+                                    className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+                                />
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+                                <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md px-2 py-1 rounded text-[8px] font-bold text-white uppercase tracking-widest border border-white/20">
+                                    Ad
+                                </div>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
@@ -143,4 +163,4 @@ const DealsGrid = () => {
     );
 };
 
-export default DealsGrid;
+export default DealsGrid; 

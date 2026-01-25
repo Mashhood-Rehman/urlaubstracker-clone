@@ -28,7 +28,7 @@ const Footer = () => {
     };
 
     return (
-        <footer className="relative bg-(--gray-800) text-(--white) pt-16 pb-12 px-4 overflow-hidden">
+        <footer className="relative bg-(--gray-800) text-(--white) pt-12 md:pt-16 pb-8 md:pb-12 px-4 overflow-hidden">
 
             <div className="max-w-7xl mx-auto relative z-10">
                 {/* Newsletter Section */}

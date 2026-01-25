@@ -7,7 +7,7 @@ import { moods } from '@/app/data';
 
 const MoodSelector = () => {
     return (
-        <section className="py-24 bg-(--white) px-4">
+        <section className="py-12 md:py-24 bg-(--white) px-4">
             <div className="container mx-auto">
                 <div className="mb-16">
                     <h2 className="text-4xl font-bold text-(--primary) mb-4">Travel by Mood</h2>

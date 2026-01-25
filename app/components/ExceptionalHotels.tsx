@@ -44,7 +44,7 @@ const ExceptionalHotels = () => {
     if (hotels.length === 0) return null;
 
     return (
-        <section className="py-24 bg-(--white)">
+        <section className="py-12 md:py-24 bg-(--white)">
             <div className="max-w-7xl mx-auto px-4 md:px-10">
                 <div className="text-center mb-16">
                     <h4 className="text-(--brand-purple) font-black uppercase tracking-[0.3em] text-[10px] mb-4">Curated Stays</h4>

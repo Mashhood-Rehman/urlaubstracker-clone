@@ -20,7 +20,7 @@ const DestinationReveal = () => {
 
     return (
         <section
-            className="py-32 bg-(--primary) text-(--white) overflow-hidden relative"
+            className="py-8 md:py-32 bg-(--primary) text-(--white) overflow-hidden relative"
             onMouseEnter={() => setIsHoveringSection(true)}
             onMouseLeave={() => {
                 setIsHoveringSection(false);

@@ -5,7 +5,7 @@ import { images } from '@/assets/images';
 
 const FollowUs = () => {
     return (
-        <section className="py-24 relative overflow-hidden bg-(--white)">
+        <section className="py-12 md:py-24 relative overflow-hidden bg-(--white)">
             {/* Background Accent */}
             <div className="absolute top-0 right-0 w-1/3 h-full bg-(--brand-purple)/5 skew-x-12 transform translate-x-32"></div>
 

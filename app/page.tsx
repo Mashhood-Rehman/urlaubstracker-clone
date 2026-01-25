@@ -15,7 +15,7 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       <Hero />
       <CategorySection />
-      <div className="px-24">
+      <div className="md:px-24 px-5">
 
         <DealsGrid />
       </div>

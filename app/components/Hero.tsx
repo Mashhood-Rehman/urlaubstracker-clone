@@ -9,7 +9,7 @@ import BookingEngine from './BookingEngine';
 const Hero = () => {
 
     return (
-        <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <section className="relative min-h-screen flex items-center justify-center pt-16 md:pt-20 overflow-hidden">
             {/* Background Image with Overlay */}
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"

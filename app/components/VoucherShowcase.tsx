@@ -40,7 +40,7 @@ const VoucherShowcase = () => {
     }, []);
 
     return (
-        <section className="py-20 bg-(--muted)">
+        <section className="py-10 md:py-20 bg-(--muted)">
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold text-(--primary) mb-12 text-center underline decoration-(--secondary) decoration-4 underline-offset-8">
                     Exclusive Vouchers

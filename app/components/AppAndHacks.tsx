@@ -8,21 +8,21 @@ import { appHacks } from '@/app/data';
 
 const AppAndHacks = () => {
     return (
-        <section className="py-24 bg-(--white) overflow-hidden">
+        <section className="py-12 md:py-24 bg-(--white) overflow-hidden">
             <div className="container mx-auto px-4">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                     {/* App Promotion (Split Screen Left) */}
-                    <div className="flex-1 w-full bg-(--primary) rounded-[3rem] p-12 relative flex flex-col md:flex-row items-center gap-8">
-                        <div className="relative z-10 text-(--white) flex-1">
-                            <h2 className="text-4xl font-bold mb-6">Take the deals with you.</h2>
-                            <p className="text-(--white)/70 mb-8 max-w-sm">Download our mobile app and never miss another incredible travel bargain.</p>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <button className="btn bg-(--white) text-(--primary) hover:bg-(--white)/90">App Store</button>
-                                <button className="btn border border-(--white)/30 text-(--white) hover:bg-(--white)/10">Play Store</button>
+                    <div className="flex-1 w-full bg-primary rounded-3xl md:rounded-[3rem] p-8 md:p-12 relative flex flex-col md:flex-row items-center gap-8">
+                        <div className="relative z-10 text-white flex-1 text-center md:text-left">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-6">Take the deals with you.</h2>
+                            <p className="text-white/70 mb-8 max-w-sm mx-auto md:mx-0">Download our mobile app and never miss another incredible travel bargain.</p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                                <button className="btn bg-white text-primary hover:bg-white/90">App Store</button>
+                                <button className="btn border border-white/30 text-white hover:bg-white/10">Play Store</button>
                             </div>
                         </div>
 
-                        <div className="relative w-64 h-[450px] shrink-0">
+                        <div className="relative w-48 md:w-64 h-[350px] md:h-[450px] shrink-0">
                             <div className="absolute inset-0 bg-(--secondary) rounded-[2.5rem] rotate-6"></div>
                             <img
                                 src={images.appMockup}

@@ -75,11 +75,11 @@ const Navbar = () => {
             <div className="container mx-auto px-4 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-(--secondary) rounded-lg flex items-center justify-center">
-                        <span className="text-(--white) font-bold text-xl">UT</span>
+                    <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center">
+                        <span className="text-white font-bold text-xl">UT</span>
                     </div>
                     <span
-                        className={`font-bold text-xl hidden md:block ${(!isLandingPage || isScrolled) ? 'text-(--primary)' : 'text-(--white)'
+                        className={`font-bold text-xl hidden md:block ${(!isLandingPage || isScrolled) ? 'text-primary' : 'text-white'
                             }`}
                     >
                         Urlaubstracker
@@ -94,7 +94,7 @@ const Navbar = () => {
                             {link.name === 'Vouchers' ? (
                                 <>
                                     <button
-                                        className={`font-medium hover:text-(--secondary) transition-colors flex items-center gap-1 ${(!isLandingPage || isScrolled) ? 'text-(--primary)' : 'text-(--white)'
+                                        className={`font-medium hover:text-secondary transition-colors flex items-center gap-1 ${(!isLandingPage || isScrolled) ? 'text-primary' : 'text-white'
                                             }`}
                                     >
                                         Vouchers
@@ -104,7 +104,7 @@ const Navbar = () => {
                                         <div className="bg-(--white) rounded-xl shadow-xl border border-(--gray-100) p-2 min-w-[200px]">
                                             <Link
                                                 href="/vouchers"
-                                                className="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-(--gray-700) hover:bg-(--primary)/5 hover:text-(--primary) transition-colors"
+                                                className="flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
                                             >
                                                 <icons.Ticket className="w-4 h-4" />
                                                 All Vouchers
@@ -125,7 +125,7 @@ const Navbar = () => {
                             ) : (
                                 <Link
                                     href={link.href}
-                                    className={`font-medium hover:text-(--secondary) transition-colors ${(!isLandingPage || isScrolled) ? 'text-(--primary)' : 'text-(--white)'
+                                    className={`font-medium hover:text-secondary transition-colors ${(!isLandingPage || isScrolled) ? 'text-primary' : 'text-white'
                                         }`}
                                 >
                                     {link.name}
@@ -138,8 +138,8 @@ const Navbar = () => {
                 {/* Actions */}
                 <div className="flex items-center gap-4">
                     <div className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full border ${(!isLandingPage || isScrolled)
-                        ? 'border-(--gray-200) text-(--primary)'
-                        : 'border-(--white)/30 text-(--white)'}white'
+                        ? 'border-gray-200 text-primary'
+                        : 'border-white/30 text-white'}
                         }`}>
                         <icons.Search className="w-4 h-4" />
                         <input
@@ -149,61 +149,100 @@ const Navbar = () => {
                         />
                     </div>
 
-                    <button className="lg:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                    <button className="lg:hidden p-2 rounded-lg" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                         {isMobileMenuOpen ? (
-                            <icons.X className={(!isLandingPage || isScrolled) ? 'text-(--primary)' : 'text-(--white)'
+                            <icons.X className={(!isLandingPage || isScrolled) ? 'text-primary' : 'text-white'
                             } />
                         ) : (
-                            <icons.Menu className={(!isLandingPage || isScrolled) ? 'text-(--primary)' : 'text-(--white)'} />
+                            <icons.Menu className={(!isLandingPage || isScrolled) ? 'text-primary' : 'text-white'} />
                         )}
                     </button>
                 </div>
             </div>
 
-            {/* Mobile Menu */}
-            {isMobileMenuOpen && (
-                <div className="lg:hidden bg-(--white) absolute top-full left-0 right-0 shadow-xl border-t animate-in slide-in-from-top duration-300">
-                    <div className="flex flex-col p-4 gap-4">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className="text-(--primary) font-medium border-b border-(--gray-100) pb-2"
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
-                        {isAuthenticated ? (
-                            <>
+            {/* Mobile Menu Overlay */}
+            <div
+                className={`lg:hidden fixed inset-0 z-[-1] bg-(--secondary)/60 backdrop-blur-sm transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                    }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            {/* Mobile Menu Content */}
+            <div
+                className={`lg:hidden fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white shadow-2xl z-60 transition-transform duration-300 ease-out transform ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+                    }`}
+            >
+                <div className="flex flex-col h-full">
+                    <div className="p-6 border-b border-(--gray-100) flex items-center justify-between">
+                        <div className="w-10 h-10 bg-(--secondary) rounded-lg flex items-center justify-center">
+                            <span className="text-(--white) font-bold text-xl">UT</span>
+                        </div>
+                        <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-(--gray-400) hover:text-(--secondary)">
+                            <icons.X className="w-6 h-6" />
+                        </button>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                        <div className="flex flex-col gap-4">
+                            <h4 className="text-gray-400 font-bold text-xs uppercase tracking-widest">Navigation</h4>
+                            {navLinks.map((link) => (
                                 <Link
-                                    href="/admin"
-                                    className="text-primary font-medium border-b border-gray-100 pb-2 flex items-center gap-2"
+                                    key={link.name}
+                                    href={link.href}
+                                    className={`text-lg font-bold flex items-center justify-between group ${pathname === link.href ? 'text-primary' : 'text-gray-800'}`}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
-                                    <icons.LayoutDashboard className="w-4 h-4" />
-                                    Admin Panel
+                                    {link.name}
+                                    <icons.ChevronRight className={`w-5 h-5 transition-transform ${pathname === link.href ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
                                 </Link>
-                                <button
-                                    onClick={handleLogout}
-                                    className="text-red-500 font-bold pt-2 flex items-center gap-2 text-left"
-                                >
-                                    <icons.LogOut className="w-4 h-4" />
-                                    Logout
-                                </button>
-                            </>
-                        ) : (
-                            <Link
-                                href="/auth/login"
-                                className="text-secondary font-bold pt-2"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                                Login
-                            </Link>
-                        )}
+                            ))}
+                        </div>
 
+                        <div className="pt-6 border-t border-gray-100 flex flex-col gap-4">
+                            <h4 className="text-gray-400 font-bold text-xs uppercase tracking-widest">Account</h4>
+                            {isAuthenticated ? (
+                                <>
+                                    <Link
+                                        href="/admin"
+                                        className="text-lg font-bold text-gray-800 flex items-center gap-3"
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        <icons.LayoutDashboard className="w-5 h-5 text-primary" />
+                                        Admin Panel
+                                    </Link>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="text-lg font-bold text-red-500 flex items-center gap-3 text-left"
+                                    >
+                                        <icons.LogOut className="w-5 h-5" />
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <Link
+                                    href="/auth/login"
+                                    className="text-lg font-bold text-secondary flex items-center gap-3"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    <icons.LogIn className="w-5 h-5" />
+                                    Login / Register
+                                </Link>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="p-6 bg-gray-50">
+                        <div className="relative">
+                            <icons.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search deals..."
+                                className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:border-primary/50"
+                            />
+                        </div>
                     </div>
                 </div>
-            )}
+            </div>
         </nav>
     );
 };

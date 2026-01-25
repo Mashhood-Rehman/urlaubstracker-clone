@@ -12,6 +12,7 @@ const AdminSidebar = () => {
         { name: 'Products', href: '/admin/products', icon: icons.Package },
         { name: 'Categories', href: '/admin/categories', icon: icons.List },
         { name: 'Blogs', href: '/admin/blogs', icon: icons.FileText },
+        { name: 'Ads Banners', href: '/admin/banners', icon: icons.ImageIcon },
         { name: 'Brands', href: '/admin/brands', icon: icons.Globe },
         { name: 'Coupons', href: '/admin/coupons', icon: icons.Ticket },
     ];

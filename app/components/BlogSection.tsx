@@ -39,14 +39,14 @@ const BlogSection = () => {
     if (blogs.length === 0) return null;
 
     return (
-        <section className="py-24 bg-(--white) relative overflow-hidden">
+        <section className="py-12 md:py-24 bg-white relative overflow-hidden">
             <div className="container mx-auto px-4 md:px-10 relative z-10">
-                <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
+                <div className="flex flex-col md:flex-row items-center justify-between mb-10 md:mb-16 gap-6">
                     <div className="max-w-2xl text-center md:text-left">
-                        <h2 className="text-4xl md:text-6xl font-black text-(--gray-900) uppercase tracking-tighter mb-4 leading-tight">
-                            Travel <span className="text-(--primary) tracking-normal">Stories</span>
+                        <h2 className="text-4xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter mb-4 leading-tight">
+                            Travel <span className="text-primary tracking-normal">Stories</span>
                         </h2>
-                        <p className="text-xl text-(--gray-500) font-medium">
+                        <p className="text-xl text-gray-500 font-medium">
                             Expert guides, hidden gems, and travel inspiration from our community.
                         </p>
                     </div>
@@ -64,7 +64,7 @@ const BlogSection = () => {
                         <Link
                             href={`/blogs/${blog.slug}`}
                             key={blog.id}
-                            className="group bg-(--white) rounded-2xl overflow-hidden border border-(--slate-100) shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full"
+                            className="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full"
                         >
                             <div className="relative h-64 overflow-hidden">
                                 <img
@@ -91,11 +91,11 @@ const BlogSection = () => {
                                     </span>
                                 </div>
 
-                                <h3 className="text-2xl font-black text-(--gray-900) leading-tight mb-4 group-hover:text-(--brand-purple) transition-colors line-clamp-2">
+                                <h3 className="text-2xl font-black text-gray-900 leading-tight mb-4 group-hover:text-brand-purple transition-colors line-clamp-2">
                                     {blog.title}
                                 </h3>
 
-                                <p className="text-(--gray-500) text-sm leading-relaxed line-clamp-3 mb-8">
+                                <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-8">
                                     {blog.excerpt}
                                 </p>
 
