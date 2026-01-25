@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Loader, ArrowRight } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import Link from 'next/link';
 
 interface Coupon {
@@ -48,7 +48,7 @@ const VoucherShowcase = () => {
 
                 {loading ? (
                     <div className="flex justify-center items-center h-48">
-                        <Loader className="w-8 h-8 animate-spin text-primary" />
+                        <icons.Loader className="w-8 h-8 animate-spin text-primary" />
                     </div>
                 ) : vouchers.length === 0 ? (
                     <div className="text-center text-gray-500 py-12">
@@ -77,7 +77,7 @@ const VoucherShowcase = () => {
                                     {v.code}
                                 </div>
                                 <div className="flex items-center gap-1 text-xs font-semibold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    View Brand <ArrowRight className="w-3 h-3" />
+                                    View Brand <icons.ArrowRight className="w-3 h-3" />
                                 </div>
                             </Link>
                         ))}

@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Loader } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import CouponList from './components/CouponList';
+import Loading from '../../components/Loading';
 import CouponForm from './components/CouponForm';
 import AssignEntitiesModal from './components/AssignEntitiesModal';
 
@@ -121,7 +122,7 @@ export default function CouponsPage() {
           }}
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
         >
-          <Plus className="w-5 h-5" />
+          <icons.Plus className="w-5 h-5" />
           New Coupon
         </button>
       </div>
@@ -153,9 +154,7 @@ export default function CouponsPage() {
 
       {/* Content */}
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <Loader className="w-8 h-8 animate-spin text-blue-600" />
-        </div>
+        <Loading variant="container" text="Fetching coupons..." />
       ) : filteredCoupons.length === 0 ? (
         <div className="bg-white rounded-lg shadow-md p-12 text-center">
           <p className="text-gray-500 text-lg">No coupons found</p>

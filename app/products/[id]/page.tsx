@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { ExternalLink, Tag, Copy, Check, ChevronRight, Loader2, MapPin, Info, Image as ImageIcon } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
@@ -61,7 +61,7 @@ export default function DynamicProductDetailPage() {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-white">
-                <Loader2 className="w-10 h-10 animate-spin text-[#5B2EFF]" />
+                <icons.Loader2 className="w-10 h-10 animate-spin text-[#5B2EFF]" />
             </div>
         );
     }
@@ -81,9 +81,9 @@ export default function DynamicProductDetailPage() {
                 {/* Breadcrumb */}
                 <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">
                     <Link href="/" className="hover:text-[#5B2EFF] transition-colors">Home</Link>
-                    <ChevronRight size={10} />
+                    <icons.ChevronRight size={10} />
                     <span className="text-[#5B2EFF]">{product.mainCategory}</span>
-                    <ChevronRight size={10} />
+                    <icons.ChevronRight size={10} />
                     <span className="text-slate-900 truncate max-w-[200px]">{product.title}</span>
                 </div>
 
@@ -99,7 +99,7 @@ export default function DynamicProductDetailPage() {
                                 />
                             ) : (
                                 <div className="w-full h-full flex flex-col items-center justify-center text-slate-300">
-                                    <ImageIcon size={48} />
+                                    <icons.ImageIcon size={48} />
                                     <span className="mt-2 font-bold uppercase tracking-widest text-xs">No Images Available</span>
                                 </div>
                             )}
@@ -134,7 +134,7 @@ export default function DynamicProductDetailPage() {
                             </h1>
 
                             <div className="flex items-center gap-2 text-[#5B2EFF] font-black text-[11px] uppercase tracking-[0.2em] mb-8">
-                                <Tag size={14} />
+                                <icons.Tag size={14} />
                                 Exclusive Offer
                             </div>
 
@@ -160,7 +160,7 @@ export default function DynamicProductDetailPage() {
                                             className="px-10 py-5 bg-[#111827] text-white font-black italic uppercase rounded-2xl hover:bg-[#5B2EFF] transition-all flex items-center gap-2 shadow-lg hover:shadow-[#5B2EFF]/20"
                                         >
                                             View Website
-                                            <ExternalLink size={20} />
+                                            <icons.ExternalLink size={20} />
                                         </a>
                                     )}
                                 </div>
@@ -194,7 +194,7 @@ export default function DynamicProductDetailPage() {
                                                         onClick={() => copyToClipboard(coupon.code, coupon.id)}
                                                         className="text-[#5B2EFF] hover:text-slate-900 transition-colors cursor-pointer"
                                                     >
-                                                        {copiedId === coupon.id ? <Check size={18} /> : <Copy size={18} />}
+                                                        {copiedId === coupon.id ? <icons.Check size={18} /> : <icons.Copy size={18} />}
                                                     </button>
                                                 </div>
                                             </div>
@@ -208,7 +208,7 @@ export default function DynamicProductDetailPage() {
                         <div className="bg-gradient-to-br from-[#111827] to-[#1E293B] rounded-3xl p-8 text-white shadow-xl">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-10 h-10 rounded-xl bg-[#5EEAD4]/20 flex items-center justify-center text-[#5EEAD4]">
-                                    <Info size={20} />
+                                    <icons.Info size={20} />
                                 </div>
                                 <h3 className="font-black italic uppercase tracking-tighter">Booking Information</h3>
                             </div>

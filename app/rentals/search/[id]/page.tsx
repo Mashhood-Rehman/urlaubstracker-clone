@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { icons } from '@/assets/icons';
 import Link from 'next/link';
+import Loading from '../../../components/Loading';
 
 export default function RentalDetailPage() {
     const { id } = useParams();
@@ -27,11 +28,9 @@ export default function RentalDetailPage() {
         if (id) fetchRental();
     }, [id]);
 
-    if (loading) return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="text-xl font-bold text-primary animate-pulse">Loading rental details...</div>
-        </div>
-    );
+
+    // ... inside the component
+    if (loading) return <Loading variant="page" text="Loading rental details..." />;
 
     if (!rental) return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">

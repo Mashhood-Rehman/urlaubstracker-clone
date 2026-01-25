@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Loader, ArrowRight } from 'lucide-react';
+import { icons } from '@/assets/icons';
 
 interface Product {
     id: number;
@@ -22,6 +22,8 @@ interface Blog {
     mainImage: string;
 }
 
+import Loading from './Loading';
+
 const DealsGrid = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -39,7 +41,6 @@ const DealsGrid = () => {
                 const blogsData = await blogsRes.json();
 
                 if (productsData.success) {
-                    // Fetch up to 9 products for a 3x3 grid
                     setProducts(productsData.data.slice(0, 9));
                 }
                 setBlogs(Array.isArray(blogsData) ? blogsData.slice(0, 3) : []);
@@ -49,8 +50,6 @@ const DealsGrid = () => {
                 setLoading(false);
             }
         };
-        console.log(fetchData())
-
         fetchData();
     }, []);
 
@@ -62,14 +61,7 @@ const DealsGrid = () => {
         return `/products/${product.id}`;
     };
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-[400px]">
-                <Loader className="w-10 h-10 animate-spin text-primary" />
-            </div>
-        );
-    }
-    console.log(products)
+    if (loading) return <Loading variant="container" />;
     return (
         <section className="py-12 bg-white">
             <div className="container mx-auto px-4">
@@ -79,7 +71,6 @@ const DealsGrid = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    {/* Products Grid (3 columns) */}
                     <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {products.map((product) => (
                             <Link
@@ -112,7 +103,6 @@ const DealsGrid = () => {
                             but standard grid will just show what's there. */}
                     </div>
 
-                    {/* Side Column (1 column) */}
                     <div className="flex flex-col gap-8">
                         {/* Blog Box */}
                         <div className="bg-white rounded-lg p-5 flex flex-col border border-gray-100 shadow-sm">
@@ -135,16 +125,15 @@ const DealsGrid = () => {
                                                 {blog.title}
                                             </h5>
                                         </div>
-                                        <ArrowRight className="w-3 h-3 text-gray-100 group-hover:text-secondary translate-x-0 group-hover:translate-x-0.5 transition-all" />
+                                        <icons.ArrowRight className="w-3 h-3 text-gray-100 group-hover:text-secondary translate-x-0 group-hover:translate-x-0.5 transition-all" />
                                     </Link>
                                 ))}
                             </div>
                             <Link href="/blogs" className="mt-5 pt-4 border-t border-gray-50 text-[10px] font-black uppercase tracking-widest text-secondary hover:text-primary transition-colors flex items-center gap-1 group">
-                                View all stories <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                                View all stories <icons.ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                             </Link>
                         </div>
 
-                        {/* Extra Space for Ads (Empty as requested) */}
                         <div className="flex-1 min-h-[200px]">
                         </div>
                     </div>

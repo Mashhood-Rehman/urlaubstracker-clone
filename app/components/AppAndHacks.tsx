@@ -4,11 +4,7 @@ import React from 'react';
 import { images } from '@/assets/images';
 import { icons } from '@/assets/icons';
 
-const hacks = [
-    { title: 'Packing Like a Pro', desc: 'Space-saving techniques for long trips.', icon: icons.Ticket },
-    { title: 'Finding Cheap Flights', desc: 'The best days to book and fly.', icon: icons.Plane },
-    { title: 'Travel Insurance Guide', desc: 'What you really need to be covered.', icon: icons.Bell },
-];
+import { appHacks } from '@/app/data';
 
 const AppAndHacks = () => {
     return (
@@ -40,7 +36,7 @@ const AppAndHacks = () => {
                     <div className="flex-1 w-full">
                         <h2 className="text-3xl font-bold text-primary mb-8">Travel Hacks & Tips</h2>
                         <div className="space-y-6">
-                            {hacks.map((hack) => (
+                            {appHacks.map((hack) => (
                                 <div
                                     key={hack.title}
                                     className="flex items-start gap-6 p-6 rounded-2xl hover:bg-muted transition-colors cursor-pointer group"

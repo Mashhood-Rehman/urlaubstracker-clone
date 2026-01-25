@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Upload, X, ImageIcon } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import toast from 'react-hot-toast';
 
 interface ImageUploadProps {
@@ -79,7 +79,6 @@ export default function ImageUpload({
         {label} <span className="text-red-500">*</span> ({images.length}/{maxImages})
       </label>
 
-      {/* Upload Area */}
       <div className="relative">
         <input
           type="file"
@@ -92,13 +91,12 @@ export default function ImageUpload({
         />
         <label
           htmlFor="image-upload"
-          className={`flex items-center justify-center gap-2 w-full px-4 py-6 border-2 border-dashed rounded-lg cursor-pointer transition-all ${
-            uploading || images.length >= maxImages
-              ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
-              : 'border-blue-300 bg-blue-50 hover:border-blue-400 hover:bg-blue-100'
-          }`}
+          className={`flex items-center justify-center gap-2 w-full px-4 py-6 border-2 border-dashed rounded-lg cursor-pointer transition-all ${uploading || images.length >= maxImages
+            ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
+            : 'border-blue-300 bg-blue-50 hover:border-blue-400 hover:bg-blue-100'
+            }`}
         >
-          <Upload className="w-5 h-5 text-blue-600" />
+          <icons.Upload className="w-5 h-5 text-blue-600" />
           <div className="text-center">
             <p className="text-sm font-semibold text-slate-700">
               {uploading ? 'Uploading...' : 'Drag & drop images or click to browse'}
@@ -108,7 +106,6 @@ export default function ImageUpload({
         </label>
       </div>
 
-      {/* Image Preview Grid */}
       {images.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {images.map((image, index) => (
@@ -125,7 +122,7 @@ export default function ImageUpload({
                 onClick={() => handleRemoveImage(index)}
                 className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
               >
-                <X className="w-4 h-4" />
+                <icons.X className="w-4 h-4" />
               </button>
               <p className="text-xs text-gray-500 mt-1 text-center">Image {index + 1}</p>
             </div>

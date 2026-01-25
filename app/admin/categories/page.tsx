@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, Plus, Trash2, X, AlertCircle } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import toast from 'react-hot-toast';
 
 interface Category {
@@ -19,7 +19,6 @@ export default function CategoriesPage() {
     const [showModal, setShowModal] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Form State
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -97,7 +96,6 @@ export default function CategoriesPage() {
         c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (c.description && c.description.toLowerCase().includes(searchTerm.toLowerCase()))
     );
-    console.log('filteredcategories', filteredCategories)
 
     return (
         <div className="p-6">
@@ -110,15 +108,14 @@ export default function CategoriesPage() {
                     onClick={() => setShowModal(true)}
                     className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
                 >
-                    <Plus className="w-4 h-4" />
+                    <icons.Plus className="w-4 h-4" />
                     Add Category
                 </button>
             </div>
 
-            {/* Search */}
             <div className="mb-6 max-w-md">
                 <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg">
-                    <Search className="w-4 h-4 text-gray-400" />
+                    <icons.Search className="w-4 h-4 text-gray-400" />
                     <input
                         type="text"
                         placeholder="Search categories..."
@@ -129,7 +126,6 @@ export default function CategoriesPage() {
                 </div>
             </div>
 
-            {/* List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {isLoading ? (
                     Array.from({ length: 6 }).map((_, i) => (
@@ -158,7 +154,7 @@ export default function CategoriesPage() {
                                         className="p-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                         title="Delete Category"
                                     >
-                                        <Trash2 className="w-4 h-4" />
+                                        <icons.Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
                             )}
@@ -171,14 +167,13 @@ export default function CategoriesPage() {
                 )}
             </div>
 
-            {/* Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg w-full max-w-md">
                         <div className="flex justify-between items-center p-4 border-b border-gray-100">
                             <h2 className="text-lg font-bold">Add New Category</h2>
                             <button onClick={() => setShowModal(false)} className="p-1 hover:bg-gray-100 rounded-full">
-                                <X className="w-5 h-5" />
+                                <icons.X className="w-5 h-5" />
                             </button>
                         </div>
                         <form onSubmit={handleSubmit} className="p-4 space-y-4">

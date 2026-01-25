@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import toast from 'react-hot-toast';
 import ImageUpload from '../components/ImageUpload';
+import Loading from '../../components/Loading';
 
 export default function ProductsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,13 +30,12 @@ export default function ProductsPage() {
     }, []);
 
     const [formData, setFormData] = useState<any>({
-        // Hotel common fields
         title_fr: '',
         desc_fr: '',
         address: '',
         city: '',
         country: '',
-        category: 'Hotel', // This is sub-category for hotels or general category
+        category: 'Hotel',
         price_per_night: '',
         total_price: '',
         currency: 'EUR',
@@ -45,7 +45,6 @@ export default function ProductsPage() {
         check_in: '',
         check_out: '',
         notes: '',
-        // Flight fields
         airline: '',
         departureCity: '',
         arrivalCity: '',
@@ -59,7 +58,6 @@ export default function ProductsPage() {
         extras: '',
         tips: '',
         offerLink: '',
-        // Rental fields
         mainHeading: '',
         mainDescription: '',
         offer: '',
@@ -67,7 +65,6 @@ export default function ProductsPage() {
         thingsToDo: '',
         additionalInfo: '',
         ecoTip: '',
-        // Images
         images: [] as string[],
         link: '',
     });
@@ -84,7 +81,6 @@ export default function ProductsPage() {
                 const res = await fetch("/api/products")
                 const data = await res.json()
                 setProducts(data.data)
-                console.log("Products fetched:", data);
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {
@@ -302,17 +298,14 @@ export default function ProductsPage() {
                 setShowModal(false);
                 resetForm();
 
-                // Refresh products list
                 const res = await fetch("/api/products")
                 const data = await res.json()
                 setProducts(data.data)
 
             } else {
-                console.log('Failed to save product error frontend:', result);
                 toast.error('Failed to save product');
             }
         } catch (error) {
-            console.error('Error:', error);
             toast.error('Error saving product');
         } finally {
             setLoading(false);
@@ -321,18 +314,15 @@ export default function ProductsPage() {
 
     return (
         <div className="p-6">
-            {/* Header */}
             <div className="mb-6">
                 <h1 className="text-2xl font-bold text-foreground">Products Management</h1>
                 <p className="text-sm text-gray-500 mt-1">Manage all products and packages</p>
             </div>
 
-            {/* Actions Bar */}
-            {/* Actions Bar */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-4 gap-3">
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
                     <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 sm:max-w-md">
-                        <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                        <icons.Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
                         <input
                             type="text"
                             placeholder="Search by name, city, country..."
@@ -376,7 +366,7 @@ export default function ProductsPage() {
                     }}
                     className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium whitespace-nowrap"
                 >
-                    <Plus className="w-4 h-4" />
+                    <icons.Plus className="w-4 h-4" />
                     <span className="hidden sm:inline">Add Product</span>
                     <span className="sm:hidden">Add</span>
                 </button>
@@ -412,24 +402,11 @@ export default function ProductsPage() {
                     </thead>
                     <tbody>
                         {isFetching ? (
-                            Array.from({ length: itemsPerPage }).map((_, idx) => (
-                                <tr key={`skeleton-${idx}`} className="border-b border-gray-100 animate-pulse">
-                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-8"></div></td>
-                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-48"></div></td>
-                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-20"></div></td>
-                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-24"></div></td>
-                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-16"></div></td>
-                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-12"></div></td>
-                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-10"></div></td>
-                                    <td className="px-4 py-4"><div className="h-4 bg-gray-200 rounded w-32"></div></td>
-                                    <td className="px-4 py-4">
-                                        <div className="flex gap-2">
-                                            <div className="w-6 h-6 bg-gray-200 rounded"></div>
-                                            <div className="w-6 h-6 bg-gray-200 rounded"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
+                            <tr>
+                                <td colSpan={9}>
+                                    <Loading variant="container" text="Syncing products..." />
+                                </td>
+                            </tr>
                         ) : paginatedProducts.length > 0 ? (
                             paginatedProducts.map((product) => (
                                 <tr key={`${product.mainCategory}-${product.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
@@ -473,13 +450,13 @@ export default function ProductsPage() {
                                                 onClick={() => handleEdit(product)}
                                                 className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
                                             >
-                                                <Edit className="w-4 h-4 text-blue-600" />
+                                                <icons.Edit className="w-4 h-4 text-blue-600" />
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(product)}
                                                 className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
                                             >
-                                                <Trash2 className="w-4 h-4 text-red-600" />
+                                                <icons.Trash2 className="w-4 h-4 text-red-600" />
                                             </button>
                                         </div>
                                     </td>
@@ -561,7 +538,7 @@ export default function ProductsPage() {
                         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
                             <h2 className="text-lg font-bold text-foreground">{isEditing ? 'Edit Product' : 'Add New Product'}</h2>
                             <button onClick={() => setShowModal(false)} className="p-1 hover:bg-gray-100 rounded">
-                                <X className="w-5 h-5" />
+                                <icons.X className="w-5 h-5" />
                             </button>
                         </div>
 

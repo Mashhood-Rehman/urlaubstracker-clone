@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Loader, Search, Check } from 'lucide-react';
+import { icons } from '@/assets/icons';
 
 interface Entity {
   id: number;
@@ -214,7 +214,7 @@ export default function AssignEntitiesModal({
             onClick={onClose}
             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5 text-gray-600" />
+            <icons.X className="w-5 h-5 text-gray-600" />
           </button>
         </div>
 
@@ -231,8 +231,8 @@ export default function AssignEntitiesModal({
                   setSearchTerm('');
                 }}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors capitalize ${(entityType === cat.slug || entityType === cat.name)
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                   }`}
               >
                 {cat.name}
@@ -256,7 +256,7 @@ export default function AssignEntitiesModal({
         {/* Search */}
         <div className="p-6 border-b">
           <div className="relative">
-            <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+            <icons.Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
             <input
               type="text"
               placeholder={`Search ${entityType}...`}
@@ -270,7 +270,7 @@ export default function AssignEntitiesModal({
         {/* Content */}
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <Loader className="w-8 h-8 animate-spin text-blue-600" />
+            <icons.Loader className="w-8 h-8 animate-spin text-blue-600" />
           </div>
         ) : (
           <div className="p-6">
@@ -324,7 +324,7 @@ export default function AssignEntitiesModal({
                         </span>
                       )}
                       {selectedEntities.has(entity.id) && (
-                        <Check className="w-5 h-5 text-blue-600" />
+                        <icons.Check className="w-5 h-5 text-blue-600" />
                       )}
                     </div>
                   </div>
@@ -357,7 +357,7 @@ export default function AssignEntitiesModal({
             disabled={assigning || selectedEntities.size === 0}
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400"
           >
-            {assigning && <Loader className="w-4 h-4 animate-spin" />}
+            {assigning && <icons.Loader className="w-4 h-4 animate-spin" />}
             Assign ({selectedEntities.size})
           </button>
         </div>

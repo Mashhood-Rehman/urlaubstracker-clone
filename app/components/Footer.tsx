@@ -1,6 +1,6 @@
 'use client';
 
-import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone, ExternalLink } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import Image from 'next/image';
 
 const Footer = () => {
@@ -43,7 +43,7 @@ const Footer = () => {
                     </div>
                     <form className="flex flex-col sm:flex-row gap-4" onSubmit={(e) => e.preventDefault()}>
                         <div className="relative flex-grow">
-                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
+                            <icons.Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
                             <input
                                 type="email"
                                 placeholder="Your email address"
@@ -71,7 +71,7 @@ const Footer = () => {
                             Your specialist for the best travel offers and holiday bargains. We find the cheapest deals worldwide for you every day.
                         </p>
                         <div className="flex gap-4">
-                            {[Facebook, Instagram, Twitter, Youtube].map((Icon, idx) => (
+                            {[icons.Facebook, icons.Instagram, icons.Twitter, icons.Youtube].map((Icon, idx) => (
                                 <a key={idx} href="#" className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl hover:bg-[#0E7C7B] transition-all hover:-translate-y-1 group">
                                     <Icon size={20} className="text-white/70 group-hover:text-white transition-colors" />
                                 </a>
@@ -117,7 +117,7 @@ const Footer = () => {
                                 <a key={link.name} href={link.href} className="flex items-center gap-3 p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition-colors group">
                                     <span className="text-2xl">{link.flag}</span>
                                     <span className="text-sm font-medium text-white/80 group-hover:text-white">{link.name}</span>
-                                    <ExternalLink size={14} className="ml-auto text-white/20 group-hover:text-white/40" />
+                                    <icons.ExternalLink size={14} className="ml-auto text-white/20 group-hover:text-white/40" />
                                 </a>
                             ))}
                         </div>

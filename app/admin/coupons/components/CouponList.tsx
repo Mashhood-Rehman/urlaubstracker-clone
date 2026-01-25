@@ -1,6 +1,6 @@
 'use client';
 
-import { Edit2, Trash2, CheckCircle, XCircle, Gift } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import { format } from 'date-fns';
 
 interface Coupon {
@@ -126,21 +126,21 @@ export default function CouponList({ coupons, onEdit, onDelete, onAssign, onTogg
                       className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                       title="Assign to entities"
                     >
-                      <Gift className="w-4 h-4" />
+                      <icons.Gift className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => onEdit(coupon)}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                       title="Edit coupon"
                     >
-                      <Edit2 className="w-4 h-4" />
+                      <icons.Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => onDelete(coupon.id)}
                       className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       title="Delete coupon"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <icons.Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </td>

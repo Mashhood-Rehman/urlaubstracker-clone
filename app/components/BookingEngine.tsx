@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { icons } from '@/assets/icons';
 import Autocomplete from './Autocomplete';
 import Calendar from './Calendar';
+import { bookingTabs as tabs } from '@/app/data';
 
 const BookingEngine = () => {
     const router = useRouter();
@@ -53,13 +54,6 @@ const BookingEngine = () => {
         }
     };
 
-
-
-    const tabs = [
-        { name: 'Flights', icon: icons.Plane },
-        { name: 'Hotels', icon: icons.Hotel },
-        { name: 'Car Rental', icon: icons.Car },
-    ];
 
     return (
         <div className="relative z-20 w-full max-w-5xl mx-auto">

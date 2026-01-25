@@ -3,13 +3,7 @@
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 
-const destinations = [
-    { name: 'Bali', country: 'Indonesia', image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=1000' },
-    { name: 'Iceland', country: 'Europe', image: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&q=80&w=1000' },
-    { name: 'Tokyo', country: 'Japan', image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&q=80&w=1000' },
-    { name: 'Amalfi Coast', country: 'Italy', image: 'https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?auto=format&fit=crop&q=80&w=1000' },
-    { name: 'Santorini', country: 'Greece', image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&q=80&w=1000' },
-];
+import { destinations } from '@/app/data';
 
 const DestinationReveal = () => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);

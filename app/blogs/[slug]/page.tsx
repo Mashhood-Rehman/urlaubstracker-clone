@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Clock, User, Tag, Share2, Facebook, Twitter, Link as LinkIcon, ChevronRight } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import Link from 'next/link';
 
 interface Blog {
@@ -19,6 +19,8 @@ interface Blog {
     link?: string;
     createdAt: string;
 }
+
+import Loading from '../../components/Loading';
 
 export default function BlogDetailsPage() {
     const { slug } = useParams();
@@ -71,11 +73,7 @@ export default function BlogDetailsPage() {
     };
 
     if (loading) {
-        return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="w-10 h-10 border-2 border-[#5B2EFF]/20 border-t-[#5B2EFF] rounded-full animate-spin"></div>
-            </div>
-        );
+        return <Loading variant="page" text="Fetching story..." />;
     }
 
     if (!blog) {
@@ -83,7 +81,7 @@ export default function BlogDetailsPage() {
             <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 text-center">
                 <h1 className="text-2xl font-bold text-gray-900 mb-4">Article not found</h1>
                 <Link href="/" className="text-[#5B2EFF] font-semibold flex items-center gap-2 hover:underline">
-                    <ArrowLeft size={18} /> Back to homepage
+                    <icons.ArrowLeft size={18} /> Back to homepage
                 </Link>
             </div>
         );
@@ -99,7 +97,7 @@ export default function BlogDetailsPage() {
                             onClick={() => router.back()}
                             className="z-10 p-2 mb-5 bg-white/80 backdrop-blur-sm rounded-full shadow-md hover:bg-white text-gray-700 transition-all"
                         >
-                            <ArrowLeft size={20} />
+                            <icons.ArrowLeft size={20} />
                         </button>
                         {/* Carousel Wrapper */}
                         <div className="rounded-lg overflow-hidden bg-gray-100 group mb-8 border border-gray-100">
@@ -118,7 +116,7 @@ export default function BlogDetailsPage() {
                                             onClick={prevImage}
                                             className="p-2 bg-white/90 rounded-sm shadow-md hover:bg-white"
                                         >
-                                            <ChevronRight size={20} className="rotate-180" />
+                                            <icons.ChevronRight size={20} className="rotate-180" />
                                         </button>
                                     </div>
                                     <div className="absolute inset-y-0 right-0 flex items-center px-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
@@ -126,7 +124,7 @@ export default function BlogDetailsPage() {
                                             onClick={nextImage}
                                             className="p-2 bg-white/90 rounded-sm shadow-md hover:bg-white"
                                         >
-                                            <ChevronRight size={20} />
+                                            <icons.ChevronRight size={20} />
                                         </button>
                                     </div>
                                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
@@ -156,11 +154,11 @@ export default function BlogDetailsPage() {
                             </h1>
                             <div className="flex items-center gap-4 text-xs text-gray-500 font-medium">
                                 <div className="flex items-center gap-1.5">
-                                    <User size={14} />
+                                    <icons.User size={14} />
                                     <span>{blog.author}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
-                                    <Clock size={14} />
+                                    <icons.Clock size={14} />
                                     <span>5 min read</span>
                                 </div>
                                 <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
@@ -189,7 +187,7 @@ export default function BlogDetailsPage() {
                                     className="px-6 py-3 bg-[#5B2EFF] text-white font-bold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 whitespace-nowrap"
                                 >
                                     Visit Original Source
-                                    <ChevronRight size={18} />
+                                    <icons.ChevronRight size={18} />
                                 </a>
                             </div>
                         )}

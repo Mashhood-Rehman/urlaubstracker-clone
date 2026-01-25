@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import toast from 'react-hot-toast';
 import ImageUpload from '../components/ImageUpload';
 
@@ -204,7 +204,7 @@ export default function FlightsAdminPage() {
 
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 max-w-md">
-                    <Search className="w-4 h-4 text-gray-400" />
+                    <icons.Search className="w-4 h-4 text-gray-400" />
                     <input
                         type="text"
                         placeholder="Search flights..."
@@ -220,7 +220,7 @@ export default function FlightsAdminPage() {
                     }}
                     className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
                 >
-                    <Plus className="w-4 h-4" />
+                    <icons.Plus className="w-4 h-4" />
                     Add Flight
                 </button>
             </div>
@@ -265,13 +265,13 @@ export default function FlightsAdminPage() {
                                                 onClick={() => handleEdit(flight)}
                                                 className="p-1 hover:bg-gray-100 rounded text-blue-600"
                                             >
-                                                <Edit className="w-4 h-4" />
+                                                <icons.Edit className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(flight.id)}
                                                 className="p-1 hover:bg-gray-100 rounded text-red-600"
                                             >
-                                                <Trash2 className="w-4 h-4" />
+                                                <icons.Trash2 className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </td>
@@ -294,7 +294,7 @@ export default function FlightsAdminPage() {
                         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
                             <h2 className="text-lg font-bold text-foreground">{isEditing ? 'Edit Flight' : 'Add New Flight'}</h2>
                             <button onClick={() => setShowModal(false)} className="p-1 hover:bg-gray-100 rounded">
-                                <X className="w-5 h-5" />
+                                <icons.X className="w-5 h-5" />
                             </button>
                         </div>
 

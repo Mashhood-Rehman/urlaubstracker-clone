@@ -3,40 +3,7 @@
 import React from 'react';
 import { icons } from '@/assets/icons';
 
-const moods = [
-    {
-        title: 'Adventure',
-        desc: 'Peak experiences for the brave.',
-        icon: icons.Plane,
-        color: 'bg-orange-500',
-        size: 'md:col-span-2 md:row-span-2',
-        image: 'https://images.unsplash.com/photo-1533240332313-0db49b459ad6?auto=format&fit=crop&q=80&w=1000'
-    },
-    {
-        title: 'Serenity',
-        desc: 'Quiet escapes and calm waters.',
-        icon: icons.Hotel,
-        color: 'bg-blue-400',
-        size: 'md:col-span-1 md:row-span-1',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=1000'
-    },
-    {
-        title: 'Urban Pulse',
-        desc: 'City lights and neon nights.',
-        icon: icons.MapPin,
-        color: 'bg-purple-600',
-        size: 'md:col-span-1 md:row-span-2',
-        image: 'https://images.unsplash.com/photo-1449153001399-4c0af90ad4d9?auto=format&fit=crop&q=80&w=1000'
-    },
-    {
-        title: 'Hidden Gems',
-        desc: 'Off the beaten path secrets.',
-        icon: icons.Globe,
-        color: 'bg-emerald-500',
-        size: 'md:col-span-1 md:row-span-1',
-        image: 'https://images.unsplash.com/photo-1516483642775-8209864e831f?auto=format&fit=crop&q=80&w=1000'
-    },
-];
+import { moods } from '@/app/data';
 
 const MoodSelector = () => {
     return (

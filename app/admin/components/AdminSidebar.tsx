@@ -2,18 +2,18 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Package, LogOut, FileText, Globe, Ticket, List } from 'lucide-react';
+import { icons } from '@/assets/icons';
 
 const AdminSidebar = () => {
     const pathname = usePathname();
 
     const navItems = [
-        { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-        { name: 'Products', href: '/admin/products', icon: Package },
-        { name: 'Categories', href: '/admin/categories', icon: List },
-        { name: 'Blogs', href: '/admin/blogs', icon: FileText },
-        { name: 'Brands', href: '/admin/brands', icon: Globe },
-        { name: 'Coupons', href: '/admin/coupons', icon: Ticket },
+        { name: 'Dashboard', href: '/admin', icon: icons.LayoutDashboard },
+        { name: 'Products', href: '/admin/products', icon: icons.Package },
+        { name: 'Categories', href: '/admin/categories', icon: icons.List },
+        { name: 'Blogs', href: '/admin/blogs', icon: icons.FileText },
+        { name: 'Brands', href: '/admin/brands', icon: icons.Globe },
+        { name: 'Coupons', href: '/admin/coupons', icon: icons.Ticket },
     ];
 
 
@@ -60,7 +60,7 @@ const AdminSidebar = () => {
                     href="/"
                     className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors cursor-pointer"
                 >
-                    <Globe className="w-4 h-4" />
+                    <icons.Globe className="w-4 h-4" />
                     <span className="text-sm font-medium">Back to Website</span>
                 </Link>
                 <button
@@ -72,7 +72,7 @@ const AdminSidebar = () => {
                     }}
                     className="w-full h-10 flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors cursor-pointer text-left"
                 >
-                    <LogOut className="w-4 h-4" />
+                    <icons.LogOut className="w-4 h-4" />
                     <span className="text-sm font-medium">Logout</span>
                 </button>
             </div>

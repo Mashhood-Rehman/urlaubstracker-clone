@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { icons } from '@/assets/icons';
+import { calendarData } from '@/app/data';
+const { months, daysOfWeek } = calendarData;
 
 interface CalendarProps {
     selectedDate?: string;
@@ -30,8 +32,7 @@ export default function Calendar({
     const calendarRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
 
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 
     // Update dropdown position when opening or scrolling
     useEffect(() => {

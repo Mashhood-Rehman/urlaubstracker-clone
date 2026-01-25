@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Loader, ExternalLink } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import { useParams } from 'next/navigation';
+import Loading from '../../components/Loading';
 
 interface Coupon {
     id: number;
@@ -44,12 +45,10 @@ export default function BrandDetailPage() {
         if (params.id) fetchBrand();
     }, [params.id]);
 
+
+    // ... inside the component
     if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <Loader className="w-12 h-12 animate-spin text-primary" />
-            </div>
-        );
+        return <Loading variant="page" text="Gathering brand info..." />;
     }
 
     if (!brand) {
@@ -86,7 +85,7 @@ export default function BrandDetailPage() {
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:underline flex items-center gap-2 mb-6"
                         >
-                            <ExternalLink className="w-4 h-4" />
+                            <icons.ExternalLink className="w-4 h-4" />
                             Visit Official Website
                         </a>
                     )}

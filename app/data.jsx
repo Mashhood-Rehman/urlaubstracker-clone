@@ -1,4 +1,5 @@
 import React from 'react';
+import { icons } from '@/assets/icons';
 
 export const travelHacks = [
     {
@@ -61,3 +62,63 @@ export const exceptionalHotels = [
         image: "https://images.unsplash.com/photo-1540202404-a2f29036bb57?auto=format&fit=crop&w=800&q=80"
     }
 ];
+
+export const moods = [
+    {
+        title: 'Adventure',
+        desc: 'Peak experiences for the brave.',
+        icon: icons.Plane,
+        color: 'bg-orange-500',
+        size: 'md:col-span-2 md:row-span-2',
+        image: 'https://images.unsplash.com/photo-1533240332313-0db49b459ad6?auto=format&fit=crop&q=80&w=1000'
+    },
+    {
+        title: 'Serenity',
+        desc: 'Quiet escapes and calm waters.',
+        icon: icons.Hotel,
+        color: 'bg-blue-400',
+        size: 'md:col-span-1 md:row-span-1',
+        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=1000'
+    },
+    {
+        title: 'Urban Pulse',
+        desc: 'City lights and neon nights.',
+        icon: icons.MapPin,
+        color: 'bg-purple-600',
+        size: 'md:col-span-1 md:row-span-2',
+        image: 'https://images.unsplash.com/photo-1449153001399-4c0af90ad4d9?auto=format&fit=crop&q=80&w=1000'
+    },
+    {
+        title: 'Hidden Gems',
+        desc: 'Off the beaten path secrets.',
+        icon: icons.Globe,
+        color: 'bg-emerald-500',
+        size: 'md:col-span-1 md:row-span-1',
+        image: 'https://images.unsplash.com/photo-1516483642775-8209864e831f?auto=format&fit=crop&q=80&w=1000'
+    },
+];
+
+export const destinations = [
+    { name: 'Bali', country: 'Indonesia', image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=1000' },
+    { name: 'Iceland', country: 'Europe', image: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&q=80&w=1000' },
+    { name: 'Tokyo', country: 'Japan', image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&q=80&w=1000' },
+    { name: 'Amalfi Coast', country: 'Italy', image: 'https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?auto=format&fit=crop&q=80&w=1000' },
+    { name: 'Santorini', country: 'Greece', image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&q=80&w=1000' },
+];
+
+export const appHacks = [
+    { title: 'Packing Like a Pro', desc: 'Space-saving techniques for long trips.', icon: icons.Ticket },
+    { title: 'Finding Cheap Flights', desc: 'The best days to book and fly.', icon: icons.Plane },
+    { title: 'Travel Insurance Guide', desc: 'What you really need to be covered.', icon: icons.Bell },
+];
+
+export const bookingTabs = [
+    { name: 'Flights', icon: icons.Plane },
+    { name: 'Hotels', icon: icons.Hotel },
+    { name: 'Car Rental', icon: icons.Car },
+];
+
+export const calendarData = {
+    months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+};

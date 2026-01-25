@@ -1,10 +1,9 @@
+import { icons } from '@/assets/icons';
 import prisma from '@/lib/prisma';
-import { Package, Plane, Car } from 'lucide-react';
 import Link from 'next/link';
 
 
 export default async function AdminDashboard() {
-    // Fetch live counts
     const [hotelCount, flightCount, rentalCount] = await Promise.all([
         prisma.hotel.count(),
         prisma.flight.count(),
@@ -12,15 +11,15 @@ export default async function AdminDashboard() {
     ]);
 
     const stats = [
-        { label: 'Hotels', value: hotelCount.toString(), icon: Package, color: 'bg-green-500' },
-        { label: 'Flights', value: flightCount.toString(), icon: Plane, color: 'bg-blue-600' },
-        { label: 'Rentals', value: rentalCount.toString(), icon: Car, color: 'bg-purple-500' },
+        { label: 'Hotels', value: hotelCount.toString(), icon: icons.Package, color: 'bg-green-500' },
+        { label: 'Flights', value: flightCount.toString(), icon: icons.Plane, color: 'bg-blue-600' },
+        { label: 'Rentals', value: rentalCount.toString(), icon: icons.Car, color: 'bg-purple-500' },
     ];
 
     const actions = [
-        { label: 'Manage Hotels', href: '/admin/products', icon: Package, color: 'bg-green-500' },
-        { label: 'Manage Flights', href: '/admin/flights', icon: Plane, color: 'bg-blue-600' },
-        { label: 'Manage Rentals', href: '/admin/rentals', icon: Car, color: 'bg-purple-500' },
+        { label: 'Manage Hotels', href: '/admin/products', icon: icons.Package, color: 'bg-green-500' },
+        { label: 'Manage Flights', href: '/admin/flights', icon: icons.Plane, color: 'bg-blue-600' },
+        { label: 'Manage Rentals', href: '/admin/rentals', icon: icons.Car, color: 'bg-purple-500' },
     ];
 
     return (
@@ -30,7 +29,6 @@ export default async function AdminDashboard() {
                 <p className="text-sm text-gray-500 mt-1">Welcome to the admin panel</p>
             </div>
 
-            {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 {stats.map((stat) => {
                     const Icon = stat.icon;
@@ -53,7 +51,6 @@ export default async function AdminDashboard() {
                 })}
             </div>
 
-            {/* Quick Actions */}
             <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h2 className="text-lg font-semibold text-foreground mb-4">Quick Navigation</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

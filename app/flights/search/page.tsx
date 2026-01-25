@@ -4,6 +4,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { icons } from '@/assets/icons';
 import Link from 'next/link';
+import Loading from '../../components/Loading';
 
 function FlightSearchResultsContent() {
     const searchParams = useSearchParams();
@@ -65,11 +66,11 @@ function FlightSearchResultsContent() {
                                 `/api/coupons/validate-date-range?entityType=flights&startDate=${startDate}&endDate=${endDate}`
                             );
                             const couponData = await couponRes.json();
-                            
+
                             if (couponData.validEntityIds && couponData.validEntityIds.length > 0) {
                                 // Only show flights that have valid coupons
                                 filtered = filtered.filter((f: any) =>
-                                  couponData.validEntityIds.includes(f.id)
+                                    couponData.validEntityIds.includes(f.id)
                                 );
                             } else {
                                 // No valid coupons for this date range
@@ -151,9 +152,7 @@ function FlightSearchResultsContent() {
                         </div>
 
                         {loading ? (
-                            <div className="text-center py-20">
-                                <div className="text-xl font-bold text-primary animate-pulse">Loading amazing deals...</div>
-                            </div>
+                            <Loading variant="container" text="Loading amazing deals..." />
                         ) : flights.length > 0 ? (
                             flights.map((flight) => (
                                 <div key={flight.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group">
@@ -222,11 +221,7 @@ function FlightSearchResultsContent() {
 
 export default function FlightSearchResults() {
     return (
-        <Suspense fallback={
-            <div className="min-h-screen bg-gray-50 pt-24 pb-12 flex items-center justify-center">
-                <div className="text-xl font-bold text-primary animate-pulse">Loading search...</div>
-            </div>
-        }>
+        <Suspense fallback={<Loading variant="page" text="Searching flights..." />}>
             <FlightSearchResultsContent />
         </Suspense>
     );

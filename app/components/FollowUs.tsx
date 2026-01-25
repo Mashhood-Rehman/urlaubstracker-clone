@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { Instagram, Smartphone, Send, Globe } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import { images } from '@/assets/images';
 
 const FollowUs = () => {
@@ -42,17 +42,17 @@ const FollowUs = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <a href="#" className="group flex items-center justify-between px-2 py-3 bg-gray-900 text-white rounded-lg hover:bg-[#5B2EFF] transition-all duration-300">
                                 <div className="flex items-center gap-4">
-                                    <Instagram className="w-6 h-6" />
+                                    <icons.Instagram className="w-6 h-6" />
                                     <span className="font-black italic uppercase">Instagram</span>
                                 </div>
-                                <Send className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <icons.Send className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </a>
                             <a href="#" className="group flex items-center justify-between p-2 py-3 bg-white border-2 border-gray-100 rounded-lg hover:border-[#5EEAD4] transition-all duration-300">
                                 <div className="flex items-center gap-4">
-                                    <Smartphone className="w-6 h-6 text-gray-900" />
+                                    <icons.Smartphone className="w-6 h-6 text-gray-900" />
                                     <span className="font-black text-gray-900 italic uppercase">TikTok</span>
                                 </div>
-                                < Globe className="w-5 h-5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <icons.Globe className="w-5 h-5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </a>
                         </div>
                     </div>

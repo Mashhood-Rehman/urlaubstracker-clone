@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ArrowUpRight, Calendar, User } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import Link from 'next/link';
 
 interface Blog {
@@ -15,6 +15,8 @@ interface Blog {
     category: string;
     createdAt: string;
 }
+
+import Loading from '../components/Loading';
 
 const BlogList = () => {
     const searchParams = useSearchParams();
@@ -41,11 +43,7 @@ const BlogList = () => {
     }, [categoryFilter]);
 
     if (loading) {
-        return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="w-10 h-10 border-2 border-[#5B2EFF]/20 border-t-[#5B2EFF] rounded-full animate-spin"></div>
-            </div>
-        );
+        return <Loading variant="page" text="Loading articles..." />;
     }
 
     return (
@@ -86,11 +84,11 @@ const BlogList = () => {
                                 <div className="p-8 flex flex-col flex-1">
                                     <div className="flex items-center gap-6 text-gray-400 text-[11px] font-bold uppercase tracking-wider mb-4">
                                         <span className="flex items-center gap-2">
-                                            <Calendar size={14} className="text-[#5B2EFF]" />
+                                            <icons.Calendar size={14} className="text-[#5B2EFF]" />
                                             {new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                         </span>
                                         <span className="flex items-center gap-2">
-                                            <User size={14} className="text-[#5B2EFF]" />
+                                            <icons.User size={14} className="text-[#5B2EFF]" />
                                             {blog.author}
                                         </span>
                                     </div>
@@ -105,7 +103,7 @@ const BlogList = () => {
 
                                     <div className="mt-auto flex items-center justify-between">
                                         <span className="text-[11px] font-black uppercase tracking-widest text-[#5B2EFF] flex items-center gap-2 group-hover:gap-3 transition-all">
-                                            Read Article <ArrowUpRight size={14} />
+                                            Read Article <icons.ArrowUpRight size={14} />
                                         </span>
                                     </div>
                                 </div>
@@ -127,11 +125,7 @@ const BlogList = () => {
 
 export default function BlogsPage() {
     return (
-        <Suspense fallback={
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="w-10 h-10 border-2 border-[#5B2EFF]/20 border-t-[#5B2EFF] rounded-full animate-spin"></div>
-            </div>
-        }>
+        <Suspense fallback={<Loading variant="page" />}>
             <BlogList />
         </Suspense>
     );

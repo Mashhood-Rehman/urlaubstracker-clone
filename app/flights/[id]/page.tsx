@@ -12,6 +12,8 @@ const formatCurrency = (amount: number, currency: string) => {
     }).format(amount);
 };
 
+import Loading from '../../components/Loading';
+
 const FlightDetailPage = () => {
     const { id } = useParams();
     const [flight, setFlight] = useState<any>(null);
@@ -34,11 +36,7 @@ const FlightDetailPage = () => {
         if (id) fetchFlight();
     }, [id]);
 
-    if (loading) return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="text-xl font-bold text-primary animate-pulse">Loading flight details...</div>
-        </div>
-    );
+    if (loading) return <Loading variant="page" text="Loading flight details..." />;
 
     if (!flight) return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">

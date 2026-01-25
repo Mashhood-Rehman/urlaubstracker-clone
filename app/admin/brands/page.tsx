@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Loader, Globe, Image as ImageIcon, Trash2, Edit2 } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import ImageUpload from '../components/ImageUpload';
+import Loading from '../../components/Loading';
 
 interface Brand {
     id: number;
@@ -110,7 +111,7 @@ export default function BrandsPage() {
                     }}
                     className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                    <Plus className="w-5 h-5" />
+                    <icons.Plus className="w-5 h-5" />
                     Add Brand
                 </button>
             </div>
@@ -165,7 +166,7 @@ export default function BrandsPage() {
                             type="submit"
                             className="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center gap-2"
                         >
-                            {loading && <Loader className="w-4 h-4 animate-spin" />}
+                            {loading && <icons.Loader className="w-4 h-4 animate-spin" />}
                             {editingBrand ? 'Update' : 'Create'} Brand
                         </button>
                     </div>
@@ -173,9 +174,7 @@ export default function BrandsPage() {
             )}
 
             {loading && !brands.length ? (
-                <div className="flex justify-center p-12">
-                    <Loader className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
+                <Loading variant="container" text="Loading partner brands..." />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {brands.map((brand) => (
@@ -185,15 +184,15 @@ export default function BrandsPage() {
                                     {brand.images && brand.images.length > 0 ? (
                                         <img src={brand.images[0]} alt={brand.name} className="w-full h-full object-contain" />
                                     ) : (
-                                        <ImageIcon className="w-8 h-8 text-gray-300" />
+                                        <icons.ImageIcon className="w-8 h-8 text-gray-300" />
                                     )}
                                 </div>
                                 <div className="flex gap-1">
                                     <button onClick={() => handleEdit(brand)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg">
-                                        <Edit2 className="w-4 h-4" />
+                                        <icons.Edit2 className="w-4 h-4" />
                                     </button>
                                     <button onClick={() => handleDelete(brand.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
-                                        <Trash2 className="w-4 h-4" />
+                                        <icons.Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>
@@ -205,7 +204,7 @@ export default function BrandsPage() {
                                 </div>
                                 {brand.websiteLink && (
                                     <a href={brand.websiteLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-1 text-sm">
-                                        <Globe className="w-4 h-4" />
+                                        <icons.Globe className="w-4 h-4" />
                                         Visit site
                                     </a>
                                 )}

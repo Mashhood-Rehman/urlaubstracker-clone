@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { icons } from '@/assets/icons';
-import { LucideIcon } from 'lucide-react';
+import Loading from './Loading';
+
 
 interface Category {
     id: string | number;
@@ -47,12 +48,10 @@ const CategorySection = () => {
         }
     };
 
+
+    // ... inside the component
     if (loading) {
-        return (
-            <div className="py-12 flex justify-center items-center">
-                <div className="w-8 h-8 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-            </div>
-        );
+        return <Loading variant="container" />;
     }
 
     return (
@@ -74,7 +73,6 @@ const CategorySection = () => {
                                 href={`/search?category=${category.slug}`}
                                 className="group relative bg-slate-50 border border-slate-100 rounded-2xl p-6 transition-all duration-300 hover:bg-white hover:border-secondary/20 hover:shadow-2xl hover:shadow-secondary/10 hover:-translate-y-1 flex flex-col items-center justify-center text-center overflow-hidden"
                             >
-                                {/* Decorative Gradient Overlay */}
                                 <div className="absolute inset-0 bg-linear-to-br from-secondary/0 to-secondary/0 group-hover:from-secondary/[0.03] group-hover:to-transparent transition-all duration-500 opacity-0 group-hover:opacity-100"></div>
 
                                 <div className="relative z-10 w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 group-hover:border-secondary/30 group-hover:shadow-secondary/10">

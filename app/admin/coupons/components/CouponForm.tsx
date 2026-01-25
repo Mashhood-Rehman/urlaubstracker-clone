@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Loader } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import { format } from 'date-fns';
 
 interface Coupon {
@@ -155,7 +155,7 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
           onClick={onCancel}
           className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
         >
-          <X className="w-5 h-5 text-gray-600" />
+          <icons.X className="w-5 h-5 text-gray-600" />
         </button>
       </div>
 
@@ -313,7 +313,7 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
             disabled={loading}
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400"
           >
-            {loading && <Loader className="w-4 h-4 animate-spin" />}
+            {loading && <icons.Loader className="w-4 h-4 animate-spin" />}
             {coupon ? 'Update Coupon' : 'Create Coupon'}
           </button>
         </div>

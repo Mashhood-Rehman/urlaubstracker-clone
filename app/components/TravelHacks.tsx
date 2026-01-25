@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import Link from 'next/link';
 
 interface Blog {
@@ -49,7 +49,7 @@ const TravelHacks = () => {
                         className="px-10 py-5 bg-gray-900 text-white font-black italic uppercase rounded-lg hover:bg-[#5B2EFF] transition-all shrink-0 flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-[#5B2EFF]/20"
                     >
                         View All Travel Tips
-                        <ArrowUpRight size={20} />
+                        <icons.ArrowUpRight size={20} />
                     </Link>
                 </div>
 
@@ -87,7 +87,7 @@ const TravelHacks = () => {
                                     </p>
                                     <div className="mt-auto pt-6 flex items-center justify-between">
                                         <span className="text-[10px] font-black uppercase tracking-widest text-[#5B2EFF] flex items-center gap-2 group-hover:gap-3 transition-all">
-                                            Unlock Hack <ArrowUpRight size={14} />
+                                            Unlock Hack <icons.ArrowUpRight size={14} />
                                         </span>
                                     </div>
                                 </div>

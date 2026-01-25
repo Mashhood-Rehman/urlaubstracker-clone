@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { icons } from '@/assets/icons';
 import toast from 'react-hot-toast';
-import { ChevronLeft, ChevronRight, Copy, Check } from 'lucide-react';
 
 interface HotelDetailClientProps {
     hotel: any;
@@ -40,7 +39,7 @@ export default function HotelDetailClient({ hotel, coupons }: HotelDetailClientP
             <div className="bg-white border-b sticky top-0 z-40">
                 <div className="container mx-auto px-4 py-4 flex items-center gap-4">
                     <Link href="/" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                        <ChevronLeft className="w-6 h-6" />
+                        <icons.ChevronLeft className="w-6 h-6" />
                     </Link>
                     <h1 className="text-2xl font-bold text-gray-900">{hotel.title_fr || hotel.title}</h1>
                 </div>
@@ -66,13 +65,13 @@ export default function HotelDetailClient({ hotel, coupons }: HotelDetailClientP
                                                     onClick={prevImage}
                                                     className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md transition-all opacity-0 group-hover:opacity-100"
                                                 >
-                                                    <ChevronLeft className="w-6 h-6 text-gray-900" />
+                                                    <icons.ChevronLeft className="w-6 h-6 text-gray-900" />
                                                 </button>
                                                 <button
                                                     onClick={nextImage}
                                                     className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md transition-all opacity-0 group-hover:opacity-100"
                                                 >
-                                                    <ChevronRight className="w-6 h-6 text-gray-900" />
+                                                    <icons.ChevronRight className="w-6 h-6 text-gray-900" />
                                                 </button>
                                                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
                                                     {currentImageIndex + 1} / {hotel.images.length}
@@ -199,7 +198,7 @@ export default function HotelDetailClient({ hotel, coupons }: HotelDetailClientP
                                         className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
                                     >
                                         Book Now
-                                        <ChevronRight className="w-5 h-5" />
+                                        <icons.ChevronRight className="w-5 h-5" />
                                     </a>
                                 ) : (
                                     <button className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:opacity-90 transition-opacity">
@@ -249,9 +248,9 @@ export default function HotelDetailClient({ hotel, coupons }: HotelDetailClientP
                                                     title="Copy coupon code"
                                                 >
                                                     {copiedCouponId === coupon.id ? (
-                                                        <Check className="w-4 h-4" />
+                                                        <icons.Check className="w-4 h-4" />
                                                     ) : (
-                                                        <Copy className="w-4 h-4" />
+                                                        <icons.Copy className="w-4 h-4" />
                                                     )}
                                                 </button>
                                             </div>

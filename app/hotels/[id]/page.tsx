@@ -1,4 +1,3 @@
-// app/hotels/[id]/page.tsx
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import { icons } from '@/assets/icons';
@@ -9,11 +8,9 @@ export default async function HotelDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // ✅ MUST await params in Next 15
   const { id } = await params;
 
   const hotelId = Number(id);
-  console.log('Parsed hotelId:', hotelId);
 
   if (isNaN(hotelId)) {
     return <div>Invalid hotel ID</div>;
@@ -22,8 +19,6 @@ export default async function HotelDetailPage({
   const hotel = await prisma.hotel.findUnique({
     where: { id: hotelId },
   });
-
-  console.log('Hotel from DB:', hotel);
 
   if (!hotel) {
     return (
@@ -57,8 +52,6 @@ export default async function HotelDetailPage({
       },
     },
   });
-
-  console.log('Coupons from DB:', coupons);
 
   return <HotelDetailClient hotel={hotel} coupons={coupons} />;
 }

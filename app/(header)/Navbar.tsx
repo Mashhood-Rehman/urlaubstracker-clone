@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { icons } from '@/assets/icons';
 import { images } from '@/assets/images';
 import Link from 'next/link';
-import { User, LogOut, LayoutDashboard } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
@@ -133,14 +132,14 @@ const Navbar = () => {
                                     className="text-primary font-medium border-b border-gray-100 pb-2 flex items-center gap-2"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
-                                    <LayoutDashboard className="w-4 h-4" />
+                                    <icons.LayoutDashboard className="w-4 h-4" />
                                     Admin Panel
                                 </Link>
                                 <button
                                     onClick={handleLogout}
                                     className="text-red-500 font-bold pt-2 flex items-center gap-2 text-left"
                                 >
-                                    <LogOut className="w-4 h-4" />
+                                    <icons.LogOut className="w-4 h-4" />
                                     Logout
                                 </button>
                             </>

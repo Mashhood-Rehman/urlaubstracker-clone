@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Plus, Edit, Trash2 } from 'lucide-react';
+import { icons } from '@/assets/icons';
 
 export default function UsersPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +26,7 @@ export default function UsersPage() {
             {/* Actions Bar */}
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 max-w-md">
-                    <Search className="w-4 h-4 text-gray-400" />
+                    <icons.Search className="w-4 h-4 text-gray-400" />
                     <input
                         type="text"
                         placeholder="Search users..."
@@ -36,7 +36,7 @@ export default function UsersPage() {
                     />
                 </div>
                 <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium">
-                    <Plus className="w-4 h-4" />
+                    <icons.Plus className="w-4 h-4" />
                     Add User
                 </button>
             </div>
@@ -64,8 +64,8 @@ export default function UsersPage() {
                                 <td className="px-4 py-2">
                                     <span
                                         className={`inline-block px-2 py-0.5 text-xs font-medium rounded ${user.status === 'Active'
-                                                ? 'bg-green-100 text-green-700'
-                                                : 'bg-gray-100 text-gray-700'
+                                            ? 'bg-green-100 text-green-700'
+                                            : 'bg-gray-100 text-gray-700'
                                             }`}
                                     >
                                         {user.status}
@@ -74,10 +74,10 @@ export default function UsersPage() {
                                 <td className="px-4 py-2">
                                     <div className="flex items-center gap-2">
                                         <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-                                            <Edit className="w-4 h-4 text-blue-600" />
+                                            <icons.Edit className="w-4 h-4 text-blue-600" />
                                         </button>
                                         <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-                                            <Trash2 className="w-4 h-4 text-red-600" />
+                                            <icons.Trash2 className="w-4 h-4 text-red-600" />
                                         </button>
                                     </div>
                                 </td>

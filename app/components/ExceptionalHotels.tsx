@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { Star, MapPin, ArrowRight } from 'lucide-react';
+import { icons } from '@/assets/icons';
 import Link from 'next/link';
 
 interface Hotel {
@@ -13,6 +13,8 @@ interface Hotel {
     images: string[];
     rating?: number;
 }
+
+import Loading from './Loading';
 
 const ExceptionalHotels = () => {
     const [hotels, setHotels] = useState<Hotel[]>([]);
@@ -38,7 +40,8 @@ const ExceptionalHotels = () => {
         fetchHotels();
     }, []);
 
-    if (!loading && hotels.length === 0) return null;
+    if (loading) return <Loading variant="container" />;
+    if (hotels.length === 0) return null;
 
     return (
         <section className="py-24 bg-white">
@@ -51,53 +54,47 @@ const ExceptionalHotels = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {loading ? (
-                        [1, 2, 3, 4].map((i) => (
-                            <div key={i} className="bg-slate-50 rounded-2xl h-[450px] animate-pulse border border-slate-100" />
-                        ))
-                    ) : (
-                        hotels.map((hotel) => (
-                            <Link
-                                href={`/hotels/${hotel.id}`}
-                                key={hotel.id}
-                                className="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full cursor-pointer"
-                            >
-                                <div className="relative h-64 overflow-hidden">
-                                    <img
-                                        src={hotel.images[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80'}
-                                        alt={hotel.title}
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                    />
-                                    {hotel.rating && (
-                                        <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 shadow-xl">
-                                            <Star size={10} className="fill-[#5B2EFF] text-[#5B2EFF]" />
-                                            <span className="font-black text-[10px] text-gray-900">{hotel.rating.toFixed(1)}</span>
-                                        </div>
-                                    )}
-                                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-gray-900/60 to-transparent"></div>
-                                    <div className="absolute bottom-6 left-6">
-                                        <p className="text-white font-black text-xl group-hover:text-[#5EEAD4] transition-colors">
-                                            {hotel.currency || '€'} {hotel.price_per_night}
-                                            <span className="text-[10px] font-medium ml-1 opacity-80">/ night</span>
-                                        </p>
+                    {hotels.map((hotel) => (
+                        <Link
+                            href={`/hotels/${hotel.id}`}
+                            key={hotel.id}
+                            className="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full cursor-pointer"
+                        >
+                            <div className="relative h-64 overflow-hidden">
+                                <img
+                                    src={hotel.images[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80'}
+                                    alt={hotel.title}
+                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                />
+                                {hotel.rating && (
+                                    <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 shadow-xl">
+                                        <icons.Star size={10} className="fill-[#5B2EFF] text-[#5B2EFF]" />
+                                        <span className="font-black text-[10px] text-gray-900">{hotel.rating.toFixed(1)}</span>
                                     </div>
+                                )}
+                                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-gray-900/60 to-transparent"></div>
+                                <div className="absolute bottom-6 left-6">
+                                    <p className="text-white font-black text-xl group-hover:text-[#5EEAD4] transition-colors">
+                                        {hotel.currency || '€'} {hotel.price_per_night}
+                                        <span className="text-[10px] font-medium ml-1 opacity-80">/ night</span>
+                                    </p>
                                 </div>
-                                <div className="p-6 flex flex-col flex-1">
-                                    <div className="flex items-center gap-1.5 text-[#5B2EFF] font-black text-[9px] uppercase tracking-widest mb-3">
-                                        <MapPin size={10} />
-                                        {hotel.city}, {hotel.country}
-                                    </div>
-                                    <h3 className="text-lg font-black text-gray-900 leading-tight mb-6 line-clamp-2 h-12">{hotel.title}</h3>
+                            </div>
+                            <div className="p-6 flex flex-col flex-1">
+                                <div className="flex items-center gap-1.5 text-[#5B2EFF] font-black text-[9px] uppercase tracking-widest mb-3">
+                                    <icons.MapPin size={10} />
+                                    {hotel.city}, {hotel.country}
+                                </div>
+                                <h3 className="text-lg font-black text-gray-900 leading-tight mb-6 line-clamp-2 h-12">{hotel.title}</h3>
 
-                                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-50">
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-[#5B2EFF] flex items-center gap-2 group-hover:gap-3 transition-all">
-                                            Discover Stay <ArrowRight size={14} />
-                                        </span>
-                                    </div>
+                                <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-50">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-[#5B2EFF] flex items-center gap-2 group-hover:gap-3 transition-all">
+                                        Discover Stay <icons.ArrowRight size={14} />
+                                    </span>
                                 </div>
-                            </Link>
-                        ))
-                    )}
+                            </div>
+                        </Link>
+                    ))}
                 </div>
             </div>
         </section>
