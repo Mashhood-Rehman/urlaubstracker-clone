@@ -4,6 +4,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { icons } from '@/assets/icons';
 import Loading from '../components/Loading';
+import toast from 'react-hot-toast';
 
 interface Coupon {
     id: number;
@@ -47,7 +48,13 @@ function VouchersContent() {
         fetchVouchers();
     }, [category]);
 
-    if (loading) return <Loading variant="container" text="Loading exclusive vouchers..." />;
+    const copyText = (text: string) => {
+        navigator.clipboard.writeText(text)
+        toast.success('Code copied to clipboard');
+    }
+    if (loading) return <div className='flex items-center justify-center'>
+        <Loading variant="container" text="Loading exclusive vouchers..." className='mt-12' />;
+    </div>
 
     return (
         <div className="min-h-screen bg-(--background) pt-24 pb-12">
@@ -105,7 +112,7 @@ function VouchersContent() {
                                         <code className="text-lg font-black text-(--secondary) tracking-widest uppercase">
                                             {coupon.code}
                                         </code>
-                                        <button className="text-xs font-bold text-(--primary) bg-(--white) px-3 py-1 rounded-lg border border-(--primary)/10 shadow-sm group-hover:bg-(--primary) group-hover:text-(--white) transition-all">
+                                        <button onClick={() => copyText(coupon.code)} className="text-xs cursor-pointer font-bold text-(--primary) bg-(--white) px-3 py-1 rounded-lg border border-(--primary)/10 shadow-sm group-hover:bg-(--primary) group-hover:text-(--white) transition-all">
                                             Copy Code
                                         </button>
                                     </div>

@@ -25,7 +25,7 @@ const Loading = ({ variant = 'inline', text, className = "" }: LoadingProps) => 
     };
 
     return (
-        <div className={`${variants[variant]} ${className}`}>
+        <div className={`${variants[variant]} ${className} h-screen`}>
             <div className="relative">
                 <icons.Loader2
                     size={spinnerSize[variant]}
