@@ -1,4 +1,5 @@
 import Hero from "./components/Hero";
+import CategorySection from "./components/CategorySection";
 import DealsGrid from "./components/DealsGrid";
 import DestinationReveal from "./components/DestinationReveal";
 import MoodSelector from "./components/MoodSelector";
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       <Hero />
+      <CategorySection />
       <div className="px-24">
 
         <DealsGrid />

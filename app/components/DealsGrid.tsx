@@ -49,6 +49,7 @@ const DealsGrid = () => {
                 setLoading(false);
             }
         };
+        console.log(fetchData())
 
         fetchData();
     }, []);
@@ -68,7 +69,7 @@ const DealsGrid = () => {
             </div>
         );
     }
-
+    console.log(products)
     return (
         <section className="py-12 bg-white">
             <div className="container mx-auto px-4">

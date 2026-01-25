@@ -58,8 +58,8 @@ export default function RentalDetailPage() {
                         <div className="lg:col-span-2 space-y-8">
                             <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                                 <span className={`px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${rental.category === 'car' ? 'bg-blue-100 text-blue-800' :
-                                        rental.category === 'parking' ? 'bg-gray-100 text-gray-800' :
-                                            'bg-purple-100 text-purple-800'
+                                    rental.category === 'parking' ? 'bg-gray-100 text-gray-800' :
+                                        'bg-purple-100 text-purple-800'
                                     } mb-4 inline-block`}>
                                     {rental.category} deal
                                 </span>
@@ -142,10 +142,22 @@ export default function RentalDetailPage() {
                                         ))}
                                     </div>
 
-                                    <button className="w-full py-4 bg-secondary text-primary font-bold rounded-2xl hover:bg-white transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2">
-                                        Book this Deal
-                                        <icons.ArrowRight className="w-5 h-5" />
-                                    </button>
+                                    {rental.link ? (
+                                        <a
+                                            href={rental.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-full py-4 bg-secondary text-primary font-bold rounded-2xl hover:bg-white transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2"
+                                        >
+                                            Book this Deal
+                                            <icons.ArrowRight className="w-5 h-5" />
+                                        </a>
+                                    ) : (
+                                        <button className="w-full py-4 bg-secondary text-primary font-bold rounded-2xl hover:bg-white transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2">
+                                            Book this Deal
+                                            <icons.ArrowRight className="w-5 h-5" />
+                                        </button>
+                                    )}
                                 </div>
 
                                 <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">

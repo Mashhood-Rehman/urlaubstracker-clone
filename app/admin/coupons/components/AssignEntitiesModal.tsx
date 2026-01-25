@@ -23,7 +23,8 @@ export default function AssignEntitiesModal({
   onClose,
   onSubmit,
 }: AssignEntitiesModalProps) {
-  const [entityType, setEntityType] = useState<'flights' | 'hotels' | 'rentals'>('flights');
+  const [categories, setCategories] = useState<any[]>([]);
+  const [entityType, setEntityType] = useState<string>('flights');
   const [entities, setEntities] = useState<Entity[]>([]);
   const [selectedEntities, setSelectedEntities] = useState<Set<number>>(new Set());
   const [assignedEntityIds, setAssignedEntityIds] = useState<Set<number>>(new Set());
@@ -34,8 +35,29 @@ export default function AssignEntitiesModal({
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        if (data.success) {
+          const allCats = [
+            { name: 'Hotel', slug: 'hotels' },
+            { name: 'Flight', slug: 'flights' },
+            { name: 'Rental', slug: 'rentals' },
+            ...data.data.filter((c: any) => !['Hotel', 'Flight', 'Rental'].includes(c.name)).map((c: any) => ({ ...c, slug: 'dynamicProducts' }))
+          ];
+          setCategories(allCats);
+        }
+      } catch (err) {
+        console.error('Failed to fetch categories:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
     fetchCouponData();
-  }, [couponId]);
+  }, [couponId, entityType]);
 
   useEffect(() => {
     fetchEntities();
@@ -57,6 +79,13 @@ export default function AssignEntitiesModal({
       } else if (entityType === 'rentals' && coupon.rentalIds) {
         setAssignedEntityIds(new Set(coupon.rentalIds));
         setSelectedEntities(new Set(coupon.rentalIds));
+      } else if (coupon.dynamicProductIds) {
+        // Check if the current category is dynamic
+        const currentCat = categories.find(c => c.slug === entityType || (c.slug === 'dynamicProducts' && c.name === entityType));
+        if (currentCat && currentCat.slug === 'dynamicProducts') {
+          setAssignedEntityIds(new Set(coupon.dynamicProductIds));
+          setSelectedEntities(new Set(coupon.dynamicProductIds));
+        }
       }
     } catch (err) {
       console.error('Failed to fetch coupon data:', err);
@@ -67,19 +96,28 @@ export default function AssignEntitiesModal({
     try {
       setLoading(true);
       setError('');
-      const response = await fetch(`/api/${entityType}?limit=1000`);
+
+      let url = `/api/${entityType}?limit=1000`;
+
+      // If it's a dynamic product category, we might need to filter by category name
+      // assuming /api/products returns all and we filter on frontend, 
+      // or /api/products?category=Name if implemented.
+      // Based on previous tool calls, /api/products returns all.
+
+      if (entityType !== 'flights' && entityType !== 'hotels' && entityType !== 'rentals') {
+        url = `/api/products?category=${entityType}&limit=1000`;
+      }
+
+      const response = await fetch(url);
       const data = await response.json();
-      // Handle different response structures
+
       let items = [];
       if (entityType === 'hotels' || entityType === 'flights' || entityType === 'rentals') {
         items = data.data || data[entityType] || [];
       } else {
-        items = data[entityType] || data.data || [];
+        items = data.data || [];
       }
       setEntities(items);
-      
-      // Fetch and update assigned entities when switching tabs
-      await fetchCouponData();
     } catch (err) {
       setError(`Failed to fetch ${entityType}`);
       console.error(err);
@@ -117,8 +155,10 @@ export default function AssignEntitiesModal({
       setError('');
       setSuccess('');
 
+      const isDynamic = !['flights', 'hotels', 'rentals'].includes(entityType);
+
       const payload = {
-        [entityType]: Array.from(selectedEntities),
+        [isDynamic ? 'dynamicProducts' : entityType]: Array.from(selectedEntities),
       };
 
       const response = await fetch(`/api/coupons/${couponId}/assign`, {
@@ -131,7 +171,7 @@ export default function AssignEntitiesModal({
         throw new Error('Failed to assign entities');
       }
 
-      setSuccess(`Successfully assigned ${selectedEntities.size} ${entityType} to coupon`);
+      setSuccess(`Successfully assigned ${selectedEntities.size} units to coupon`);
       setTimeout(() => {
         onSubmit();
         onClose();
@@ -180,23 +220,22 @@ export default function AssignEntitiesModal({
 
         {/* Entity Type Selector */}
         <div className="p-6 border-b bg-gray-50">
-          <p className="text-sm font-medium text-gray-700 mb-3">Select Entity Type:</p>
-          <div className="flex gap-3">
-            {(['flights', 'hotels', 'rentals'] as const).map((type) => (
+          <p className="text-sm font-medium text-gray-700 mb-3">Select Category:</p>
+          <div className="flex flex-wrap gap-3">
+            {categories.map((cat) => (
               <button
-                key={type}
+                key={cat.name}
                 onClick={() => {
-                  setEntityType(type);
+                  setEntityType(cat.slug === 'dynamicProducts' ? cat.name : cat.slug);
                   setSelectedEntities(new Set());
                   setSearchTerm('');
                 }}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors capitalize ${
-                  entityType === type
+                className={`px-4 py-2 rounded-lg font-medium transition-colors capitalize ${(entityType === cat.slug || entityType === cat.name)
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                }`}
+                  }`}
               >
-                {type}
+                {cat.name}
               </button>
             ))}
           </div>

@@ -1,6 +1,46 @@
 import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
+export async function GET(
+    request: NextRequest,
+    context: { params: Promise<{ id: string }> }
+) {
+    try {
+        const { id } = await context.params;
+        const productId = parseInt(id);
+
+        // Try to find in all potential models
+        const [hotel, flight, rental, dynamicProduct] = await Promise.all([
+            prisma.hotel.findUnique({ where: { id: productId }, include: { coupons: true } as any }),
+            prisma.flight.findUnique({ where: { id: productId }, include: { coupons: true } as any }),
+            prisma.rental.findUnique({ where: { id: productId }, include: { coupons: true } as any }),
+            prisma.dynamicProduct.findUnique({ where: { id: productId }, include: { coupons: true, category: true } as any }),
+        ]);
+
+        const product = hotel || flight || rental || dynamicProduct;
+
+        if (!product) {
+            return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
+        }
+
+        let mainCategory = 'Hotel';
+        if (flight) mainCategory = 'Flight';
+        if (rental) mainCategory = 'Rental';
+        if (dynamicProduct) mainCategory = (dynamicProduct as any).category?.name || 'Category';
+
+        return NextResponse.json({
+            success: true,
+            data: { ...product, mainCategory }
+        }, { status: 200 });
+    } catch (error: any) {
+        console.error('Error fetching product:', error?.stack || error);
+        return NextResponse.json(
+            { success: false, error: error?.message || 'Failed to fetch product' },
+            { status: 500 }
+        );
+    }
+}
+
 export async function PUT(
     request: NextRequest,
     context: { params: Promise<{ id: string }> }
@@ -31,8 +71,7 @@ export async function PUT(
                     description: data.desc || data.mainDescription || undefined,
                 },
             });
-        } else {
-            // Default to Hotel
+        } else if (mainCategory === 'Hotel') {
             product = await prisma.hotel.update({
                 where: { id: productId },
                 data: {
@@ -42,6 +81,20 @@ export async function PUT(
                     rating: data.rating ? parseFloat(data.rating) : null,
                     review_count: data.review_count ? parseInt(data.review_count) : null,
                 },
+            });
+        } else {
+            // Dynamic Product
+            product = await prisma.dynamicProduct.update({
+                where: { id: productId },
+                data: {
+                    title: data.title || '',
+                    description: data.description || '',
+                    price: parseFloat(data.price) || 0,
+                    currency: data.currency || 'EUR',
+                    images: data.images || [],
+                    link: data.link || null,
+                    details: data.details || data,
+                }
             });
         }
 
@@ -72,8 +125,10 @@ export async function DELETE(
             await prisma.flight.delete({ where: { id: productId } });
         } else if (mainCategory === 'Rental') {
             await prisma.rental.delete({ where: { id: productId } });
-        } else {
+        } else if (mainCategory === 'Hotel') {
             await prisma.hotel.delete({ where: { id: productId } });
+        } else {
+            await prisma.dynamicProduct.delete({ where: { id: productId } });
         }
 
         return NextResponse.json(

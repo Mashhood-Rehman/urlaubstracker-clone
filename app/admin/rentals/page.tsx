@@ -25,6 +25,7 @@ export default function RentalsAdminPage() {
         additionalInfo: '',
         ecoTip: '',
         images: [] as string[],
+        link: '',
     });
 
     useEffect(() => {
@@ -61,6 +62,7 @@ export default function RentalsAdminPage() {
             additionalInfo: '',
             ecoTip: '',
             images: [],
+            link: '',
         });
         setIsEditing(false);
         setSelectedRentalId(null);
@@ -79,6 +81,7 @@ export default function RentalsAdminPage() {
             additionalInfo: rental.additionalInfo ? JSON.stringify(rental.additionalInfo, null, 2) : '',
             ecoTip: rental.ecoTip || '',
             images: rental.images || [],
+            link: rental.link || '',
         });
         setSelectedRentalId(rental.id);
         setIsEditing(true);
@@ -386,6 +389,18 @@ export default function RentalsAdminPage() {
                                         value={formData.ecoTip}
                                         onChange={handleInputChange}
                                         className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                    />
+                                </div>
+
+                                <div className="col-span-2">
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">External Link (Booking/Info URL)</label>
+                                    <input
+                                        type="url"
+                                        name="link"
+                                        value={formData.link}
+                                        onChange={handleInputChange}
+                                        placeholder="https://..."
+                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-sm"
                                     />
                                 </div>
 

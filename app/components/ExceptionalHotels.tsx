@@ -1,49 +1,103 @@
 "use client";
-import React from 'react';
-import { exceptionalHotels } from '../data';
-import { Star, MapPin } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Star, MapPin, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+
+interface Hotel {
+    id: number;
+    title: string;
+    city: string;
+    country: string;
+    price_per_night: number;
+    currency: string;
+    images: string[];
+    rating?: number;
+}
 
 const ExceptionalHotels = () => {
+    const [hotels, setHotels] = useState<Hotel[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchHotels = async () => {
+            try {
+                const res = await fetch('/api/products');
+                const data = await res.json();
+                if (data.success) {
+                    const filteredHotels = data.data
+                        .filter((p: any) => p.mainCategory === 'Hotel')
+                        .slice(0, 4);
+                    setHotels(filteredHotels);
+                }
+            } catch (error) {
+                console.error('Error fetching exceptional hotels:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchHotels();
+    }, []);
+
+    if (!loading && hotels.length === 0) return null;
+
     return (
-        <section className="py-24 bg-gray-50/50">
+        <section className="py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 md:px-10">
-                <div className="text-center mb-20">
-                    <h4 className="text-[#5B2EFF] font-black uppercase tracking-[0.3em] text-xs mb-4">Curated Stays</h4>
-                    <h2 className="text-5xl md:text-7xl font-black text-gray-900 italic uppercase tracking-tighter leading-none">
-                        EXCEPTIONAL <span className="text-transparent border-t-2 border-b-2 border-gray-900 bg-clip-text" style={{ WebkitTextStroke: '1px #111827' }}>HOTELS</span>
+                <div className="text-center mb-16">
+                    <h4 className="text-[#5B2EFF] font-black uppercase tracking-[0.3em] text-[10px] mb-4">Curated Stays</h4>
+                    <h2 className="text-4xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter leading-none">
+                        EXCEPTIONAL <span className="text-transparent" style={{ WebkitTextStroke: '1.5px #111827' }}>HOTELS</span>
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {exceptionalHotels.map((hotel) => (
-                        <div key={hotel.id} className="bg-white rounded-[2.5rem] overflow-hidden group border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500">
-                            <div className="relative h-72 overflow-hidden">
-                                <img
-                                    src={hotel.image}
-                                    alt={hotel.title}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                />
-                                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-                                    <Star size={12} className="fill-[#5B2EFF] text-[#5B2EFF]" />
-                                    <span className="font-black text-[10px] text-gray-900">5.0</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {loading ? (
+                        [1, 2, 3, 4].map((i) => (
+                            <div key={i} className="bg-slate-50 rounded-2xl h-[450px] animate-pulse border border-slate-100" />
+                        ))
+                    ) : (
+                        hotels.map((hotel) => (
+                            <Link
+                                href={`/hotels/${hotel.id}`}
+                                key={hotel.id}
+                                className="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full cursor-pointer"
+                            >
+                                <div className="relative h-64 overflow-hidden">
+                                    <img
+                                        src={hotel.images[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80'}
+                                        alt={hotel.title}
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    />
+                                    {hotel.rating && (
+                                        <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 shadow-xl">
+                                            <Star size={10} className="fill-[#5B2EFF] text-[#5B2EFF]" />
+                                            <span className="font-black text-[10px] text-gray-900">{hotel.rating.toFixed(1)}</span>
+                                        </div>
+                                    )}
+                                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-gray-900/60 to-transparent"></div>
+                                    <div className="absolute bottom-6 left-6">
+                                        <p className="text-white font-black text-xl group-hover:text-[#5EEAD4] transition-colors">
+                                            {hotel.currency || '€'} {hotel.price_per_night}
+                                            <span className="text-[10px] font-medium ml-1 opacity-80">/ night</span>
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="absolute inset-0 bg-linear-to-t from-gray-900/40 to-transparent"></div>
-                                <div className="absolute bottom-6 left-6">
-                                    <p className="text-white font-black text-2xl group-hover:text-[#5EEAD4] transition-colors">{hotel.price}</p>
+                                <div className="p-6 flex flex-col flex-1">
+                                    <div className="flex items-center gap-1.5 text-[#5B2EFF] font-black text-[9px] uppercase tracking-widest mb-3">
+                                        <MapPin size={10} />
+                                        {hotel.city}, {hotel.country}
+                                    </div>
+                                    <h3 className="text-lg font-black text-gray-900 leading-tight mb-6 line-clamp-2 h-12">{hotel.title}</h3>
+
+                                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-50">
+                                        <span className="text-[10px] font-black uppercase tracking-widest text-[#5B2EFF] flex items-center gap-2 group-hover:gap-3 transition-all">
+                                            Discover Stay <ArrowRight size={14} />
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="p-8">
-                                <div className="flex items-center gap-1 text-[#5B2EFF] font-black text-[10px] uppercase tracking-widest mb-2">
-                                    <MapPin size={10} />
-                                    {hotel.location}
-                                </div>
-                                <h3 className="text-xl font-black text-gray-900 leading-tight mb-6">{hotel.title}</h3>
-                                <button className="w-full py-4 bg-gray-50 text-gray-900 font-black rounded-2xl group-hover:bg-[#5B2EFF] group-hover:text-white transition-all duration-300 uppercase text-xs tracking-widest">
-                                    Elevate Stay
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+                            </Link>
+                        ))
+                    )}
                 </div>
             </div>
         </section>

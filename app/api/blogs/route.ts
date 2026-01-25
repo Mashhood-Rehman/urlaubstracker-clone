@@ -5,10 +5,16 @@ export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
         const publishedOnly = searchParams.get('published') === 'true';
+        const category = searchParams.get('category');
+        const limit = searchParams.get('limit');
 
         const blogs = await prisma.blog.findMany({
-            where: publishedOnly ? { published: true } : {},
-            orderBy: { createdAt: 'desc' }
+            where: {
+                ...(publishedOnly ? { published: true } : {}),
+                ...(category ? { category: { equals: category, mode: 'insensitive' } } : {}),
+            },
+            orderBy: { createdAt: 'desc' },
+            ...(limit ? { take: parseInt(limit) } : {})
         });
 
         return NextResponse.json(blogs);

@@ -90,17 +90,14 @@ export default function CategoriesPage() {
             return;
         }
 
-        // Implementation for DELETE would go here.
-        // For now, since user didn't strictly ask for Delete API and I didn't verify it,
-        // I will just show a toast or implement if I added the endpoint.
-        // I haven't added DELETE endpoint yet.
+
         toast.error("Delete functionality not fully implemented on backend yet.");
     };
-
     const filteredCategories = categories.filter(c =>
         c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (c.description && c.description.toLowerCase().includes(searchTerm.toLowerCase()))
     );
+    console.log('filteredcategories', filteredCategories)
 
     return (
         <div className="p-6">

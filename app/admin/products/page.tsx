@@ -69,6 +69,7 @@ export default function ProductsPage() {
         ecoTip: '',
         // Images
         images: [] as string[],
+        link: '',
     });
 
 
@@ -132,6 +133,7 @@ export default function ProductsPage() {
             baggage: '', services: '', whyAdore: '', flexibleDates: false, extras: '', tips: '', offerLink: '',
             mainHeading: '', mainDescription: '', offer: '', whySuperDeal: '', thingsToDo: '', additionalInfo: '', ecoTip: '',
             images: [],
+            link: '',
         });
         setMainCategory('Hotel');
         setIsEditing(false);
@@ -220,6 +222,7 @@ export default function ProductsPage() {
                     extras: formData.extras ? JSON.parse(formData.extras) : null,
                     tips: formData.tips ? JSON.parse(formData.tips) : null,
                     offerLink: formData.offerLink,
+                    link: formData.link,
                     images: formData.images,
                 };
             } else if (mainCategory === 'Rental') {
@@ -235,9 +238,10 @@ export default function ProductsPage() {
                     thingsToDo: formData.thingsToDo.split(',').map((s: string) => s.trim()).filter((s: string) => s),
                     additionalInfo: formData.additionalInfo ? JSON.parse(formData.additionalInfo) : {},
                     ecoTip: formData.ecoTip,
+                    link: formData.link,
                     images: formData.images,
                 };
-            } else {
+            } else if (mainCategory === 'Hotel') {
                 // Hotel
                 payload = {
                     mainCategory,
@@ -257,7 +261,20 @@ export default function ProductsPage() {
                     check_in: formData.check_in,
                     check_out: formData.check_out,
                     notes: formData.notes,
+                    link: formData.link,
                     images: formData.images,
+                };
+            } else {
+                // Dynamic Category
+                payload = {
+                    mainCategory,
+                    title: formData.title || formData.title_fr || '',
+                    description: formData.description || formData.desc_fr || '',
+                    price: formData.price,
+                    currency: formData.currency,
+                    link: formData.link,
+                    images: formData.images,
+                    details: formData.details ? JSON.parse(formData.details) : formData,
                 };
             }
 
@@ -265,7 +282,8 @@ export default function ProductsPage() {
                 if (isEditing) {
                     if (mainCategory === 'Flight') return `/api/flights/${selectedProductId}`;
                     if (mainCategory === 'Rental') return `/api/rentals/${selectedProductId}`;
-                    return `/api/hotels/${selectedProductId}`;
+                    if (mainCategory === 'Hotel') return `/api/hotels/${selectedProductId}`;
+                    return `/api/products/${selectedProductId}`; // Dynamic Products
                 } else {
                     return '/api/products';
                 }
@@ -550,9 +568,23 @@ export default function ProductsPage() {
                         <form onSubmit={handleSubmit} className="p-6">
                             <div className="mb-6">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">Main Category</label>
-                                <div className="flex gap-4">
-                                    {categories.map((cat) => (
-                                        <label key={cat.name} className="flex items-center gap-2 cursor-pointer">
+                                <div className="flex flex-wrap gap-4">
+                                    {['Hotel', 'Flight', 'Rental'].map((cat) => (
+                                        <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="mainCategory"
+                                                checked={mainCategory === cat}
+                                                onChange={() => setMainCategory(cat)}
+                                                className="w-4 h-4 text-primary focus:ring-primary"
+                                            />
+                                            <span className={`text-sm ${mainCategory === cat ? 'text-primary font-bold' : 'text-gray-600'}`}>
+                                                {cat}
+                                            </span>
+                                        </label>
+                                    ))}
+                                    {categories.filter(c => !['Hotel', 'Flight', 'Rental'].includes(c.name)).map((cat) => (
+                                        <label key={cat.id} className="flex items-center gap-2 cursor-pointer">
                                             <input
                                                 type="radio"
                                                 name="mainCategory"
@@ -610,6 +642,10 @@ export default function ProductsPage() {
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Amenities (comma-separated)</label>
                                             <input type="text" name="amenities" value={formData.amenities} onChange={handleInputChange} placeholder="WiFi, Pool, Parking" required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                         </div>
+                                        <div className="col-span-2">
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">External Link (Booking/Info URL)</label>
+                                            <input type="url" name="link" value={formData.link || ''} onChange={handleInputChange} placeholder="https://..." className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
                                     </>
                                 )}
 
@@ -656,6 +692,10 @@ export default function ProductsPage() {
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Services (comma-separated)</label>
                                             <input type="text" name="services" value={formData.services} onChange={handleInputChange} placeholder="Meals, WiFi, USB Power" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                         </div>
+                                        <div className="col-span-2">
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">External Link (Booking/Info URL)</label>
+                                            <input type="url" name="link" value={formData.link || ''} onChange={handleInputChange} placeholder="https://..." className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
                                     </>
                                 )}
 
@@ -685,6 +725,10 @@ export default function ProductsPage() {
                                         <div>
                                             <label className="block text-xs font-medium text-gray-700 mb-1">Offer (JSON)</label>
                                             <input type="text" name="offer" value={formData.offer} onChange={handleInputChange} placeholder='{"price": 45, "unit": "day"}' className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">External Link (Booking/Info URL)</label>
+                                            <input type="url" name="link" value={formData.link || ''} onChange={handleInputChange} placeholder="https://..." className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                         </div>
                                     </>
                                 )}
@@ -738,6 +782,10 @@ export default function ProductsPage() {
                                             maxImages={10}
                                             label={`${mainCategory} Images`}
                                         />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">External Link (Booking/Info URL)</label>
+                                        <input type="url" name="link" value={formData.link || ''} onChange={handleInputChange} placeholder="https://..." className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                     </div>
                                 </div>
                             )}

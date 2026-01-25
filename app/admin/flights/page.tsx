@@ -31,6 +31,7 @@ export default function FlightsAdminPage() {
         tips: '',
         offerLink: '',
         images: [] as string[],
+        link: '',
     });
 
     useEffect(() => {
@@ -74,6 +75,7 @@ export default function FlightsAdminPage() {
             tips: '',
             offerLink: '',
             images: [],
+            link: '',
         });
         setIsEditing(false);
         setSelectedFlightId(null);
@@ -98,6 +100,7 @@ export default function FlightsAdminPage() {
             tips: flight.tips ? JSON.stringify(flight.tips, null, 2) : '',
             offerLink: flight.offerLink || '',
             images: flight.images || [],
+            link: flight.link || '',
         });
         setSelectedFlightId(flight.id);
         setIsEditing(true);
@@ -479,6 +482,18 @@ export default function FlightsAdminPage() {
                                         rows={2}
                                         placeholder='["Check in 2h before", "Check baggage size"]'
                                         className="w-full px-3 py-2 border border-gray-200 rounded-lg font-mono text-xs focus:outline-none focus:border-primary"
+                                    />
+                                </div>
+
+                                <div className="col-span-2">
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">External Link (Booking/Info URL)</label>
+                                    <input
+                                        type="url"
+                                        name="link"
+                                        value={formData.link}
+                                        onChange={handleInputChange}
+                                        placeholder="https://..."
+                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-sm"
                                     />
                                 </div>
 

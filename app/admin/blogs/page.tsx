@@ -25,6 +25,7 @@ export default function BlogsPage() {
         tags: '',
         published: false,
         featured: false,
+        link: '',
     });
     const [uploading, setUploading] = useState(false);
 
@@ -74,6 +75,7 @@ export default function BlogsPage() {
             tags: '',
             published: false,
             featured: false,
+            link: '',
         });
         setIsEditing(false);
         setSelectedBlogId(null);
@@ -448,8 +450,6 @@ export default function BlogsPage() {
                                                 className="w-full px-2 py-1.5 border border-slate-200 rounded-md text-[11px] focus:outline-none focus:border-primary transition-colors"
                                             />
                                         </div>
-
-                                        {/* Multiple Images Upload */}
                                         <div className="pt-2">
                                             <ImageUpload
                                                 images={formData.images}

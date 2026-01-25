@@ -29,6 +29,7 @@ model Hotel {
   notes           String?
   images          String[]
   coupons         Coupon[]
+  link            String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
@@ -53,6 +54,7 @@ model Flight {
   offerLink       String?
   images          String[]
   coupons         Coupon[]
+  link            String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
@@ -71,6 +73,7 @@ model Rental {
   ecoTip            String?
   images            String[]
   coupons           Coupon[]
+  link              String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 }
@@ -92,6 +95,7 @@ model Blog {
   metaTitle       String?
   metaDescription String?
   
+  link            String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -114,6 +118,8 @@ model Coupon {
   hotels            Hotel[]
   rentalIds         Int[]     @default([])
   rentals           Rental[]
+  dynamicProductIds Int[]     @default([])
+  dynamicProducts   DynamicProduct[]
   brandId           Int?
   brand             Brand?    @relation(fields: [brandId], references: [id])
   createdAt         DateTime  @default(now())
@@ -151,6 +157,8 @@ model DynamicProduct {
   details     Json? // Flexible field for category-specific attributes
   categoryId  Int
   category    Category @relation(fields: [categoryId], references: [id])
+  link        String?
+  coupons     Coupon[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

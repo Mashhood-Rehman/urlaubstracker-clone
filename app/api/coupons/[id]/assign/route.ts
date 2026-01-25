@@ -9,7 +9,7 @@ export async function POST(
     const { id } = await params;
     const couponId = parseInt(id);
     const body = await request.json();
-    const { flights, hotels, rentals } = body;
+    const { flights, hotels, rentals, dynamicProducts } = body;
 
     const existingCoupon = await prisma.coupon.findUnique({
       where: { id: couponId },
@@ -46,6 +46,13 @@ export async function POST(
       };
     }
 
+    if (dynamicProducts !== undefined) {
+      updateData.dynamicProductIds = dynamicProducts;
+      updateData.dynamicProducts = {
+        set: dynamicProducts.map((id: number) => ({ id })),
+      };
+    }
+
     const updatedCoupon = await prisma.coupon.update({
       where: { id: couponId },
       data: updateData,
@@ -53,6 +60,7 @@ export async function POST(
         flights: true,
         hotels: true,
         rentals: true,
+        dynamicProducts: true,
       },
     });
 
