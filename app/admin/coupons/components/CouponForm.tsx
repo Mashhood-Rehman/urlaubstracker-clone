@@ -148,19 +148,19 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-2xl font-bold text-(--foreground)">
           {coupon ? 'Edit Coupon' : 'Create New Coupon'}
         </h2>
         <button
           onClick={onCancel}
-          className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-1 hover:bg-(--gray-100) rounded-lg transition-colors"
         >
-          <icons.X className="w-5 h-5 text-gray-600" />
+          <icons.X className="w-5 h-5 text-(--gray-600)" />
         </button>
       </div>
 
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+        <div className="mb-4 p-4 bg-(--error)/10 border border-(--error)/20 rounded-lg text-(--error)">
           {error}
         </div>
       )}
@@ -169,8 +169,8 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
         <div className="grid grid-cols-2 gap-6">
           {/* Code */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Coupon Code <span className="text-red-600">*</span>
+            <label className="block text-sm font-medium text-(--foreground) mb-2">
+              Coupon Code <span className="text-(--error)">*</span>
             </label>
             <input
               type="text"
@@ -178,15 +178,15 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
               value={formData.code}
               onChange={handleChange}
               placeholder="e.g., SUMMER20"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
               disabled={!!coupon}
             />
           </div>
 
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Coupon Name <span className="text-red-600">*</span>
+            <label className="block text-sm font-medium text-(--foreground) mb-2">
+              Coupon Name <span className="text-(--error)">*</span>
             </label>
             <input
               type="text"
@@ -194,21 +194,21 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
               value={formData.name}
               onChange={handleChange}
               placeholder="e.g., Summer Sale"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
             />
           </div>
         </div>
 
         {/* Brand Selection */}
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-(--foreground) mb-2">
             Select Brand
           </label>
           <select
             name="brandId"
             value={formData.brandId || ''}
             onChange={(e) => setFormData(prev => ({ ...prev, brandId: e.target.value ? parseInt(e.target.value) : null }))}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
           >
             <option value="">No Brand (Generic)</option>
             {brands.map((brand) => (
@@ -221,7 +221,7 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-(--foreground) mb-2">
             Description
           </label>
           <textarea
@@ -230,15 +230,15 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
             onChange={handleChange}
             placeholder="Enter coupon description..."
             rows={3}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
+            className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) resize-none bg-(--white) text-(--foreground)"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-6">
           {/* Discount Value */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Discount (%) <span className="text-red-600">*</span>
+            <label className="block text-sm font-medium text-(--foreground) mb-2">
+              Discount (%) <span className="text-(--error)">*</span>
             </label>
             <input
               type="number"
@@ -248,13 +248,13 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
               min="0"
               max="100"
               step="0.01"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
             />
           </div>
 
           {/* Max Uses */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
+            <label className="block text-sm font-medium text-(--foreground) mb-2">
               Max Uses
             </label>
             <input
@@ -264,7 +264,7 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
               onChange={handleChange}
               min="1"
               placeholder="Unlimited"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
             />
           </div>
         </div>
@@ -272,29 +272,29 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
         <div className="grid grid-cols-2 gap-6">
           {/* Valid From */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Valid From <span className="text-red-600">*</span>
+            <label className="block text-sm font-medium text-(--foreground) mb-2">
+              Valid From <span className="text-(--error)">*</span>
             </label>
             <input
               type="date"
               name="validFrom"
               value={formData.validFrom}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
             />
           </div>
 
           {/* Valid Until */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Valid Until <span className="text-red-600">*</span>
+            <label className="block text-sm font-medium text-(--foreground) mb-2">
+              Valid Until <span className="text-(--error)">*</span>
             </label>
             <input
               type="date"
               name="validUntil"
               value={formData.validUntil}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
             />
           </div>
         </div>
@@ -304,14 +304,14 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 text-(--gray-700) border border-(--gray-300) rounded-lg hover:bg-(--gray-50) transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400"
+            className="flex items-center gap-2 px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {loading && <icons.Loader className="w-4 h-4 animate-spin" />}
             {coupon ? 'Update Coupon' : 'Create Coupon'}

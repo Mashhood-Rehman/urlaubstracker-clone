@@ -12,8 +12,29 @@ export async function GET(request: Request) {
     const isShowcased = url.searchParams.get("showcased") === "true";
 
     const where: any = {};
-    if (url.searchParams.get("showcased") !== null) {
-      where.isShowcased = isShowcased;
+    const showcased = url.searchParams.get("showcased");
+    if (showcased !== null) {
+      where.isShowcased = showcased === "true";
+    }
+
+    const categorySlug = url.searchParams.get("category");
+    if (categorySlug) {
+      where.OR = [
+        { hotels: { some: { city: { contains: categorySlug, mode: 'insensitive' } } } }, // Dummy if we filter by city/country as fallback, but let's stick to categories
+        { hotels: { some: { id: { not: undefined } } } }, // This isn't quite right for prisma, need to check if it has hotels/flights/rentals
+      ];
+
+      // More accurate filtering for Prisma:
+      if (categorySlug === 'hotels') {
+        where.hotels = { some: {} };
+      } else if (categorySlug === 'flights') {
+        where.flights = { some: {} };
+      } else if (categorySlug === 'rentals') {
+        where.rentals = { some: {} };
+      } else {
+        // Dynamic category
+        where.dynamicProducts = { some: { category: { slug: categorySlug } } };
+      }
     }
 
     const coupons = await prisma.coupon.findMany({

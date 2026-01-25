@@ -321,8 +321,8 @@ export default function ProductsPage() {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-4 gap-3">
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
-                    <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 sm:max-w-md">
-                        <icons.Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <div className="flex items-center gap-2 px-3 py-2 bg-(--white) border border-(--gray-200) rounded-lg flex-1 sm:max-w-md">
+                        <icons.Search className="w-4 h-4 text-(--gray-400) shrink-0" />
                         <input
                             type="text"
                             placeholder="Search by name, city, country..."
@@ -335,14 +335,14 @@ export default function ProductsPage() {
                         <select
                             value={categoryFilter}
                             onChange={(e) => setCategoryFilter(e.target.value)}
-                            className="flex-1 sm:flex-none px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:border-primary"
+                            className="flex-1 sm:flex-none px-3 py-2 bg-(--white) border border-(--gray-200) rounded-lg text-sm font-medium text-(--gray-700) focus:outline-none focus:border-(--primary)"
                         >
                             <option value="All">ALL</option>
                             <option value="Hotel">Hotels</option>
                             <option value="Flight">Flight</option>
                             <option value="Rental">Rentals</option>
                         </select>
-                        <div className="flex items-center gap-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-lg px-3 py-2">
+                        <div className="flex items-center gap-2 text-sm text-(--gray-500) bg-(--white) border border-(--gray-200) rounded-lg px-3 py-2">
                             <span className="hidden sm:inline">Show:</span>
                             <select
                                 value={itemsPerPage}
@@ -350,7 +350,7 @@ export default function ProductsPage() {
                                     setItemsPerPage(Number(e.target.value));
                                     setCurrentPage(1);
                                 }}
-                                className="bg-transparent border-none outline-none font-medium text-gray-700"
+                                className="bg-transparent border-none outline-none font-medium text-(--gray-700)"
                             >
                                 <option value={10}>10</option>
                                 <option value={20}>20</option>
@@ -364,7 +364,7 @@ export default function ProductsPage() {
                         resetForm();
                         setShowModal(true);
                     }}
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium whitespace-nowrap"
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity text-sm font-medium whitespace-nowrap"
                 >
                     <icons.Plus className="w-4 h-4" />
                     <span className="hidden sm:inline">Add Product</span>
@@ -373,31 +373,31 @@ export default function ProductsPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
+            <div className="bg-(--white) rounded-lg border border-(--gray-200) overflow-x-auto">
                 <table className="w-full">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-(--gray-50) border-b border-(--gray-200)">
                         <tr>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">ID</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">ID</th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
                                 {categoryFilter === 'Flight' ? 'Flight Title' : categoryFilter === 'Rental' ? 'Rental Name' : 'Hotel Name'}
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Category</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">Category</th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
                                 {categoryFilter === 'Flight' ? 'Route' : 'City'}
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
                                 {categoryFilter === 'Flight' ? 'Price' : categoryFilter === 'Rental' ? 'Offer' : 'Price/Night'}
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
                                 {categoryFilter === 'Flight' ? 'Class' : 'Rating'}
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
                                 {categoryFilter === 'Flight' ? 'Duration' : 'Reviews'}
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
                                 {categoryFilter === 'Flight' ? 'Airline' : categoryFilter === 'Rental' ? 'Details' : 'Amenities'}
                             </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600">Actions</th>
+                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -409,36 +409,36 @@ export default function ProductsPage() {
                             </tr>
                         ) : paginatedProducts.length > 0 ? (
                             paginatedProducts.map((product) => (
-                                <tr key={`${product.mainCategory}-${product.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                    <td className="px-4 py-2 text-sm text-gray-600">{product.id}</td>
-                                    <td className="px-4 py-2 text-sm font-medium text-foreground">{product.title_fr || product.mainHeading}</td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">
-                                        <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${product.mainCategory === 'Flight' ? 'bg-blue-100 text-blue-700' :
-                                            product.mainCategory === 'Rental' ? 'bg-green-100 text-green-700' :
-                                                'bg-purple-100 text-purple-700'
+                                <tr key={`${product.mainCategory}-${product.id}`} className="border-b border-(--gray-100) hover:bg-(--gray-50) transition-colors">
+                                    <td className="px-4 py-2 text-sm text-(--gray-600)">{product.id}</td>
+                                    <td className="px-4 py-2 text-sm font-medium text-(--foreground)">{product.title_fr || product.mainHeading}</td>
+                                    <td className="px-4 py-2 text-sm text-(--gray-600)">
+                                        <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${product.mainCategory === 'Flight' ? 'bg-(--primary)/10 text-(--primary)' :
+                                            product.mainCategory === 'Rental' ? 'bg-(--success)/10 text-(--success)' :
+                                                'bg-(--secondary)/10 text-(--secondary)'
                                             }`}>
                                             {product.mainCategory || 'Hotel'}
                                         </span>
                                     </td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">{product.city || product.departureCity || '-'}</td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">
+                                    <td className="px-4 py-2 text-sm text-(--gray-600)">{product.city || product.departureCity || '-'}</td>
+                                    <td className="px-4 py-2 text-sm text-(--gray-600)">
                                         {product.currency || 'EUR'} {product.price_per_night || product.price || '-'}
                                     </td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">
-                                        <span className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">
+                                    <td className="px-4 py-2 text-sm text-(--gray-600)">
+                                        <span className="inline-flex items-center gap-1 bg-(--accent)/10 text-(--accent) px-2 py-0.5 rounded">
                                             ⭐ {product.rating ? Number(product.rating).toFixed(1) : 'N/A'}
                                         </span>
                                     </td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">{product.review_count || 0}</td>
-                                    <td className="px-4 py-2 text-sm text-gray-600">
+                                    <td className="px-4 py-2 text-sm text-(--gray-600)">{product.review_count || 0}</td>
+                                    <td className="px-4 py-2 text-sm text-(--gray-600)">
                                         <div className="flex flex-wrap gap-1">
                                             {Array.isArray(product.amenities) && product.amenities.slice(0, 3).map((amenity: any, idx: any) => (
-                                                <span key={idx} className="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">
+                                                <span key={idx} className="inline-block bg-(--primary)/10 text-(--primary) px-2 py-0.5 rounded text-xs">
                                                     {amenity}
                                                 </span>
                                             ))}
                                             {product.mainCategory === 'Flight' && (
-                                                <span className="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">
+                                                <span className="inline-block bg-(--primary)/10 text-(--primary) px-2 py-0.5 rounded text-xs">
                                                     {product.airline}
                                                 </span>
                                             )}
@@ -448,15 +448,15 @@ export default function ProductsPage() {
                                         <div className="flex items-center gap-2">
                                             <button
                                                 onClick={() => handleEdit(product)}
-                                                className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
+                                                className="p-1 hover:bg-(--gray-100) cursor-pointer rounded transition-colors"
                                             >
-                                                <icons.Edit className="w-4 h-4 text-blue-600" />
+                                                <icons.Edit className="w-4 h-4 text-(--primary)" />
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(product)}
-                                                className="p-1 hover:bg-gray-100 cursor-pointer rounded transition-colors"
+                                                className="p-1 hover:bg-(--gray-100) cursor-pointer rounded transition-colors"
                                             >
-                                                <icons.Trash2 className="w-4 h-4 text-red-600" />
+                                                <icons.Trash2 className="w-4 h-4 text-(--error)" />
                                             </button>
                                         </div>
                                     </td>
@@ -464,7 +464,7 @@ export default function ProductsPage() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={9} className="px-4 py-6 text-center text-sm text-gray-500">
+                                <td colSpan={9} className="px-4 py-6 text-center text-sm text-(--gray-500)">
                                     No products found
                                 </td>
                             </tr>
@@ -475,8 +475,8 @@ export default function ProductsPage() {
 
             {/* Pagination Controls */}
             {!isFetching && filteredProducts.length > 0 && (
-                <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-4 py-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-                    <div className="text-xs sm:text-sm text-gray-500 order-2 sm:order-1">
+                <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-4 py-3 bg-(--white) border border-(--gray-200) rounded-lg shadow-sm">
+                    <div className="text-xs sm:text-sm text-(--gray-500) order-2 sm:order-1">
                         Showing <span className="font-medium">{startIndex + 1}</span> to{' '}
                         <span className="font-medium">{Math.min(startIndex + itemsPerPage, filteredProducts.length)}</span> of{' '}
                         <span className="font-medium">{filteredProducts.length}</span> results
@@ -485,7 +485,7 @@ export default function ProductsPage() {
                         <button
                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                             disabled={currentPage === 1}
-                            className="px-2 sm:px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-2 sm:px-4 py-2 border border-(--gray-200) rounded-lg text-xs sm:text-sm font-medium text-(--gray-700) hover:bg-(--gray-50) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             <span className="hidden sm:inline">Previous</span>
                             <span className="sm:hidden">Prev</span>
@@ -511,8 +511,8 @@ export default function ProductsPage() {
                                         <button
                                             onClick={() => setCurrentPage(page)}
                                             className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-xs sm:text-sm font-medium transition-colors ${currentPage === page
-                                                ? 'bg-primary text-white'
-                                                : 'text-gray-700 hover:bg-gray-100'
+                                                ? 'bg-(--primary) text-(--white)'
+                                                : 'text-(--gray-700) hover:bg-(--gray-100)'
                                                 }`}
                                         >
                                             {page}
@@ -524,7 +524,7 @@ export default function ProductsPage() {
                         <button
                             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                             disabled={currentPage === totalPages || totalPages === 0}
-                            className="px-2 sm:px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-2 sm:px-4 py-2 border border-(--gray-200) rounded-lg text-xs sm:text-sm font-medium text-(--gray-700) hover:bg-(--gray-50) disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             Next
                         </button>
@@ -533,11 +533,11 @@ export default function ProductsPage() {
             )}
             {/* Add Product Modal */}
             {showModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-                            <h2 className="text-lg font-bold text-foreground">{isEditing ? 'Edit Product' : 'Add New Product'}</h2>
-                            <button onClick={() => setShowModal(false)} className="p-1 hover:bg-gray-100 rounded">
+                <div className="fixed inset-0 bg-(--black)/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-(--white) rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                        <div className="sticky top-0 bg-(--white) border-b border-(--gray-200) px-6 py-4 flex items-center justify-between">
+                            <h2 className="text-lg font-bold text-(--foreground)">{isEditing ? 'Edit Product' : 'Add New Product'}</h2>
+                            <button onClick={() => setShowModal(false)} className="p-1 hover:bg-(--gray-100) rounded">
                                 <icons.X className="w-5 h-5" />
                             </button>
                         </div>
@@ -555,7 +555,7 @@ export default function ProductsPage() {
                                                 onChange={() => setMainCategory(cat)}
                                                 className="w-4 h-4 text-primary focus:ring-primary"
                                             />
-                                            <span className={`text-sm ${mainCategory === cat ? 'text-primary font-bold' : 'text-gray-600'}`}>
+                                            <span className={`text-sm ${mainCategory === cat ? 'text-(--primary) font-bold' : 'text-(--gray-600)'}`}>
                                                 {cat}
                                             </span>
                                         </label>
@@ -569,7 +569,7 @@ export default function ProductsPage() {
                                                 onChange={() => setMainCategory(cat.name)}
                                                 className="w-4 h-4 text-primary focus:ring-primary"
                                             />
-                                            <span className={`text-sm ${mainCategory === cat.name ? 'text-primary font-bold' : 'text-gray-600'}`}>
+                                            <span className={`text-sm ${mainCategory === cat.name ? 'text-(--primary) font-bold' : 'text-(--gray-600)'}`}>
                                                 {cat.name}
                                             </span>
                                         </label>
@@ -771,14 +771,14 @@ export default function ProductsPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowModal(false)}
-                                    className="flex-1 px-4 py-2 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium"
+                                    className="flex-1 px-4 py-2 border border-(--gray-200) text-(--gray-700) rounded-lg hover:bg-(--gray-50) transition-colors text-sm font-medium"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium disabled:opacity-50"
+                                    className="flex-1 px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity text-sm font-medium disabled:opacity-50"
                                 >
                                     {loading ? 'Saving...' : (isEditing ? 'Update Product' : 'Create Product')}
                                 </button>

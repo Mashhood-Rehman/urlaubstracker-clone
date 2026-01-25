@@ -39,20 +39,20 @@ const BlogSection = () => {
     if (blogs.length === 0) return null;
 
     return (
-        <section className="py-24 bg-white relative overflow-hidden">
+        <section className="py-24 bg-(--white) relative overflow-hidden">
             <div className="container mx-auto px-4 md:px-10 relative z-10">
                 <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
                     <div className="max-w-2xl text-center md:text-left">
-                        <h2 className="text-4xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter mb-4 leading-tight">
-                            Travel <span className="text-primary tracking-normal">Stories</span>
+                        <h2 className="text-4xl md:text-6xl font-black text-(--gray-900) uppercase tracking-tighter mb-4 leading-tight">
+                            Travel <span className="text-(--primary) tracking-normal">Stories</span>
                         </h2>
-                        <p className="text-xl text-gray-500 font-medium">
+                        <p className="text-xl text-(--gray-500) font-medium">
                             Expert guides, hidden gems, and travel inspiration from our community.
                         </p>
                     </div>
                     <Link
                         href="/blogs"
-                        className="group flex items-center gap-3 bg-[#5B2EFF] text-white px-8 py-4 rounded-2xl font-bold hover:bg-[#4A24CC] transition-all shadow-xl hover:shadow-[#5B2EFF]/25 hover:-translate-y-1"
+                        className="group flex items-center gap-3 bg-(--brand-purple) text-(--white) px-8 py-4 rounded-2xl font-bold hover:bg-(--secondary) transition-all shadow-xl hover:shadow-(--brand-purple)/25 hover:-translate-y-1"
                     >
                         View All Articles
                         <icons.ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
@@ -64,7 +64,7 @@ const BlogSection = () => {
                         <Link
                             href={`/blogs/${blog.slug}`}
                             key={blog.id}
-                            className="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full"
+                            className="group bg-(--white) rounded-2xl overflow-hidden border border-(--slate-100) shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full"
                         >
                             <div className="relative h-64 overflow-hidden">
                                 <img
@@ -73,37 +73,37 @@ const BlogSection = () => {
                                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                                 />
                                 <div className="absolute top-6 left-6">
-                                    <div className="bg-[#5EEAD4] text-[#5B2EFF] px-4 py-1.5 rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl">
+                                    <div className="bg-(--brand-teal) text-(--brand-purple) px-4 py-1.5 rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl">
                                         {blog.category}
                                     </div>
                                 </div>
                             </div>
 
                             <div className="p-8 flex flex-col flex-1">
-                                <div className="flex items-center gap-6 text-gray-400 text-[11px] font-bold uppercase tracking-wider mb-4">
+                                <div className="flex items-center gap-6 text-(--gray-400) text-[11px] font-bold uppercase tracking-wider mb-4">
                                     <span className="flex items-center gap-2">
-                                        <icons.Calendar size={14} className="text-[#5B2EFF]" />
+                                        <icons.Calendar size={14} className="text-(--brand-purple)" />
                                         {new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                     </span>
                                     <span className="flex items-center gap-2">
-                                        <icons.User size={14} className="text-[#5B2EFF]" />
+                                        <icons.User size={14} className="text-(--brand-purple)" />
                                         {blog.author}
                                     </span>
                                 </div>
 
-                                <h3 className="text-2xl font-black text-gray-900 leading-tight mb-4 group-hover:text-[#5B2EFF] transition-colors line-clamp-2">
+                                <h3 className="text-2xl font-black text-(--gray-900) leading-tight mb-4 group-hover:text-(--brand-purple) transition-colors line-clamp-2">
                                     {blog.title}
                                 </h3>
 
-                                <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-8">
+                                <p className="text-(--gray-500) text-sm leading-relaxed line-clamp-3 mb-8">
                                     {blog.excerpt}
                                 </p>
 
                                 <div className="mt-auto flex items-center justify-between">
-                                    <span className="text-[11px] font-black uppercase tracking-widest text-[#5B2EFF] flex items-center gap-2 group-hover:gap-3 transition-all">
+                                    <span className="text-[11px] font-black uppercase tracking-widest text-(--brand-purple) flex items-center gap-2 group-hover:gap-3 transition-all">
                                         Read Article <icons.ArrowUpRight size={14} />
                                     </span>
-                                    <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-[#5B2EFF] group-hover:text-white transition-colors">
+                                    <div className="w-10 h-10 rounded-full bg-(--slate-50) flex items-center justify-center group-hover:bg-(--brand-purple) group-hover:text-(--white) transition-colors">
                                         <icons.ArrowUpRight size={20} />
                                     </div>
                                 </div>

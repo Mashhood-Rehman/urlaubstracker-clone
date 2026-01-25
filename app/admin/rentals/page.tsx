@@ -174,13 +174,13 @@ export default function RentalsAdminPage() {
     return (
         <div className="p-6">
             <div className="mb-6">
-                <h1 className="text-2xl font-bold text-foreground">Rentals Management</h1>
-                <p className="text-sm text-gray-500 mt-1">Manage all rentals (Cars, Motorbikes, Parking)</p>
+                <h1 className="text-2xl font-bold text-(--foreground)">Rentals Management</h1>
+                <p className="text-sm text-(--gray-500) mt-1">Manage all rentals (Cars, Motorbikes, Parking)</p>
             </div>
 
             <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 max-w-md">
-                    <icons.Search className="w-4 h-4 text-gray-400" />
+                <div className="flex items-center gap-2 px-3 py-2 bg-(--white) border border-(--gray-200) rounded-lg flex-1 max-w-md">
+                    <icons.Search className="w-4 h-4 text-(--gray-400)" />
                     <input
                         type="text"
                         placeholder="Search rentals..."
@@ -194,39 +194,39 @@ export default function RentalsAdminPage() {
                         resetForm();
                         setShowModal(true);
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
                 >
                     <icons.Plus className="w-4 h-4" />
                     Add Rental
                 </button>
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div className="bg-(--white) rounded-lg border border-(--gray-200) overflow-hidden">
                 <table className="w-full text-sm">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-(--gray-50) border-b border-(--gray-200)">
                         <tr>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">ID</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Title</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Category</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Price Info</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Actions</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">ID</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Title</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Category</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Price Info</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredRentals.length > 0 ? (
                             filteredRentals.map((rental) => (
-                                <tr key={rental.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                    <td className="px-4 py-3 text-gray-600">{rental.id}</td>
-                                    <td className="px-4 py-3 font-medium text-foreground">{rental.title}</td>
+                                <tr key={rental.id} className="border-b border-(--gray-100) hover:bg-(--gray-50) transition-colors">
+                                    <td className="px-4 py-3 text-(--gray-600)">{rental.id}</td>
+                                    <td className="px-4 py-3 font-medium text-(--foreground)">{rental.title}</td>
                                     <td className="px-4 py-3">
-                                        <span className={`px-2 py-0.5 rounded text-xs capitalize ${rental.category === 'car' ? 'bg-blue-100 text-blue-800' :
-                                            rental.category === 'parking' ? 'bg-gray-100 text-gray-800' :
-                                                'bg-purple-100 text-purple-800'
+                                        <span className={`px-2 py-0.5 rounded text-xs capitalize ${rental.category === 'car' ? 'bg-(--primary)/10 text-(--primary)' :
+                                            rental.category === 'parking' ? 'bg-(--gray-100) text-(--gray-800)' :
+                                                'bg-(--secondary)/10 text-(--secondary)'
                                             }`}>
                                             {rental.category}
                                         </span>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600">
+                                    <td className="px-4 py-3 text-(--gray-600)">
                                         {rental.offer?.pricePerDay ? `${rental.offer.pricePerDay} ${rental.offer.currency || '€'} / day` :
                                             rental.offer?.price ? `${rental.offer.price} ${rental.offer.currency || '€'}` : 'N/A'}
                                     </td>
@@ -234,13 +234,13 @@ export default function RentalsAdminPage() {
                                         <div className="flex items-center gap-2">
                                             <button
                                                 onClick={() => handleEdit(rental)}
-                                                className="p-1 hover:bg-gray-100 rounded text-blue-600"
+                                                className="p-1 hover:bg-(--gray-100) rounded text-(--primary)"
                                             >
                                                 <icons.Edit className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(rental.id)}
-                                                className="p-1 hover:bg-gray-100 rounded text-red-600"
+                                                className="p-1 hover:bg-(--gray-100) rounded text-(--error)"
                                             >
                                                 <icons.Trash2 className="w-4 h-4" />
                                             </button>
@@ -250,7 +250,7 @@ export default function RentalsAdminPage() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                                <td colSpan={5} className="px-4 py-8 text-center text-(--gray-500)">
                                     No rentals found
                                 </td>
                             </tr>
@@ -260,11 +260,11 @@ export default function RentalsAdminPage() {
             </div>
 
             {showModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-                        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-                            <h2 className="text-lg font-bold text-foreground">{isEditing ? 'Edit Rental' : 'Add New Rental'}</h2>
-                            <button onClick={() => setShowModal(false)} className="p-1 hover:bg-gray-100 rounded">
+                <div className="fixed inset-0 bg-(--black)/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-(--white) rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+                        <div className="sticky top-0 bg-(--white) border-b border-(--gray-200) px-6 py-4 flex items-center justify-between">
+                            <h2 className="text-lg font-bold text-(--foreground)">{isEditing ? 'Edit Rental' : 'Add New Rental'}</h2>
+                            <button onClick={() => setShowModal(false)} className="p-1 hover:bg-(--gray-100) rounded">
                                 <icons.X className="w-5 h-5" />
                             </button>
                         </div>
@@ -272,12 +272,12 @@ export default function RentalsAdminPage() {
                         <form onSubmit={handleSubmit} className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Category</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Category</label>
                                     <select
                                         name="category"
                                         value={formData.category}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white)"
                                     >
                                         <option value="car">Car</option>
                                         <option value="motorbike">Motorbike</option>
@@ -286,55 +286,55 @@ export default function RentalsAdminPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Title</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Title</label>
                                     <input
                                         type="text"
                                         name="title"
                                         value={formData.title}
                                         onChange={handleInputChange}
                                         required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white)"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Description</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Description</label>
                                     <textarea
                                         name="description"
                                         value={formData.description}
                                         onChange={handleInputChange}
                                         required
                                         rows={2}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white)"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Main Heading</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Main Heading</label>
                                     <input
                                         type="text"
                                         name="mainHeading"
                                         value={formData.mainHeading}
                                         onChange={handleInputChange}
                                         required
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white)"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Main Description</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Main Description</label>
                                     <textarea
                                         name="mainDescription"
                                         value={formData.mainDescription}
                                         onChange={handleInputChange}
                                         required
                                         rows={2}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white)"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Offer (JSON)</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Offer (JSON)</label>
                                     <textarea
                                         name="offer"
                                         value={formData.offer}
@@ -342,65 +342,65 @@ export default function RentalsAdminPage() {
                                         required
                                         rows={3}
                                         placeholder='{ "vehicle": "Fiat Panda", "pricePerDay": 6, "currency": "€" }'
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg font-mono text-xs focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg font-mono text-xs focus:outline-none focus:border-(--primary) bg-(--white)"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Why Super Deal</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Why Super Deal</label>
                                     <textarea
                                         name="whySuperDeal"
                                         value={formData.whySuperDeal}
                                         onChange={handleInputChange}
                                         rows={2}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white)"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Things To Do (comma-separated)</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Things To Do (comma-separated)</label>
                                     <input
                                         type="text"
                                         name="thingsToDo"
                                         value={formData.thingsToDo}
                                         onChange={handleInputChange}
                                         placeholder="Explore beaches, Visit villages"
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white)"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Additional Info (JSON)</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Additional Info (JSON)</label>
                                     <textarea
                                         name="additionalInfo"
                                         value={formData.additionalInfo}
                                         onChange={handleInputChange}
                                         rows={3}
                                         placeholder='{ "vehicleType": "Compact", "pickup": "Airport" }'
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg font-mono text-xs focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg font-mono text-xs focus:outline-none focus:border-(--primary) bg-(--white)"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">Eco Tip</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">Eco Tip</label>
                                     <input
                                         type="text"
                                         name="ecoTip"
                                         value={formData.ecoTip}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white)"
                                     />
                                 </div>
 
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">External Link (Booking/Info URL)</label>
+                                    <label className="block text-xs font-medium text-(--gray-700) mb-1">External Link (Booking/Info URL)</label>
                                     <input
                                         type="url"
                                         name="link"
                                         value={formData.link}
                                         onChange={handleInputChange}
                                         placeholder="https://..."
-                                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary text-sm"
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) text-sm bg-(--white)"
                                     />
                                 </div>
 
@@ -418,14 +418,14 @@ export default function RentalsAdminPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowModal(false)}
-                                    className="flex-1 px-4 py-2 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                                    className="flex-1 px-4 py-2 border border-(--gray-200) text-(--gray-700) rounded-lg hover:bg-(--gray-50) transition-colors font-medium"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity font-medium disabled:opacity-50"
+                                    className="flex-1 px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity font-medium disabled:opacity-50"
                                 >
                                     {loading ? 'Saving...' : (isEditing ? 'Update Rental' : 'Create Rental')}
                                 </button>

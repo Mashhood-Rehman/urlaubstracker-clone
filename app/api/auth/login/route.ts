@@ -14,14 +14,11 @@ export async function POST(request: NextRequest) {
                 message: 'Login successful',
             });
 
-            // Set an HTTP-only cookie for the session
-            // In a real app, you'd use a JWT or session ID, but for static credentials,
-            // we'll set a simple "is_admin" cookie for demonstration.
             response.cookies.set('admin_session', 'true', {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
-                maxAge: 60 * 60 * 24, // 24 hours
+                maxAge: 60 * 60 * 24,
                 path: '/',
             });
 

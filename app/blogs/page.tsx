@@ -47,13 +47,13 @@ const BlogList = () => {
     }
 
     return (
-        <main className="min-h-screen pt-24 pb-20 bg-slate-50">
+        <main className="min-h-screen pt-24 pb-20 bg-(--slate-50)">
             <div className="container mx-auto px-4 md:px-10">
                 <div className="mb-16">
-                    <h1 className="text-4xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter mb-4">
+                    <h1 className="text-4xl md:text-6xl font-black text-(--gray-900) uppercase tracking-tighter mb-4">
                         {categoryFilter ? `${categoryFilter} ` : ''}Articles
                     </h1>
-                    <p className="text-xl text-gray-500 font-medium">
+                    <p className="text-xl text-(--gray-500) font-medium">
                         {categoryFilter
                             ? `Discover our best ${categoryFilter.toLowerCase()} guides and stories.`
                             : 'Explore our latest travel insights, guides, and inspiration.'}
@@ -66,7 +66,7 @@ const BlogList = () => {
                             <Link
                                 href={`/blogs/${blog.slug}`}
                                 key={blog.id}
-                                className="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col"
+                                className="group bg-(--white) rounded-2xl overflow-hidden border border-(--slate-100) shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col"
                             >
                                 <div className="relative h-64 overflow-hidden">
                                     <img
@@ -75,34 +75,34 @@ const BlogList = () => {
                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                                     />
                                     <div className="absolute top-6 left-6">
-                                        <div className="bg-[#5EEAD4] text-[#5B2EFF] px-4 py-1.5 rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl">
+                                        <div className="bg-(--brand-teal) text-(--brand-purple) px-4 py-1.5 rounded-full font-black text-[10px] uppercase tracking-widest shadow-xl">
                                             {blog.category}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="p-8 flex flex-col flex-1">
-                                    <div className="flex items-center gap-6 text-gray-400 text-[11px] font-bold uppercase tracking-wider mb-4">
+                                    <div className="flex items-center gap-6 text-(--gray-400) text-[11px] font-bold uppercase tracking-wider mb-4">
                                         <span className="flex items-center gap-2">
-                                            <icons.Calendar size={14} className="text-[#5B2EFF]" />
+                                            <icons.Calendar size={14} className="text-(--brand-purple)" />
                                             {new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                         </span>
                                         <span className="flex items-center gap-2">
-                                            <icons.User size={14} className="text-[#5B2EFF]" />
+                                            <icons.User size={14} className="text-(--brand-purple)" />
                                             {blog.author}
                                         </span>
                                     </div>
 
-                                    <h3 className="text-2xl font-black text-gray-900 leading-tight mb-4 group-hover:text-[#5B2EFF] transition-colors line-clamp-2">
+                                    <h3 className="text-2xl font-black text-(--gray-900) leading-tight mb-4 group-hover:text-(--brand-purple) transition-colors line-clamp-2">
                                         {blog.title}
                                     </h3>
 
-                                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-8">
+                                    <p className="text-(--gray-500) text-sm leading-relaxed line-clamp-3 mb-8">
                                         {blog.excerpt}
                                     </p>
 
                                     <div className="mt-auto flex items-center justify-between">
-                                        <span className="text-[11px] font-black uppercase tracking-widest text-[#5B2EFF] flex items-center gap-2 group-hover:gap-3 transition-all">
+                                        <span className="text-[11px] font-black uppercase tracking-widest text-(--brand-purple) flex items-center gap-2 group-hover:gap-3 transition-all">
                                             Read Article <icons.ArrowUpRight size={14} />
                                         </span>
                                     </div>
@@ -111,8 +111,8 @@ const BlogList = () => {
                         ))
                     ) : (
                         <div className="col-span-full py-20 text-center">
-                            <h3 className="text-2xl font-bold text-gray-400">No articles found in this category.</h3>
-                            <Link href="/blogs" className="text-[#5B2EFF] mt-4 inline-block font-bold hover:underline">
+                            <h3 className="text-2xl font-bold text-(--gray-400)">No articles found in this category.</h3>
+                            <Link href="/blogs" className="text-(--brand-purple) mt-4 inline-block font-bold hover:underline">
                                 View all articles
                             </Link>
                         </div>

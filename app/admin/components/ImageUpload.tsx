@@ -75,8 +75,8 @@ export default function ImageUpload({
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-semibold text-slate-600 uppercase tracking-tight">
-        {label} <span className="text-red-500">*</span> ({images.length}/{maxImages})
+      <label className="block text-sm font-semibold text-(--gray-600) uppercase tracking-tight">
+        {label} <span className="text-(--error)">*</span> ({images.length}/{maxImages})
       </label>
 
       <div className="relative">
@@ -92,16 +92,16 @@ export default function ImageUpload({
         <label
           htmlFor="image-upload"
           className={`flex items-center justify-center gap-2 w-full px-4 py-6 border-2 border-dashed rounded-lg cursor-pointer transition-all ${uploading || images.length >= maxImages
-            ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
-            : 'border-blue-300 bg-blue-50 hover:border-blue-400 hover:bg-blue-100'
+            ? 'border-(--gray-200) bg-(--gray-50) opacity-50 cursor-not-allowed'
+            : 'border-(--primary)/30 bg-(--primary)/5 hover:border-(--primary)/50 hover:bg-(--primary)/10'
             }`}
         >
-          <icons.Upload className="w-5 h-5 text-blue-600" />
+          <icons.Upload className="w-5 h-5 text-(--primary)" />
           <div className="text-center">
-            <p className="text-sm font-semibold text-slate-700">
+            <p className="text-sm font-semibold text-(--gray-700)">
               {uploading ? 'Uploading...' : 'Drag & drop images or click to browse'}
             </p>
-            <p className="text-xs text-slate-500">PNG, JPG, WEBP up to 5MB each</p>
+            <p className="text-xs text-(--gray-500)">PNG, JPG, WEBP up to 5MB each</p>
           </div>
         </label>
       </div>
@@ -110,7 +110,7 @@ export default function ImageUpload({
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {images.map((image, index) => (
             <div key={index} className="relative group">
-              <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+              <div className="aspect-square bg-(--gray-100) rounded-lg overflow-hidden border border-(--gray-200)">
                 <img
                   src={image}
                   alt={`Uploaded image ${index + 1}`}
@@ -120,11 +120,11 @@ export default function ImageUpload({
               <button
                 type="button"
                 onClick={() => handleRemoveImage(index)}
-                className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-1 right-1 bg-(--error) text-(--white) p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <icons.X className="w-4 h-4" />
               </button>
-              <p className="text-xs text-gray-500 mt-1 text-center">Image {index + 1}</p>
+              <p className="text-xs text-(--gray-500) mt-1 text-center">Image {index + 1}</p>
             </div>
           ))}
         </div>

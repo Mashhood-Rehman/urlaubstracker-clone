@@ -206,21 +206,21 @@ export default function AssignEntitiesModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div className="bg-(--white) rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex justify-between items-center p-6 border-b">
-          <h2 className="text-2xl font-bold text-gray-900">Assign Coupon to {entityType}</h2>
+        <div className="flex justify-between items-center p-6 border-b border-(--gray-100)">
+          <h2 className="text-2xl font-bold text-(--gray-900)">Assign Coupon to {entityType}</h2>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-1 hover:bg-(--gray-100) rounded-lg transition-colors"
           >
-            <icons.X className="w-5 h-5 text-gray-600" />
+            <icons.X className="w-5 h-5 text-(--gray-600)" />
           </button>
         </div>
 
         {/* Entity Type Selector */}
-        <div className="p-6 border-b bg-gray-50">
-          <p className="text-sm font-medium text-gray-700 mb-3">Select Category:</p>
+        <div className="p-6 border-b border-(--gray-100) bg-(--gray-50)/50">
+          <p className="text-sm font-medium text-(--gray-700) mb-3">Select Category:</p>
           <div className="flex flex-wrap gap-3">
             {categories.map((cat) => (
               <button
@@ -231,8 +231,8 @@ export default function AssignEntitiesModal({
                   setSearchTerm('');
                 }}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors capitalize ${(entityType === cat.slug || entityType === cat.name)
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                  ? 'bg-(--primary) text-(--white)'
+                  : 'bg-(--gray-200) text-(--gray-800) hover:bg-(--gray-300)'
                   }`}
               >
                 {cat.name}
@@ -242,27 +242,27 @@ export default function AssignEntitiesModal({
         </div>
 
         {error && (
-          <div className="mx-6 mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+          <div className="mx-6 mt-6 p-4 bg-(--error)/10 border border-(--error)/20 rounded-lg text-(--error)">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="mx-6 mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+          <div className="mx-6 mt-6 p-4 bg-(--success)/10 border border-(--success)/20 rounded-lg text-(--success)">
             {success}
           </div>
         )}
 
         {/* Search */}
-        <div className="p-6 border-b">
+        <div className="p-6 border-b border-(--gray-100)">
           <div className="relative">
-            <icons.Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+            <icons.Search className="absolute left-3 top-3 w-5 h-5 text-(--gray-400)" />
             <input
               type="text"
               placeholder={`Search ${entityType}...`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full pl-10 pr-4 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
             />
           </div>
         </div>
@@ -270,16 +270,16 @@ export default function AssignEntitiesModal({
         {/* Content */}
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <icons.Loader className="w-8 h-8 animate-spin text-blue-600" />
+            <icons.Loader className="w-8 h-8 animate-spin text-(--primary)" />
           </div>
         ) : (
           <div className="p-6">
             {/* Select All */}
             {filteredEntities.length > 0 && (
-              <div className="mb-4 pb-4 border-b">
+              <div className="mb-4 pb-4 border-b border-(--gray-100)">
                 <button
                   onClick={handleSelectAll}
-                  className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors w-full"
+                  className="flex items-center gap-3 p-3 hover:bg-(--gray-50) rounded-lg transition-colors w-full"
                 >
                   <input
                     type="checkbox"
@@ -288,9 +288,9 @@ export default function AssignEntitiesModal({
                       selectedEntities.size === filteredEntities.length
                     }
                     readOnly
-                    className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                    className="w-4 h-4 text-(--primary) rounded cursor-pointer focus:ring-(--primary)"
                   />
-                  <span className="font-medium text-gray-900">
+                  <span className="font-medium text-(--gray-900)">
                     Select All ({filteredEntities.length})
                   </span>
                 </button>
@@ -301,30 +301,30 @@ export default function AssignEntitiesModal({
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {filteredEntities.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-gray-500">No {entityType} found</p>
+                  <p className="text-(--gray-500)">No {entityType} found</p>
                 </div>
               ) : (
                 filteredEntities.map((entity) => (
                   <div
                     key={entity.id}
                     onClick={() => handleSelectEntity(entity.id)}
-                    className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-gray-200 hover:border-blue-300"
+                    className="flex items-center gap-3 p-3 hover:bg-(--gray-50) rounded-lg transition-colors cursor-pointer border border-(--gray-200) hover:border-(--primary)/30"
                   >
                     <input
                       type="checkbox"
                       checked={selectedEntities.has(entity.id)}
                       readOnly
-                      className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                      className="w-4 h-4 text-(--primary) rounded cursor-pointer focus:ring-(--primary)"
                     />
-                    <span className="flex-1 text-gray-900">{getEntityLabel(entity)}</span>
+                    <span className="flex-1 text-(--gray-900)">{getEntityLabel(entity)}</span>
                     <div className="flex items-center gap-2">
                       {assignedEntityIds.has(entity.id) && (
-                        <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-medium">
+                        <span className="text-xs bg-(--success)/10 text-(--success) px-2 py-1 rounded font-medium">
                           ✓ Assigned
                         </span>
                       )}
                       {selectedEntities.has(entity.id) && (
-                        <icons.Check className="w-5 h-5 text-blue-600" />
+                        <icons.Check className="w-5 h-5 text-(--primary)" />
                       )}
                     </div>
                   </div>
@@ -334,8 +334,8 @@ export default function AssignEntitiesModal({
 
             {/* Selection Counter */}
             {selectedEntities.size > 0 && (
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-blue-900 font-medium">
+              <div className="mt-4 p-3 bg-(--primary)/10 border border-(--primary)/20 rounded-lg">
+                <p className="text-(--primary) font-medium">
                   {selectedEntities.size} {entityType} selected
                 </p>
               </div>
@@ -344,18 +344,18 @@ export default function AssignEntitiesModal({
         )}
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 p-6 border-t bg-gray-50">
+        <div className="flex justify-end gap-3 p-6 border-t border-(--gray-100) bg-(--gray-50)/50">
           <button
             onClick={onClose}
             disabled={assigning}
-            className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-(--gray-700) border border-(--gray-300) rounded-lg hover:bg-(--gray-50) transition-colors disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={handleAssign}
             disabled={assigning || selectedEntities.size === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400"
+            className="flex items-center gap-2 px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {assigning && <icons.Loader className="w-4 h-4 animate-spin" />}
             Assign ({selectedEntities.size})

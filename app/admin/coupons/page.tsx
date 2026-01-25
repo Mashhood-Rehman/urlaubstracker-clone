@@ -112,15 +112,15 @@ export default function CouponsPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Coupons Management</h1>
-          <p className="text-gray-600 mt-1">Create and manage discount coupons</p>
+          <h1 className="text-3xl font-bold text-(--gray-900)">Coupons Management</h1>
+          <p className="text-(--gray-600) mt-1">Create and manage discount coupons</p>
         </div>
         <button
           onClick={() => {
             setEditingCoupon(null);
             setShowForm(!showForm);
           }}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 bg-(--primary) text-(--white) px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
         >
           <icons.Plus className="w-5 h-5" />
           New Coupon
@@ -129,7 +129,7 @@ export default function CouponsPage() {
 
       {/* Form */}
       {showForm && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-(--white) rounded-lg shadow-md p-6">
           <CouponForm
             coupon={editingCoupon}
             onSubmit={handleFormSubmit}
@@ -148,7 +148,7 @@ export default function CouponsPage() {
           placeholder="Search by code or name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
         />
       </div>
 
@@ -156,8 +156,8 @@ export default function CouponsPage() {
       {loading ? (
         <Loading variant="container" text="Fetching coupons..." />
       ) : filteredCoupons.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-md p-12 text-center">
-          <p className="text-gray-500 text-lg">No coupons found</p>
+        <div className="bg-(--white) rounded-lg shadow-md p-12 text-center">
+          <p className="text-(--gray-500) text-lg">No coupons found</p>
         </div>
       ) : (
         <CouponList

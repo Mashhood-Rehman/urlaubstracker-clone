@@ -42,9 +42,9 @@ export default function LoginPage() {
             {/* Back Button */}
             <Link
                 href="/"
-                className="absolute top-8 left-8 flex items-center gap-2 text-gray-500 hover:text-primary transition-colors group"
+                className="absolute top-8 left-8 flex items-center gap-2 text-(--gray-500) hover:text-(--primary) transition-colors group"
             >
-                <div className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-primary">
+                <div className="w-8 h-8 rounded-full border border-(--gray-200) flex items-center justify-center group-hover:border-(--primary)">
                     <icons.ArrowLeft className="w-4 h-4" />
                 </div>
                 <span className="text-sm font-medium">Back to site</span>
@@ -54,18 +54,18 @@ export default function LoginPage() {
                 {/* Logo */}
                 <div className="text-center mb-6">
                     <div className="inline-flex items-center gap-2 mb-2">
-                        <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-xl">UT</span>
+                        <div className="w-10 h-10 bg-(--secondary) rounded-lg flex items-center justify-center">
+                            <span className="text-(--white) font-bold text-xl">UT</span>
                         </div>
-                        <span className="font-bold text-2xl text-primary">Urlaubstracker</span>
+                        <span className="font-bold text-2xl text-(--primary)">Urlaubstracker</span>
                     </div>
-                    <h1 className="text-xl font-bold text-foreground mt-4">Welcome Admin</h1>
-                    <p className="text-sm text-gray-500 mt-1">Sign in to manage your platform</p>
+                    <h1 className="text-xl font-bold text-(--foreground) mt-4">Welcome Admin</h1>
+                    <p className="text-sm text-(--gray-500) mt-1">Sign in to manage your platform</p>
                 </div>
 
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-6">
+                <form onSubmit={handleSubmit} className="bg-(--white) rounded-lg border border-(--gray-200) p-6">
                     {error && (
                         <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
                             {error}
@@ -75,9 +75,9 @@ export default function LoginPage() {
 
                         {/* Email */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <div className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg focus-within:border-primary transition-colors">
-                                <icons.Mail className="w-4 h-4 text-gray-400" />
+                            <label className="block text-sm font-medium text-(--gray-700) mb-1">Email</label>
+                            <div className="flex items-center gap-2 px-3 py-2 border border-(--gray-200) rounded-lg focus-within:border-(--primary) transition-colors">
+                                <icons.Mail className="w-4 h-4 text-(--gray-400)" />
                                 <input
                                     type="email"
                                     value={email}
@@ -90,9 +90,9 @@ export default function LoginPage() {
 
                         {/* Password */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                            <div className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg focus-within:border-primary transition-colors">
-                                <icons.Lock className="w-4 h-4 text-gray-400" />
+                            <label className="block text-sm font-medium text-(--gray-700) mb-1">Password</label>
+                            <div className="flex items-center gap-2 px-3 py-2 border border-(--gray-200) rounded-lg focus-within:border-(--primary) transition-colors">
+                                <icons.Lock className="w-4 h-4 text-(--gray-400)" />
                                 <input
                                     type="password"
                                     value={password}
@@ -107,7 +107,7 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium mt-2 disabled:opacity-50"
+                            className="w-full px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity text-sm font-medium mt-2 disabled:opacity-50"
                         >
                             {isLoading ? 'Signing In...' : 'Sign In'}
                         </button>

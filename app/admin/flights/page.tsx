@@ -198,13 +198,13 @@ export default function FlightsAdminPage() {
     return (
         <div className="p-6">
             <div className="mb-6">
-                <h1 className="text-2xl font-bold text-foreground">Flights Management</h1>
-                <p className="text-sm text-gray-500 mt-1">Manage all available flights and routes</p>
+                <h1 className="text-2xl font-bold text-(--foreground)">Flights Management</h1>
+                <p className="text-sm text-(--gray-500) mt-1">Manage all available flights and routes</p>
             </div>
 
             <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg flex-1 max-w-md">
-                    <icons.Search className="w-4 h-4 text-gray-400" />
+                <div className="flex items-center gap-2 px-3 py-2 bg-(--white) border border-(--gray-200) rounded-lg flex-1 max-w-md">
+                    <icons.Search className="w-4 h-4 text-(--gray-400)" />
                     <input
                         type="text"
                         placeholder="Search flights..."
@@ -218,44 +218,44 @@ export default function FlightsAdminPage() {
                         resetForm();
                         setShowModal(true);
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
                 >
                     <icons.Plus className="w-4 h-4" />
                     Add Flight
                 </button>
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div className="bg-(--white) rounded-lg border border-(--gray-200) overflow-hidden">
                 <table className="w-full text-sm">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-(--gray-50) border-b border-(--gray-200)">
                         <tr>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">ID</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Title / Airline</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Route</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Duration</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Price</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Class</th>
-                            <th className="px-4 py-3 text-left font-semibold text-gray-600">Actions</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">ID</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Title / Airline</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Route</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Duration</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Price</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Class</th>
+                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredFlights.length > 0 ? (
                             filteredFlights.map((flight) => (
-                                <tr key={flight.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                    <td className="px-4 py-3 text-gray-600">{flight.id}</td>
+                                <tr key={flight.id} className="border-b border-(--gray-100) hover:bg-(--gray-50) transition-colors">
+                                    <td className="px-4 py-3 text-(--gray-600)">{flight.id}</td>
                                     <td className="px-4 py-3">
-                                        <div className="font-medium text-foreground">{flight.title}</div>
-                                        <div className="text-xs text-gray-400">{flight.airline}</div>
+                                        <div className="font-medium text-(--foreground)">{flight.title}</div>
+                                        <div className="text-xs text-(--gray-400)">{flight.airline}</div>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600">
+                                    <td className="px-4 py-3 text-(--gray-600)">
                                         {flight.departureCity} ✈ {flight.arrivalCity}
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600">{flight.duration}</td>
-                                    <td className="px-4 py-3 text-gray-600">
+                                    <td className="px-4 py-3 text-(--gray-600)">{flight.duration}</td>
+                                    <td className="px-4 py-3 text-(--gray-600)">
                                         {flight.currency} {flight.price}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <span className="bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs">
+                                        <span className="bg-(--success)/10 text-(--success) px-2 py-0.5 rounded text-xs">
                                             {flight.flightClass}
                                         </span>
                                     </td>
@@ -263,13 +263,13 @@ export default function FlightsAdminPage() {
                                         <div className="flex items-center gap-2">
                                             <button
                                                 onClick={() => handleEdit(flight)}
-                                                className="p-1 hover:bg-gray-100 rounded text-blue-600"
+                                                className="p-1 hover:bg-(--gray-100) rounded text-(--primary)"
                                             >
                                                 <icons.Edit className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(flight.id)}
-                                                className="p-1 hover:bg-gray-100 rounded text-red-600"
+                                                className="p-1 hover:bg-(--gray-100) rounded text-(--error)"
                                             >
                                                 <icons.Trash2 className="w-4 h-4" />
                                             </button>
@@ -279,7 +279,7 @@ export default function FlightsAdminPage() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
+                                <td colSpan={7} className="px-4 py-8 text-center text-(--gray-500)">
                                     No flights found
                                 </td>
                             </tr>
@@ -289,11 +289,11 @@ export default function FlightsAdminPage() {
             </div>
 
             {showModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-                        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-                            <h2 className="text-lg font-bold text-foreground">{isEditing ? 'Edit Flight' : 'Add New Flight'}</h2>
-                            <button onClick={() => setShowModal(false)} className="p-1 hover:bg-gray-100 rounded">
+                <div className="fixed inset-0 bg-(--black)/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-(--white) rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+                        <div className="sticky top-0 bg-(--white) border-b border-(--gray-200) px-6 py-4 flex items-center justify-between">
+                            <h2 className="text-lg font-bold text-(--foreground)">{isEditing ? 'Edit Flight' : 'Add New Flight'}</h2>
+                            <button onClick={() => setShowModal(false)} className="p-1 hover:bg-(--gray-100) rounded">
                                 <icons.X className="w-5 h-5" />
                             </button>
                         </div>
@@ -511,14 +511,14 @@ export default function FlightsAdminPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowModal(false)}
-                                    className="flex-1 px-4 py-2 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                                    className="flex-1 px-4 py-2 border border-(--gray-200) text-(--gray-700) rounded-lg hover:bg-(--gray-50) transition-colors font-medium"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity font-medium disabled:opacity-50"
+                                    className="flex-1 px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity font-medium disabled:opacity-50"
                                 >
                                     {loading ? 'Saving...' : (isEditing ? 'Update Flight' : 'Create Flight')}
                                 </button>

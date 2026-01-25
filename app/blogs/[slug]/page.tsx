@@ -78,9 +78,9 @@ export default function BlogDetailsPage() {
 
     if (!blog) {
         return (
-            <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 text-center">
-                <h1 className="text-2xl font-bold text-gray-900 mb-4">Article not found</h1>
-                <Link href="/" className="text-[#5B2EFF] font-semibold flex items-center gap-2 hover:underline">
+            <div className="min-h-screen bg-(--white) flex flex-col items-center justify-center p-4 text-center">
+                <h1 className="text-2xl font-bold text-(--gray-900) mb-4">Article not found</h1>
+                <Link href="/" className="text-(--brand-purple) font-semibold flex items-center gap-2 hover:underline">
                     <icons.ArrowLeft size={18} /> Back to homepage
                 </Link>
             </div>
@@ -88,19 +88,19 @@ export default function BlogDetailsPage() {
     }
 
     return (
-        <main className="min-h-screen mt-12 bg-white text-[#1A1A1A]">
+        <main className="min-h-screen mt-12 bg-(--white) text-(--gray-900)">
             <div className="max-w-6xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     {/* Main Content Area */}
                     <div className="lg:col-span-12">
                         <button
                             onClick={() => router.back()}
-                            className="z-10 p-2 mb-5 bg-white/80 backdrop-blur-sm rounded-full shadow-md hover:bg-white text-gray-700 transition-all"
+                            className="z-10 p-2 mb-5 bg-(--white)/80 backdrop-blur-sm rounded-full shadow-md hover:bg-(--white) text-(--gray-700) transition-all"
                         >
                             <icons.ArrowLeft size={20} />
                         </button>
                         {/* Carousel Wrapper */}
-                        <div className="rounded-lg overflow-hidden bg-gray-100 group mb-8 border border-gray-100">
+                        <div className="rounded-lg overflow-hidden bg-(--gray-100) group mb-8 border border-(--gray-100)">
 
 
                             <img
@@ -114,7 +114,7 @@ export default function BlogDetailsPage() {
                                     <div className="absolute inset-y-0 left-0 flex items-center px-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                         <button
                                             onClick={prevImage}
-                                            className="p-2 bg-white/90 rounded-sm shadow-md hover:bg-white"
+                                            className="p-2 bg-(--white)/90 rounded-sm shadow-md hover:bg-(--white)"
                                         >
                                             <icons.ChevronRight size={20} className="rotate-180" />
                                         </button>
@@ -122,7 +122,7 @@ export default function BlogDetailsPage() {
                                     <div className="absolute inset-y-0 right-0 flex items-center px-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                         <button
                                             onClick={nextImage}
-                                            className="p-2 bg-white/90 rounded-sm shadow-md hover:bg-white"
+                                            className="p-2 bg-(--white)/90 rounded-sm shadow-md hover:bg-(--white)"
                                         >
                                             <icons.ChevronRight size={20} />
                                         </button>
@@ -132,7 +132,7 @@ export default function BlogDetailsPage() {
                                             <button
                                                 key={i}
                                                 onClick={() => setCurrentImageIndex(i)}
-                                                className={`w-2 h-2 rounded-full transition-all ${i === currentImageIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'
+                                                className={`w-2 h-2 rounded-full transition-all ${i === currentImageIndex ? 'bg-(--white) scale-125' : 'bg-(--white)/50 hover:bg-(--white)/80'
                                                     }`}
                                             />
                                         ))}
@@ -146,13 +146,13 @@ export default function BlogDetailsPage() {
                     <div className="lg:col-span-12">
                         {/* Article Header */}
                         <div className="mb-8">
-                            <span className="inline-block px-2 py-1 rounded bg-[#5B2EFF]/5 text-[#5B2EFF] text-[10px] font-bold uppercase tracking-wider mb-3">
+                            <span className="inline-block px-2 py-1 rounded bg-(--brand-purple)/5 text-(--brand-purple) text-[10px] font-bold uppercase tracking-wider mb-3">
                                 {blog.category}
                             </span>
-                            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 mb-6 leading-tight">
+                            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-(--gray-900) mb-6 leading-tight">
                                 {blog.title}
                             </h1>
-                            <div className="flex items-center gap-4 text-xs text-gray-500 font-medium">
+                            <div className="flex items-center gap-4 text-xs text-(--gray-500) font-medium">
                                 <div className="flex items-center gap-1.5">
                                     <icons.User size={14} />
                                     <span>{blog.author}</span>
@@ -166,25 +166,25 @@ export default function BlogDetailsPage() {
                         </div>
 
                         {/* Article Body */}
-                        <article className="prose prose-slate max-w-none border-t border-gray-50">
+                        <article className="prose prose-slate max-w-none border-t border-(--gray-50)">
                             <div
-                                className="blog-content text-gray-800 leading-relaxed text-lg space-y-6"
+                                className="blog-content text-(--gray-800) leading-relaxed text-lg space-y-6"
                                 dangerouslySetInnerHTML={{ __html: blog.content.replace(/\n/g, '<br/>') }}
                             />
                         </article>
 
                         {/* External Link Section */}
                         {blog.link && (
-                            <div className="mt-10 p-6 bg-[#5B2EFF]/5 rounded-xl border border-[#5B2EFF]/10 flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div className="mt-10 p-6 bg-(--brand-purple)/5 rounded-xl border border-(--brand-purple)/10 flex flex-col md:flex-row items-center justify-between gap-4">
                                 <div>
-                                    <h4 className="font-bold text-gray-900">Want to see more details?</h4>
-                                    <p className="text-sm text-gray-600">Visit the original source for more information about this topic.</p>
+                                    <h4 className="font-bold text-(--gray-900)">Want to see more details?</h4>
+                                    <p className="text-sm text-(--gray-600)">Visit the original source for more information about this topic.</p>
                                 </div>
                                 <a
                                     href={blog.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-6 py-3 bg-[#5B2EFF] text-white font-bold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 whitespace-nowrap"
+                                    className="px-6 py-3 bg-(--brand-purple) text-(--white) font-bold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 whitespace-nowrap"
                                 >
                                     Visit Original Source
                                     <icons.ChevronRight size={18} />
@@ -194,9 +194,9 @@ export default function BlogDetailsPage() {
 
                         {/* Tags */}
                         {Array.isArray(blog.tags) && blog.tags.length > 0 && (
-                            <div className="mt-12 flex flex-wrap gap-2 pt-8 border-t border-gray-100">
+                            <div className="mt-12 flex flex-wrap gap-2 pt-8 border-t border-(--gray-100)">
                                 {blog.tags.map((tag, i) => (
-                                    <span key={i} className="px-3 py-1 bg-gray-50 rounded-md text-[11px] font-semibold text-gray-600 hover:bg-[#5B2EFF]/5 hover:text-[#5B2EFF] cursor-pointer transition-colors">
+                                    <span key={i} className="px-3 py-1 bg-(--gray-50) rounded-md text-[11px] font-semibold text-(--gray-600) hover:bg-(--brand-purple)/5 hover:text-(--brand-purple) cursor-pointer transition-colors">
                                         #{tag}
                                     </span>
                                 ))}
@@ -206,15 +206,15 @@ export default function BlogDetailsPage() {
 
                     {/* Sidebar Area */}
                     <aside className="lg:col-span-12">
-                        <div className="border border-gray-100 rounded-lg p-5 bg-white shadow-sm">
-                            <h3 className="text-sm font-bold uppercase tracking-widest text-gray-900 mb-6 pb-2 border-b-2 border-[#5B2EFF]">
+                        <div className="border border-(--gray-100) rounded-lg p-5 bg-(--white) shadow-sm">
+                            <h3 className="text-sm font-bold uppercase tracking-widest text-(--gray-900) mb-6 pb-2 border-b-2 border-(--brand-purple)">
                                 Recent Articles
                             </h3>
                             <div className="space-y-6">
                                 {recentBlogs.length > 0 ? (
                                     recentBlogs.map((post) => (
                                         <Link key={post.id} href={`/blogs/${post.slug}`} className="flex gap-4 group">
-                                            <div className="relative w-20 h-20 shrink-0 bg-gray-100 rounded-md overflow-hidden">
+                                            <div className="relative w-20 h-20 shrink-0 bg-(--gray-100) rounded-md overflow-hidden">
                                                 <img
                                                     src={post.mainImage || '/placeholder-blog.jpg'}
                                                     alt={post.title}
@@ -222,17 +222,17 @@ export default function BlogDetailsPage() {
                                                 />
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <h4 className="text-sm font-bold text-gray-900 line-clamp-2 leading-snug group-hover:text-[#5B2EFF] transition-colors">
+                                                <h4 className="text-sm font-bold text-(--gray-900) line-clamp-2 leading-snug group-hover:text-(--brand-purple) transition-colors">
                                                     {post.title}
                                                 </h4>
-                                                <span className="text-[10px] text-gray-500 font-medium mt-1 inline-block">
+                                                <span className="text-[10px] text-(--gray-500) font-medium mt-1 inline-block">
                                                     {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                                 </span>
                                             </div>
                                         </Link>
                                     ))
                                 ) : (
-                                    <p className="text-xs text-gray-400 italic">No recent articles found.</p>
+                                    <p className="text-xs text-(--gray-400) italic">No recent articles found.</p>
                                 )}
                             </div>
                         </div>
@@ -240,15 +240,15 @@ export default function BlogDetailsPage() {
                 </div>
 
                 {/* Suggested Articles Bottom Section */}
-                <section className="mt-20 pt-12 border-t border-gray-100">
-                    <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-                        <span className="w-8 h-1 bg-[#5B2EFF] rounded-full"></span>
+                <section className="mt-20 pt-12 border-t border-(--gray-100)">
+                    <h2 className="text-xl md:text-2xl font-bold text-(--gray-900) mb-8 flex items-center gap-3">
+                        <span className="w-8 h-1 bg-(--brand-purple) rounded-full"></span>
                         You might also like
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {suggestedBlogs.map((post) => (
                             <Link key={post.id} href={`/blogs/${post.slug}`} className="group space-y-4">
-                                <div className="aspect-16/10 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                                <div className="aspect-16/10 bg-(--gray-100) rounded-lg overflow-hidden border border-(--gray-100)">
                                     <img
                                         src={post.mainImage || '/placeholder-blog.jpg'}
                                         alt={post.title}
@@ -256,13 +256,13 @@ export default function BlogDetailsPage() {
                                     />
                                 </div>
                                 <div className="px-1">
-                                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#5B2EFF]">
+                                    <span className="text-[10px] font-bold uppercase tracking-wider text-(--brand-purple)">
                                         {post.category}
                                     </span>
-                                    <h3 className="text-base font-bold text-gray-900 line-clamp-2 mt-1 leading-tight group-hover:text-[#5B2EFF] transition-colors">
+                                    <h3 className="text-base font-bold text-(--gray-900) line-clamp-2 mt-1 leading-tight group-hover:text-(--brand-purple) transition-colors">
                                         {post.title}
                                     </h3>
-                                    <p className="text-sm text-gray-500 line-clamp-2 mt-2 leading-relaxed">
+                                    <p className="text-sm text-(--gray-500) line-clamp-2 mt-2 leading-relaxed">
                                         {post.excerpt}
                                     </p>
                                 </div>

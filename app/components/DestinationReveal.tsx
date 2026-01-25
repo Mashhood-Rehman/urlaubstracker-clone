@@ -20,7 +20,7 @@ const DestinationReveal = () => {
 
     return (
         <section
-            className="py-32 bg-primary text-white overflow-hidden relative"
+            className="py-32 bg-(--primary) text-(--white) overflow-hidden relative"
             onMouseEnter={() => setIsHoveringSection(true)}
             onMouseLeave={() => {
                 setIsHoveringSection(false);
@@ -29,9 +29,9 @@ const DestinationReveal = () => {
         >
             <div className="container mx-auto px-4 relative z-10">
                 <div className="flex flex-col gap-4">
-                    <span className="text-secondary font-bold tracking-widest uppercase text-sm">Trending Now</span>
+                    <span className="text-(--secondary) font-bold tracking-widest uppercase text-sm">Trending Now</span>
                     <h2 className="text-5xl md:text-8xl font-bold mb-12 tracking-tighter">
-                        Where to <br /> <span className="text-transparent bg-clip-text bg-linear-to-r from-secondary to-accent">Next?</span>
+                        Where to <br /> <span className="text-transparent bg-clip-text bg-linear-to-r from-(--secondary) to-(--accent)">Next?</span>
                     </h2>
                 </div>
 
@@ -39,18 +39,18 @@ const DestinationReveal = () => {
                     {destinations.map((dest, index) => (
                         <div
                             key={dest.name}
-                            className="group py-8 border-b border-white/10 flex items-center justify-between cursor-pointer transition-all hover:bg-white/5 px-4"
+                            className="group py-8 border-b border-(--white)/10 flex items-center justify-between cursor-pointer transition-all hover:bg-(--white)/5 px-4"
                             onMouseEnter={() => setActiveIndex(index)}
                         >
                             <div className="flex items-baseline gap-6">
-                                <span className="text-2xl font-mono text-white/30 group-hover:text-secondary transition-colors">
+                                <span className="text-2xl font-mono text-(--white)/30 group-hover:text-(--secondary) transition-colors">
                                     0{index + 1}
                                 </span>
                                 <h3 className="text-4xl md:text-6xl font-bold group-hover:translate-x-4 transition-transform duration-500">
                                     {dest.name}
                                 </h3>
                             </div>
-                            <span className="text-xl text-white/50 group-hover:text-white transition-colors">
+                            <span className="text-xl text-(--white)/50 group-hover:text-(--white) transition-colors">
                                 {dest.country}
                             </span>
                         </div>
@@ -86,9 +86,9 @@ const DestinationReveal = () => {
                             className=" object-contain rounded-3xl shadow-2xl"
                         />
                         {/* Overlay gradient on image */}
-                        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent rounded-3xl" />
-                        <div className="absolute bottom-10 left-10 text-white">
-                            <p className="text-sm font-bold uppercase tracking-widest text-secondary mb-2">Explore</p>
+                        <div className="absolute inset-0 bg-linear-to-t from-(--black)/80 via-(--black)/20 to-transparent rounded-3xl" />
+                        <div className="absolute bottom-10 left-10 text-(--white)">
+                            <p className="text-sm font-bold uppercase tracking-widest text-(--secondary) mb-2">Explore</p>
                             <h4 className="text-4xl font-bold">{dest.name}</h4>
                         </div>
                     </div>
@@ -96,7 +96,7 @@ const DestinationReveal = () => {
             </div>
 
             {/* Background decorative elements */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-linear-to-l from-secondary/5 to-transparent pointer-events-none" />
+            <div className="absolute top-0 right-0 w-1/3 h-full bg-linear-to-l from-(--secondary)/5 to-transparent pointer-events-none" />
         </section>
     );
 };

@@ -18,14 +18,14 @@ const AdminSidebar = () => {
 
 
     return (
-        <aside className="w-56 bg-secondary min-h-screen fixed left-0 top-0 flex flex-col">
+        <aside className="w-56 bg-(--secondary) min-h-screen fixed left-0 top-0 flex flex-col">
             {/* Logo */}
-            <div className="p-4 border-b border-white/10">
+            <div className="p-4 border-b border-(--white)/10">
                 <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">UT</span>
+                    <div className="w-8 h-8 bg-(--primary) rounded-lg flex items-center justify-center">
+                        <span className="text-(--white) font-bold text-sm">UT</span>
                     </div>
-                    <span className="text-white font-semibold text-sm">Admin Panel</span>
+                    <span className="text-(--white) font-semibold text-sm">Admin Panel</span>
                 </div>
             </div>
 
@@ -41,8 +41,8 @@ const AdminSidebar = () => {
                                 <Link
                                     href={item.href}
                                     className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive
-                                        ? 'bg-primary text-white'
-                                        : 'text-white/70 hover:bg-white/5 hover:text-white'
+                                        ? 'bg-(--primary) text-(--white)'
+                                        : 'text-(--white)/70 hover:bg-(--white)/5 hover:text-(--white)'
                                         }`}
                                 >
                                     <Icon className="w-4 h-4" />
@@ -55,10 +55,10 @@ const AdminSidebar = () => {
             </nav>
 
             {/* Logout */}
-            <div className="p-3 border-t border-white/10 space-y-1">
+            <div className="p-3 border-t border-(--white)/10 space-y-1">
                 <Link
                     href="/"
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors cursor-pointer"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-(--white)/70 hover:bg-(--white)/5 hover:text-(--white) transition-colors cursor-pointer"
                 >
                     <icons.Globe className="w-4 h-4" />
                     <span className="text-sm font-medium">Back to Website</span>
@@ -70,7 +70,7 @@ const AdminSidebar = () => {
                             window.location.href = '/auth/login';
                         }
                     }}
-                    className="w-full h-10 flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors cursor-pointer text-left"
+                    className="w-full h-10 flex items-center gap-3 px-3 py-2 rounded-lg text-(--white)/70 hover:bg-(--white)/5 hover:text-(--white) transition-colors cursor-pointer text-left"
                 >
                     <icons.LogOut className="w-4 h-4" />
                     <span className="text-sm font-medium">Logout</span>

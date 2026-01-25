@@ -101,12 +101,12 @@ export default function CategoriesPage() {
         <div className="p-6">
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-foreground">Categories</h1>
-                    <p className="text-sm text-gray-500 mt-1">Manage product categories</p>
+                    <h1 className="text-2xl font-bold text-(--foreground)">Categories</h1>
+                    <p className="text-sm text-(--gray-500) mt-1">Manage product categories</p>
                 </div>
                 <button
                     onClick={() => setShowModal(true)}
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-(--primary) text-(--white) rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
                 >
                     <icons.Plus className="w-4 h-4" />
                     Add Category
@@ -114,8 +114,8 @@ export default function CategoriesPage() {
             </div>
 
             <div className="mb-6 max-w-md">
-                <div className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg">
-                    <icons.Search className="w-4 h-4 text-gray-400" />
+                <div className="flex items-center gap-2 px-3 py-2 bg-(--white) border border-(--gray-200) rounded-lg">
+                    <icons.Search className="w-4 h-4 text-(--gray-400)" />
                     <input
                         type="text"
                         placeholder="Search categories..."
@@ -129,21 +129,21 @@ export default function CategoriesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {isLoading ? (
                     Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="h-32 bg-gray-100 rounded-lg animate-pulse" />
+                        <div key={i} className="h-32 bg-(--gray-100) rounded-lg animate-pulse" />
                     ))
                 ) : filteredCategories.length > 0 ? (
                     filteredCategories.map((category) => (
-                        <div key={category.id} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative group">
+                        <div key={category.id} className="bg-(--white) p-4 rounded-lg border border-(--gray-200) shadow-sm hover:shadow-md transition-shadow relative group">
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <h3 className="font-semibold text-lg text-foreground">{category.name}</h3>
-                                    <p className="text-xs text-gray-500 font-mono mt-1">{category.slug}</p>
+                                    <h3 className="font-semibold text-lg text-(--foreground)">{category.name}</h3>
+                                    <p className="text-xs text-(--gray-500) font-mono mt-1">{category.slug}</p>
                                 </div>
-                                <span className={`text-xs px-2 py-1 rounded-full ${category.type === 'static' ? 'bg-gray-100 text-gray-600' : 'bg-blue-100 text-blue-600'}`}>
+                                <span className={`text-xs px-2 py-1 rounded-full ${category.type === 'static' ? 'bg-(--gray-100) text-(--gray-600)' : 'bg-(--primary)/10 text-(--primary)'}`}>
                                     {category.type}
                                 </span>
                             </div>
-                            <p className="text-sm text-gray-600 mt-3 line-clamp-2">
+                            <p className="text-sm text-(--gray-600) mt-3 line-clamp-2">
                                 {category.description || 'No description provided.'}
                             </p>
 
@@ -151,7 +151,7 @@ export default function CategoriesPage() {
                                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
                                         onClick={() => handleDelete(category.id, category.type)}
-                                        className="p-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                        className="p-1.5 text-(--error) hover:bg-(--error)/10 rounded-md transition-colors"
                                         title="Delete Category"
                                     >
                                         <icons.Trash2 className="w-4 h-4" />
@@ -161,65 +161,65 @@ export default function CategoriesPage() {
                         </div>
                     ))
                 ) : (
-                    <div className="col-span-full py-12 text-center text-gray-500">
+                    <div className="col-span-full py-12 text-center text-(--gray-500)">
                         <p>No categories found.</p>
                     </div>
                 )}
-            </div>
-
-            {showModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg w-full max-w-md">
-                        <div className="flex justify-between items-center p-4 border-b border-gray-100">
-                            <h2 className="text-lg font-bold">Add New Category</h2>
-                            <button onClick={() => setShowModal(false)} className="p-1 hover:bg-gray-100 rounded-full">
-                                <icons.X className="w-5 h-5" />
-                            </button>
+                {/* Modal */}
+                {showModal && (
+                    <div className="fixed inset-0 bg-(--black)/50 flex items-center justify-center z-50 p-4">
+                        <div className="bg-(--white) rounded-lg w-full max-w-md">
+                            <div className="flex justify-between items-center p-4 border-b border-(--gray-100)">
+                                <h2 className="text-lg font-bold text-(--foreground)">Add New Category</h2>
+                                <button onClick={() => setShowModal(false)} className="p-1 hover:bg-(--gray-100) rounded-full">
+                                    <icons.X className="w-5 h-5 text-(--gray-500)" />
+                                </button>
+                            </div>
+                            <form onSubmit={handleSubmit} className="p-4 space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-(--gray-700) mb-1">Category Name</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white) text-(--foreground)"
+                                        placeholder="e.g., Cruise, Activity"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-(--gray-700) mb-1">Description</label>
+                                    <textarea
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleInputChange}
+                                        rows={3}
+                                        className="w-full px-3 py-2 border border-(--gray-200) rounded-lg focus:outline-none focus:border-(--primary) bg-(--white) text-(--foreground)"
+                                        placeholder="Optional description..."
+                                    />
+                                </div>
+                                <div className="pt-2 flex gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowModal(false)}
+                                        className="flex-1 px-4 py-2 border border-(--gray-200) rounded-lg text-(--gray-700) font-medium hover:bg-(--gray-50)"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="flex-1 px-4 py-2 bg-(--primary) text-(--white) rounded-lg font-medium hover:opacity-90 disabled:opacity-70"
+                                    >
+                                        {isSubmitting ? 'Creating...' : 'Create Category'}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <form onSubmit={handleSubmit} className="p-4 space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
-                                    placeholder="e.g., Cruise, Activity"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                                <textarea
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                    rows={3}
-                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
-                                    placeholder="Optional description..."
-                                />
-                            </div>
-                            <div className="pt-2 flex gap-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowModal(false)}
-                                    className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 font-medium hover:bg-gray-50"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 disabled:opacity-70"
-                                >
-                                    {isSubmitting ? 'Creating...' : 'Create Category'}
-                                </button>
-                            </div>
-                        </form>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }

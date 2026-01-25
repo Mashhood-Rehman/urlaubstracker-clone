@@ -110,31 +110,31 @@ export default async function SearchPage({
     }
 
     return (
-        <main className="min-h-screen bg-gray-50">
+        <main className="min-h-screen bg-(--gray-50)">
             {/* Setup a simple header for now since Navbar might be active via layout */}
-            <div className="bg-white border-b sticky top-0 z-50">
+            <div className="bg-(--white) border-b sticky top-0 z-50">
                 <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-                    <Link href="/" className="font-bold text-xl text-primary">TravelApp</Link>
+                    <Link href="/" className="font-bold text-xl text-(--primary)">TravelApp</Link>
                     <div className="flex-1 max-w-xl mx-auto flex items-center justify-center gap-8 px-8">
                         <div className="flex flex-col items-start">
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Location</span>
-                            <div className="flex items-center gap-2 text-sm text-gray-900 font-bold">
-                                <icons.MapPin className="w-3 h-3 text-secondary" />
+                            <span className="text-[10px] font-bold text-(--gray-400) uppercase tracking-widest">Location</span>
+                            <div className="flex items-center gap-2 text-sm text-(--gray-900) font-bold">
+                                <icons.MapPin className="w-3 h-3 text-(--secondary)" />
                                 {location || 'Anywhere'}
                             </div>
                         </div>
-                        <div className="h-8 w-px bg-gray-100"></div>
+                        <div className="h-8 w-px bg-(--gray-100)"></div>
                         <div className="flex flex-col items-start">
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Dates</span>
-                            <div className="flex items-center gap-2 text-sm text-gray-900 font-bold">
-                                <icons.Calendar className="w-3 h-3 text-secondary" />
+                            <span className="text-[10px] font-bold text-(--gray-400) uppercase tracking-widest">Dates</span>
+                            <div className="flex items-center gap-2 text-sm text-(--gray-900) font-bold">
+                                <icons.Calendar className="w-3 h-3 text-(--secondary)" />
                                 {startDate ? (
                                     endDate ? `${formatDisplayDate(startDate)} - ${formatDisplayDate(endDate)}` : formatDisplayDate(startDate)
                                 ) : 'Flexible'}
                             </div>
                         </div>
                     </div>
-                    <Link href="/" className="px-4 py-2 border border-gray-100 rounded-lg text-xs font-bold hover:bg-gray-50 transition-colors uppercase tracking-widest">
+                    <Link href="/" className="px-4 py-2 border border-(--gray-100) rounded-lg text-xs font-bold hover:bg-(--gray-50) transition-colors uppercase tracking-widest">
                         New Search
                     </Link>
                 </div>
@@ -147,8 +147,8 @@ export default async function SearchPage({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {hotels.map((hotel: any) => (
-                        <Link href={`/hotels/${hotel.id}`} key={hotel.id} className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all">
-                            <div className="aspect-video bg-gray-200 relative overflow-hidden">
+                        <Link href={`/hotels/${hotel.id}`} key={hotel.id} className="group bg-(--white) rounded-xl overflow-hidden border border-(--gray-100) shadow-sm hover:shadow-md transition-all">
+                            <div className="aspect-video bg-(--gray-200) relative overflow-hidden">
                                 {hotel.images && hotel.images.length > 0 ? (
                                     <img
                                         src={hotel.images[0]}
@@ -156,27 +156,27 @@ export default async function SearchPage({
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
                                 ) : (
-                                    <div className="absolute inset-0 flex items-center justify-center text-gray-400 bg-gradient-to-br from-gray-100 to-gray-200">
+                                    <div className="absolute inset-0 flex items-center justify-center text-(--gray-400) bg-linear-to-br from-(--gray-100) to-(--gray-200)">
                                         <icons.Hotel className="w-8 h-8 opacity-30" />
                                     </div>
                                 )}
                             </div>
                             <div className="p-4">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-bold text-lg text-gray-900 line-clamp-1 group-hover:text-primary transition-colors">{hotel.title_fr || hotel.title}</h3>
+                                    <h3 className="font-bold text-lg text-(--gray-900) line-clamp-1 group-hover:text-(--primary) transition-colors">{hotel.title_fr || hotel.title}</h3>
                                     {hotel.rating && (
                                         <div className="flex items-center gap-1 text-sm font-medium">
-                                            <span className="text-yellow-500">★</span>
+                                            <span className="text-(--accent)">★</span>
                                             {hotel.rating}
                                         </div>
                                     )}
                                 </div>
-                                <p className="text-sm text-gray-500 mb-3">{hotel.city}, {hotel.country}</p>
+                                <p className="text-sm text-(--gray-500) mb-3">{hotel.city}, {hotel.country}</p>
                                 <div className="flex items-center justify-between mt-4">
-                                    <div className="text-xs text-gray-400">
+                                    <div className="text-xs text-(--gray-400)">
                                         Per night
                                     </div>
-                                    <div className="font-bold text-lg text-primary">
+                                    <div className="font-bold text-lg text-(--primary)">
                                         {formatCurrency(hotel.price_per_night, hotel.currency)}
                                     </div>
                                 </div>
@@ -186,11 +186,11 @@ export default async function SearchPage({
 
                     {hotels.length === 0 && (
                         <div className="col-span-full py-20 text-center">
-                            <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <icons.Search className="w-8 h-8 text-gray-400" />
+                            <div className="bg-(--gray-100) w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <icons.Search className="w-8 h-8 text-(--gray-400)" />
                             </div>
-                            <h3 className="text-lg font-bold text-gray-900 mb-2">No results found</h3>
-                            <p className="text-gray-500">Try adjusting your search location</p>
+                            <h3 className="text-lg font-bold text-(--gray-900) mb-2">No results found</h3>
+                            <p className="text-(--gray-500)">Try adjusting your search location</p>
                         </div>
                     )}
                 </div>
