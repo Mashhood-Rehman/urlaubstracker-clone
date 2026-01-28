@@ -112,6 +112,7 @@ export async function PUT(
                 extras: body.extras,
                 tips: body.tips,
                 offerLink: body.offerLink,
+                link: body.link,
                 images: body.images || [],
             },
         });

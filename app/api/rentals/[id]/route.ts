@@ -52,6 +52,7 @@ export async function PUT(
                 thingsToDo: body.thingsToDo,
                 additionalInfo: body.additionalInfo,
                 ecoTip: body.ecoTip,
+                link: body.link,
                 images: body.images || [],
             },
         });

@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
                     extras: data.extras || null,
                     tips: data.tips || null,
                     offerLink: data.offerLink,
+                    link: data.link,
                     images: data.images || [],
                 },
             });
@@ -43,6 +44,7 @@ export async function POST(request: NextRequest) {
                     thingsToDo: data.thingsToDo || [],
                     additionalInfo: data.additionalInfo || {},
                     ecoTip: data.ecoTip,
+                    link: data.link,
                     images: data.images || [],
                 },
             });
@@ -66,6 +68,7 @@ export async function POST(request: NextRequest) {
                     check_in: data.check_in,
                     check_out: data.check_out,
                     notes: data.notes || null,
+                    link: data.link,
                     images: data.images || [],
                 },
             });
@@ -83,6 +86,7 @@ export async function POST(request: NextRequest) {
                         description: data.description || data.desc || '',
                         price: parseFloat(data.price) || parseFloat(data.price_per_night) || 0,
                         currency: data.currency || 'EUR',
+                        link: data.link,
                         images: data.images || [],
                         details: data, // Store all other fields in details
                     }

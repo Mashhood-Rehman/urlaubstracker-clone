@@ -61,6 +61,8 @@ export default function ProductsPage() {
         mainHeading: '',
         mainDescription: '',
         offer: '',
+        offerPrice: '',
+        offerUnit: 'day',
         whySuperDeal: '',
         thingsToDo: '',
         additionalInfo: '',
@@ -127,7 +129,7 @@ export default function ProductsPage() {
             check_in: '', check_out: '', notes: '',
             airline: '', departureCity: '', arrivalCity: '', duration: '', price: '', flightClass: 'Economy',
             baggage: '', services: '', whyAdore: '', flexibleDates: false, extras: '', tips: '', offerLink: '',
-            mainHeading: '', mainDescription: '', offer: '', whySuperDeal: '', thingsToDo: '', additionalInfo: '', ecoTip: '',
+            mainHeading: '', mainDescription: '', offer: '', offerPrice: '', offerUnit: 'day', whySuperDeal: '', thingsToDo: '', additionalInfo: '', ecoTip: '',
             images: [],
             link: '',
         });
@@ -144,6 +146,8 @@ export default function ProductsPage() {
             services: Array.isArray(product.services) ? product.services.join(', ') : (product.services || ''),
             whyAdore: Array.isArray(product.whyAdore) ? product.whyAdore.join(', ') : (product.whyAdore || ''),
             thingsToDo: Array.isArray(product.thingsToDo) ? product.thingsToDo.join(', ') : (product.thingsToDo || ''),
+            offerPrice: typeof product.offer === 'object' ? product.offer.price : '',
+            offerUnit: typeof product.offer === 'object' ? product.offer.unit : 'day',
             offer: typeof product.offer === 'object' ? JSON.stringify(product.offer) : (product.offer || ''),
             additionalInfo: typeof product.additionalInfo === 'object' ? JSON.stringify(product.additionalInfo) : (product.additionalInfo || ''),
             extras: typeof product.extras === 'object' ? JSON.stringify(product.extras) : (product.extras || ''),
@@ -229,10 +233,10 @@ export default function ProductsPage() {
                     description: formData.desc_fr,
                     mainHeading: formData.mainHeading,
                     mainDescription: formData.mainDescription,
-                    offer: formData.offer ? JSON.parse(formData.offer) : {},
+                    offer: formData.offerPrice ? { price: parseFloat(formData.offerPrice), unit: formData.offerUnit } : {},
                     whySuperDeal: formData.whySuperDeal,
                     thingsToDo: formData.thingsToDo.split(',').map((s: string) => s.trim()).filter((s: string) => s),
-                    additionalInfo: formData.additionalInfo ? JSON.parse(formData.additionalInfo) : {},
+                    additionalInfo: {},
                     ecoTip: formData.ecoTip,
                     link: formData.link,
                     images: formData.images,
@@ -306,6 +310,7 @@ export default function ProductsPage() {
                 toast.error('Failed to save product');
             }
         } catch (error) {
+            console.log(error)
             toast.error('Error saving product');
         } finally {
             setLoading(false);
@@ -696,12 +701,21 @@ export default function ProductsPage() {
                                             <textarea name="mainDescription" value={formData.mainDescription} onChange={handleInputChange} required rows={3} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                         </div>
                                         <div>
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Super Deal Reason</label>
-                                            <input type="text" name="whySuperDeal" value={formData.whySuperDeal} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Offer Price</label>
+                                            <input type="number" step="0.01" name="offerPrice" value={formData.offerPrice} onChange={handleInputChange} placeholder="45" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                         </div>
                                         <div>
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">Offer (JSON)</label>
-                                            <input type="text" name="offer" value={formData.offer} onChange={handleInputChange} placeholder='{"price": 45, "unit": "day"}' className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Offer Unit</label>
+                                            <select name="offerUnit" value={formData.offerUnit} onChange={handleSelectChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
+                                                <option value="hour">Per Hour</option>
+                                                <option value="day">Per Day</option>
+                                                <option value="week">Per Week</option>
+                                                <option value="month">Per Month</option>
+                                            </select>
+                                        </div>
+                                        <div className="col-span-2">
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Super Deal Reason</label>
+                                            <input type="text" name="whySuperDeal" value={formData.whySuperDeal} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                                         </div>
                                         <div className="col-span-2">
                                             <label className="block text-xs font-medium text-gray-700 mb-1">External Link (Booking/Info URL)</label>

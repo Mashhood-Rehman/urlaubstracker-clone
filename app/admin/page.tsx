@@ -4,16 +4,29 @@ import Link from 'next/link';
 
 
 export default async function AdminDashboard() {
-    const [hotelCount, flightCount, rentalCount] = await Promise.all([
+    const [hotelCount, flightCount, rentalCount, categories] = await Promise.all([
         prisma.hotel.count(),
         prisma.flight.count(),
         prisma.rental.count(),
+        prisma.category.findMany({
+            include: {
+                _count: {
+                    select: { products: true }
+                }
+            }
+        })
     ]);
 
     const stats = [
         { label: 'Hotels', value: hotelCount.toString(), icon: icons.Package, color: 'bg-(--success)' },
         { label: 'Flights', value: flightCount.toString(), icon: icons.Plane, color: 'bg-(--primary)' },
         { label: 'Rentals', value: rentalCount.toString(), icon: icons.Car, color: 'bg-(--secondary)' },
+        ...categories.map(cat => ({
+            label: cat.name,
+            value: cat._count.products.toString(),
+            icon: icons.Package,
+            color: 'bg-(--accent)'
+        }))
     ];
 
     const actions = [

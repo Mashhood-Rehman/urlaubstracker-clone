@@ -52,6 +52,7 @@ export async function PUT(
                 check_in: body.check_in,
                 check_out: body.check_out,
                 notes: body.notes || null,
+                link: body.link,
                 images: body.images || [],
             },
         });
