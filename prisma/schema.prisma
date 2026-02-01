@@ -24,8 +24,7 @@ model Hotel {
   rating          Float?
   review_count    Int?
   amenities       Json
-  check_in        String
-  check_out       String
+
   notes           String?
   images          String[]
   coupons         Coupon[]
@@ -112,6 +111,7 @@ model Coupon {
   validUntil        DateTime
   isActive          Boolean   @default(true)
   isShowcased       Boolean   @default(false)
+  destinationLink   String?
   flightIds         Int[]     @default([])
   flights           Flight[]
   hotelIds          Int[]     @default([])

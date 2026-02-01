@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { icons } from '@/assets/icons';
 import toast from 'react-hot-toast';
 import ImageUpload from '../components/ImageUpload';
+import AdminTable from '../components/AdminTable';
 
 export default function RentalsAdminPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -201,63 +202,61 @@ export default function RentalsAdminPage() {
                 </button>
             </div>
 
-            <div className="bg-(--white) rounded-lg border border-(--gray-200) overflow-hidden">
-                <table className="w-full text-sm">
-                    <thead className="bg-(--gray-50) border-b border-(--gray-200)">
-                        <tr>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">ID</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Title</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Category</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Price Info</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredRentals.length > 0 ? (
-                            filteredRentals.map((rental) => (
-                                <tr key={rental.id} className="border-b border-(--gray-100) hover:bg-(--gray-50) transition-colors">
-                                    <td className="px-4 py-3 text-(--gray-600)">{rental.id}</td>
-                                    <td className="px-4 py-3 font-medium text-(--foreground)">{rental.title}</td>
-                                    <td className="px-4 py-3">
-                                        <span className={`px-2 py-0.5 rounded text-xs capitalize ${rental.category === 'car' ? 'bg-(--primary)/10 text-(--primary)' :
-                                            rental.category === 'parking' ? 'bg-(--gray-100) text-(--gray-800)' :
-                                                'bg-(--secondary)/10 text-(--secondary)'
-                                            }`}>
-                                            {rental.category}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-3 text-(--gray-600)">
-                                        {rental.offer?.pricePerDay ? `${rental.offer.pricePerDay} ${rental.offer.currency || '€'} / day` :
-                                            rental.offer?.price ? `${rental.offer.price} ${rental.offer.currency || '€'}` : 'N/A'}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center gap-2">
-                                            <button
-                                                onClick={() => handleEdit(rental)}
-                                                className="p-1 hover:bg-(--gray-100) rounded text-(--primary)"
-                                            >
-                                                <icons.Edit className="w-4 h-4" />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(rental.id)}
-                                                className="p-1 hover:bg-(--gray-100) rounded text-(--error)"
-                                            >
-                                                <icons.Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan={5} className="px-4 py-8 text-center text-(--gray-500)">
-                                    No rentals found
+            <AdminTable>
+                <thead className="bg-(--gray-50) border-b border-(--gray-200)">
+                    <tr>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">ID</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Title</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Category</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Price Info</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredRentals.length > 0 ? (
+                        filteredRentals.map((rental) => (
+                            <tr key={rental.id} className="border-b border-(--gray-100) hover:bg-(--gray-50) transition-colors">
+                                <td className="px-4 py-3 text-(--gray-600)">{rental.id}</td>
+                                <td className="px-4 py-3 font-medium text-(--foreground)">{rental.title}</td>
+                                <td className="px-4 py-3">
+                                    <span className={`px-2 py-0.5 rounded text-xs capitalize ${rental.category === 'car' ? 'bg-(--primary)/10 text-(--primary)' :
+                                        rental.category === 'parking' ? 'bg-(--gray-100) text-(--gray-800)' :
+                                            'bg-(--secondary)/10 text-(--secondary)'
+                                        }`}>
+                                        {rental.category}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-3 text-(--gray-600)">
+                                    {rental.offer?.pricePerDay ? `${rental.offer.pricePerDay} ${rental.offer.currency || '€'} / day` :
+                                        rental.offer?.price ? `${rental.offer.price} ${rental.offer.currency || '€'}` : 'N/A'}
+                                </td>
+                                <td className="px-4 py-3">
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() => handleEdit(rental)}
+                                            className="p-1 hover:bg-(--gray-100) rounded text-(--primary)"
+                                        >
+                                            <icons.Edit className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(rental.id)}
+                                            className="p-1 hover:bg-(--gray-100) rounded text-(--error)"
+                                        >
+                                            <icons.Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={5} className="px-4 py-8 text-center text-(--gray-500)">
+                                No rentals found
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </AdminTable>
 
             {showModal && (
                 <div className="fixed inset-0 bg-(--black)/50 flex items-center justify-center z-50 p-4">

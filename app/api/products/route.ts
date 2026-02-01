@@ -65,8 +65,6 @@ export async function POST(request: NextRequest) {
                     rating: data.rating ? parseFloat(data.rating) : null,
                     review_count: data.review_count ? parseInt(data.review_count) : null,
                     amenities: data.amenities,
-                    check_in: data.check_in,
-                    check_out: data.check_out,
                     notes: data.notes || null,
                     link: data.link,
                     images: data.images || [],

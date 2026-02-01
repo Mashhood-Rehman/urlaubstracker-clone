@@ -5,6 +5,7 @@ import { icons } from '@/assets/icons';
 import toast from 'react-hot-toast';
 import ImageUpload from '../components/ImageUpload';
 import Loading from '../../components/Loading';
+import AdminTable from '../components/AdminTable';
 
 export default function ProductsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -42,8 +43,6 @@ export default function ProductsPage() {
         rating: '',
         review_count: '',
         amenities: '',
-        check_in: '',
-        check_out: '',
         notes: '',
         airline: '',
         departureCity: '',
@@ -99,9 +98,13 @@ export default function ProductsPage() {
     const filteredProducts = products ? products.filter(p => {
         const matchesSearch = searchTerm === '' ||
             p.title_fr?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.mainHeading?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             p.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             p.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            p.desc_fr?.toLowerCase().includes(searchTerm.toLowerCase());
+            p.desc_fr?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.desc?.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesCategory = categoryFilter === 'All' ||
             p.mainCategory === categoryFilter ||
@@ -126,7 +129,7 @@ export default function ProductsPage() {
         setFormData({
             title_fr: '', desc_fr: '', address: '', city: '', country: '', category: 'Hotel',
             price_per_night: '', total_price: '', currency: 'EUR', rating: '', review_count: '', amenities: '',
-            check_in: '', check_out: '', notes: '',
+            notes: '',
             airline: '', departureCity: '', arrivalCity: '', duration: '', price: '', flightClass: 'Economy',
             baggage: '', services: '', whyAdore: '', flexibleDates: false, extras: '', tips: '', offerLink: '',
             mainHeading: '', mainDescription: '', offer: '', offerPrice: '', offerUnit: 'day', whySuperDeal: '', thingsToDo: '', additionalInfo: '', ecoTip: '',
@@ -142,6 +145,8 @@ export default function ProductsPage() {
         setMainCategory(product.mainCategory || 'Hotel');
         setFormData({
             ...product,
+            title_fr: product.title_fr || product.title || '',
+            desc_fr: product.desc_fr || product.description || product.desc || '',
             amenities: Array.isArray(product.amenities) ? product.amenities.join(', ') : (product.amenities || ''),
             services: Array.isArray(product.services) ? product.services.join(', ') : (product.services || ''),
             whyAdore: Array.isArray(product.whyAdore) ? product.whyAdore.join(', ') : (product.whyAdore || ''),
@@ -258,8 +263,6 @@ export default function ProductsPage() {
                     rating: formData.rating,
                     review_count: formData.review_count,
                     amenities: formData.amenities.split(',').map((s: string) => s.trim()).filter((s: string) => s),
-                    check_in: formData.check_in,
-                    check_out: formData.check_out,
                     notes: formData.notes,
                     link: formData.link,
                     images: formData.images,
@@ -378,105 +381,103 @@ export default function ProductsPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-(--white) rounded-lg border border-(--gray-200) overflow-x-auto">
-                <table className="w-full">
-                    <thead className="bg-(--gray-50) border-b border-(--gray-200)">
+            <AdminTable className='max-w-[980px] w-full'>
+                <thead className="bg-(--gray-50) border-b border-(--gray-200)">
+                    <tr>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">ID</th>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
+                            {categoryFilter === 'Flight' ? 'Flight Title' : categoryFilter === 'Rental' ? 'Rental Name' : 'Hotel Name'}
+                        </th>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">Category</th>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
+                            {categoryFilter === 'Flight' ? 'Route' : 'City'}
+                        </th>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
+                            {categoryFilter === 'Flight' ? 'Price' : categoryFilter === 'Rental' ? 'Offer' : 'Price/Night'}
+                        </th>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
+                            {categoryFilter === 'Flight' ? 'Class' : 'Rating'}
+                        </th>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
+                            {categoryFilter === 'Flight' ? 'Duration' : 'Reviews'}
+                        </th>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
+                            {categoryFilter === 'Flight' ? 'Airline' : categoryFilter === 'Rental' ? 'Details' : 'Amenities'}
+                        </th>
+                        <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {isFetching ? (
                         <tr>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">ID</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
-                                {categoryFilter === 'Flight' ? 'Flight Title' : categoryFilter === 'Rental' ? 'Rental Name' : 'Hotel Name'}
-                            </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">Category</th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
-                                {categoryFilter === 'Flight' ? 'Route' : 'City'}
-                            </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
-                                {categoryFilter === 'Flight' ? 'Price' : categoryFilter === 'Rental' ? 'Offer' : 'Price/Night'}
-                            </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
-                                {categoryFilter === 'Flight' ? 'Class' : 'Rating'}
-                            </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
-                                {categoryFilter === 'Flight' ? 'Duration' : 'Reviews'}
-                            </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">
-                                {categoryFilter === 'Flight' ? 'Airline' : categoryFilter === 'Rental' ? 'Details' : 'Amenities'}
-                            </th>
-                            <th className="px-4 py-2 text-left text-xs font-semibold text-(--gray-600)">Actions</th>
+                            <td colSpan={9}>
+                                <Loading variant="container" text="Syncing products..." />
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {isFetching ? (
-                            <tr>
-                                <td colSpan={9}>
-                                    <Loading variant="container" text="Syncing products..." />
+                    ) : paginatedProducts.length > 0 ? (
+                        paginatedProducts.map((product) => (
+                            <tr key={`${product.mainCategory}-${product.id}`} className="border-b border-(--gray-100) hover:bg-(--gray-50) transition-colors">
+                                <td className="px-4 py-2 text-sm text-(--gray-600)">{product.id}</td>
+                                <td className="px-4 py-2 text-sm font-medium text-(--foreground)">{product.title || product.title_fr || product.mainHeading}</td>
+                                <td className="px-4 py-2 text-sm text-(--gray-600)">
+                                    <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${product.mainCategory === 'Flight' ? 'bg-(--primary)/10 text-(--primary)' :
+                                        product.mainCategory === 'Rental' ? 'bg-(--success)/10 text-(--success)' :
+                                            'bg-(--secondary)/10 text-(--secondary)'
+                                        }`}>
+                                        {product.mainCategory || 'Hotel'}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-2 text-sm text-(--gray-600)">{product.city || product.departureCity || '-'}</td>
+                                <td className="px-4 py-2 text-sm text-(--gray-600)">
+                                    {product.currency || 'EUR'} {product.price_per_night || product.price || '-'}
+                                </td>
+                                <td className="px-4 py-2 text-sm text-(--gray-600)">
+                                    <span className="inline-flex items-center gap-1 bg-(--accent)/10 text-(--accent) px-2 py-0.5 rounded">
+                                        ⭐ {product.rating ? Number(product.rating).toFixed(1) : 'N/A'}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-2 text-sm text-(--gray-600)">{product.review_count || 0}</td>
+                                <td className="px-4 py-2 text-sm text-(--gray-600)">
+                                    <div className="flex flex-wrap gap-1">
+                                        {Array.isArray(product.amenities) && product.amenities.slice(0, 3).map((amenity: any, idx: any) => (
+                                            <span key={idx} className="inline-block bg-(--primary)/10 text-(--primary) px-2 py-0.5 rounded text-xs">
+                                                {amenity}
+                                            </span>
+                                        ))}
+                                        {product.mainCategory === 'Flight' && (
+                                            <span className="inline-block bg-(--primary)/10 text-(--primary) px-2 py-0.5 rounded text-xs">
+                                                {product.airline}
+                                            </span>
+                                        )}
+                                    </div>
+                                </td>
+                                <td className="px-4 py-2">
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() => handleEdit(product)}
+                                            className="p-1 hover:bg-(--gray-100) cursor-pointer rounded transition-colors"
+                                        >
+                                            <icons.Edit className="w-4 h-4 text-(--primary)" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(product)}
+                                            className="p-1 hover:bg-(--gray-100) cursor-pointer rounded transition-colors"
+                                        >
+                                            <icons.Trash2 className="w-4 h-4 text-(--error)" />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
-                        ) : paginatedProducts.length > 0 ? (
-                            paginatedProducts.map((product) => (
-                                <tr key={`${product.mainCategory}-${product.id}`} className="border-b border-(--gray-100) hover:bg-(--gray-50) transition-colors">
-                                    <td className="px-4 py-2 text-sm text-(--gray-600)">{product.id}</td>
-                                    <td className="px-4 py-2 text-sm font-medium text-(--foreground)">{product.title_fr || product.mainHeading}</td>
-                                    <td className="px-4 py-2 text-sm text-(--gray-600)">
-                                        <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${product.mainCategory === 'Flight' ? 'bg-(--primary)/10 text-(--primary)' :
-                                            product.mainCategory === 'Rental' ? 'bg-(--success)/10 text-(--success)' :
-                                                'bg-(--secondary)/10 text-(--secondary)'
-                                            }`}>
-                                            {product.mainCategory || 'Hotel'}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2 text-sm text-(--gray-600)">{product.city || product.departureCity || '-'}</td>
-                                    <td className="px-4 py-2 text-sm text-(--gray-600)">
-                                        {product.currency || 'EUR'} {product.price_per_night || product.price || '-'}
-                                    </td>
-                                    <td className="px-4 py-2 text-sm text-(--gray-600)">
-                                        <span className="inline-flex items-center gap-1 bg-(--accent)/10 text-(--accent) px-2 py-0.5 rounded">
-                                            ⭐ {product.rating ? Number(product.rating).toFixed(1) : 'N/A'}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-2 text-sm text-(--gray-600)">{product.review_count || 0}</td>
-                                    <td className="px-4 py-2 text-sm text-(--gray-600)">
-                                        <div className="flex flex-wrap gap-1">
-                                            {Array.isArray(product.amenities) && product.amenities.slice(0, 3).map((amenity: any, idx: any) => (
-                                                <span key={idx} className="inline-block bg-(--primary)/10 text-(--primary) px-2 py-0.5 rounded text-xs">
-                                                    {amenity}
-                                                </span>
-                                            ))}
-                                            {product.mainCategory === 'Flight' && (
-                                                <span className="inline-block bg-(--primary)/10 text-(--primary) px-2 py-0.5 rounded text-xs">
-                                                    {product.airline}
-                                                </span>
-                                            )}
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <div className="flex items-center gap-2">
-                                            <button
-                                                onClick={() => handleEdit(product)}
-                                                className="p-1 hover:bg-(--gray-100) cursor-pointer rounded transition-colors"
-                                            >
-                                                <icons.Edit className="w-4 h-4 text-(--primary)" />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(product)}
-                                                className="p-1 hover:bg-(--gray-100) cursor-pointer rounded transition-colors"
-                                            >
-                                                <icons.Trash2 className="w-4 h-4 text-(--error)" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan={9} className="px-4 py-6 text-center text-sm text-(--gray-500)">
-                                    No products found
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={9} className="px-4 py-6 text-center text-sm text-(--gray-500)">
+                                No products found
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </AdminTable>
 
             {/* Pagination Controls */}
             {!isFetching && filteredProducts.length > 0 && (

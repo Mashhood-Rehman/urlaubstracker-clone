@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { icons } from '@/assets/icons';
 import toast from 'react-hot-toast';
 import ImageUpload from '../components/ImageUpload';
+import AdminTable from '../components/AdminTable';
 
 export default function BlogsPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -213,57 +214,55 @@ export default function BlogsPage() {
             </div>
 
             {/* Slim Table */}
-            <div className="bg-(--white) rounded-lg border border-(--gray-200) shadow-sm overflow-hidden">
-                <table className="w-full text-left border-collapse">
-                    <thead className="bg-(--gray-50)/50 border-b border-(--gray-200)">
-                        <tr>
-                            <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Status</th>
-                            <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Title</th>
-                            <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Category</th>
-                            <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Author</th>
-                            <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Date</th>
-                            <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-(--gray-100)">
-                        {loading && blogs.length === 0 ? (
-                            <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-400">Loading posts...</td></tr>
-                        ) : blogs.length === 0 ? (
-                            <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-400">No posts found</td></tr>
-                        ) : (
-                            blogs.filter(b => b.title.toLowerCase().includes(searchTerm.toLowerCase())).map((blog) => (
-                                <tr key={blog.id} className="hover:bg-slate-50/50 transition-colors group">
-                                    <td className="px-4 py-2.5">
-                                        <div className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium ${blog.published ? 'bg-(--success)/10 text-(--success) border border-(--success)/10' : 'bg-(--gray-100) text-(--gray-500) border border-(--gray-200)'}`}>
-                                            <div className={`w-1 h-1 rounded-full ${blog.published ? 'bg-(--success)' : 'bg-(--gray-400)'}`} />
-                                            {blog.published ? 'Published' : 'Draft'}
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-2.5">
-                                        <div className="text-[13px] font-medium text-(--foreground) truncate max-w-[300px]">{blog.title}</div>
-                                        <div className="text-[10px] text-(--gray-500) truncate max-w-[200px]">/{blog.slug}</div>
-                                    </td>
-                                    <td className="px-4 py-2.5 text-[12px] text-(--gray-600)">{blog.category}</td>
-                                    <td className="px-4 py-2.5 text-[12px] text-(--gray-600)">{blog.author}</td>
-                                    <td className="px-4 py-2.5 text-[11px] text-(--gray-500)">
-                                        {new Date(blog.createdAt).toLocaleDateString()}
-                                    </td>
-                                    <td className="px-4 py-2.5 text-right">
-                                        <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <button onClick={() => handleEdit(blog)} className="p-1 hover:bg-(--gray-100) rounded text-(--gray-500) hover:text-(--primary) transition-colors cursor-pointer">
-                                                <icons.Edit className="w-3.5 h-3.5" />
-                                            </button>
-                                            <button onClick={() => handleDelete(blog.id)} className="p-1 hover:bg-(--error)/10 rounded text-(--gray-500) hover:text-(--error) transition-colors cursor-pointer">
-                                                <icons.Trash2 className="w-3.5 h-3.5" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
-            </div>
+            <AdminTable>
+                <thead className="bg-(--gray-50)/50 border-b border-(--gray-200)">
+                    <tr>
+                        <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Status</th>
+                        <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Title</th>
+                        <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Category</th>
+                        <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Author</th>
+                        <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider">Date</th>
+                        <th className="px-4 py-2.5 text-[11px] font-semibold text-(--gray-500) uppercase tracking-wider text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-(--gray-100)">
+                    {loading && blogs.length === 0 ? (
+                        <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-400">Loading posts...</td></tr>
+                    ) : blogs.length === 0 ? (
+                        <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-400">No posts found</td></tr>
+                    ) : (
+                        blogs.filter(b => b.title.toLowerCase().includes(searchTerm.toLowerCase())).map((blog) => (
+                            <tr key={blog.id} className="hover:bg-slate-50/50 transition-colors group">
+                                <td className="px-4 py-2.5">
+                                    <div className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium ${blog.published ? 'bg-(--success)/10 text-(--success) border border-(--success)/10' : 'bg-(--gray-100) text-(--gray-500) border border-(--gray-200)'}`}>
+                                        <div className={`w-1 h-1 rounded-full ${blog.published ? 'bg-(--success)' : 'bg-(--gray-400)'}`} />
+                                        {blog.published ? 'Published' : 'Draft'}
+                                    </div>
+                                </td>
+                                <td className="px-4 py-2.5">
+                                    <div className="text-[13px] font-medium text-(--foreground) truncate max-w-[300px]">{blog.title}</div>
+                                    <div className="text-[10px] text-(--gray-500) truncate max-w-[200px]">/{blog.slug}</div>
+                                </td>
+                                <td className="px-4 py-2.5 text-[12px] text-(--gray-600)">{blog.category}</td>
+                                <td className="px-4 py-2.5 text-[12px] text-(--gray-600)">{blog.author}</td>
+                                <td className="px-4 py-2.5 text-[11px] text-(--gray-500)">
+                                    {new Date(blog.createdAt).toLocaleDateString()}
+                                </td>
+                                <td className="px-4 py-2.5 text-right">
+                                    <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button onClick={() => handleEdit(blog)} className="p-1 hover:bg-(--gray-100) rounded text-(--gray-500) hover:text-(--primary) transition-colors cursor-pointer">
+                                            <icons.Edit className="w-3.5 h-3.5" />
+                                        </button>
+                                        <button onClick={() => handleDelete(blog.id)} className="p-1 hover:bg-(--error)/10 rounded text-(--gray-500) hover:text-(--error) transition-colors cursor-pointer">
+                                            <icons.Trash2 className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </AdminTable>
 
             {/* Smart & Slim Modal */}
             {showModal && (

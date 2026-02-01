@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { icons } from '@/assets/icons';
 import toast from 'react-hot-toast';
 import ImageUpload from '../components/ImageUpload';
+import AdminTable from '../components/AdminTable';
 
 export default function FlightsAdminPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -225,68 +226,66 @@ export default function FlightsAdminPage() {
                 </button>
             </div>
 
-            <div className="bg-(--white) rounded-lg border border-(--gray-200) overflow-hidden">
-                <table className="w-full text-sm">
-                    <thead className="bg-(--gray-50) border-b border-(--gray-200)">
-                        <tr>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">ID</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Title / Airline</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Route</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Duration</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Price</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Class</th>
-                            <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredFlights.length > 0 ? (
-                            filteredFlights.map((flight) => (
-                                <tr key={flight.id} className="border-b border-(--gray-100) hover:bg-(--gray-50) transition-colors">
-                                    <td className="px-4 py-3 text-(--gray-600)">{flight.id}</td>
-                                    <td className="px-4 py-3">
-                                        <div className="font-medium text-(--foreground)">{flight.title}</div>
-                                        <div className="text-xs text-(--gray-400)">{flight.airline}</div>
-                                    </td>
-                                    <td className="px-4 py-3 text-(--gray-600)">
-                                        {flight.departureCity} ✈ {flight.arrivalCity}
-                                    </td>
-                                    <td className="px-4 py-3 text-(--gray-600)">{flight.duration}</td>
-                                    <td className="px-4 py-3 text-(--gray-600)">
-                                        {flight.currency} {flight.price}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <span className="bg-(--success)/10 text-(--success) px-2 py-0.5 rounded text-xs">
-                                            {flight.flightClass}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center gap-2">
-                                            <button
-                                                onClick={() => handleEdit(flight)}
-                                                className="p-1 hover:bg-(--gray-100) rounded text-(--primary)"
-                                            >
-                                                <icons.Edit className="w-4 h-4" />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(flight.id)}
-                                                className="p-1 hover:bg-(--gray-100) rounded text-(--error)"
-                                            >
-                                                <icons.Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan={7} className="px-4 py-8 text-center text-(--gray-500)">
-                                    No flights found
+            <AdminTable>
+                <thead className="bg-(--gray-50) border-b border-(--gray-200)">
+                    <tr>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">ID</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Title / Airline</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Route</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Duration</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Price</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Class</th>
+                        <th className="px-4 py-3 text-left font-semibold text-(--gray-600)">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredFlights.length > 0 ? (
+                        filteredFlights.map((flight) => (
+                            <tr key={flight.id} className="border-b border-(--gray-100) hover:bg-(--gray-50) transition-colors">
+                                <td className="px-4 py-3 text-(--gray-600)">{flight.id}</td>
+                                <td className="px-4 py-3">
+                                    <div className="font-medium text-(--foreground)">{flight.title}</div>
+                                    <div className="text-xs text-(--gray-400)">{flight.airline}</div>
+                                </td>
+                                <td className="px-4 py-3 text-(--gray-600)">
+                                    {flight.departureCity} ✈ {flight.arrivalCity}
+                                </td>
+                                <td className="px-4 py-3 text-(--gray-600)">{flight.duration}</td>
+                                <td className="px-4 py-3 text-(--gray-600)">
+                                    {flight.currency} {flight.price}
+                                </td>
+                                <td className="px-4 py-3">
+                                    <span className="bg-(--success)/10 text-(--success) px-2 py-0.5 rounded text-xs">
+                                        {flight.flightClass}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-3">
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() => handleEdit(flight)}
+                                            className="p-1 hover:bg-(--gray-100) rounded text-(--primary)"
+                                        >
+                                            <icons.Edit className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(flight.id)}
+                                            className="p-1 hover:bg-(--gray-100) rounded text-(--error)"
+                                        >
+                                            <icons.Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={7} className="px-4 py-8 text-center text-(--gray-500)">
+                                No flights found
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </AdminTable>
 
             {showModal && (
                 <div className="fixed inset-0 bg-(--black)/50 flex items-center justify-center z-50 p-4">

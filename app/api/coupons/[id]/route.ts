@@ -60,6 +60,7 @@ export async function PUT(
       hotelIds,
       rentalIds,
       brandId,
+      destinationLink,
     } = body;
 
     const existingCoupon = await prisma.coupon.findUnique({
@@ -100,6 +101,7 @@ export async function PUT(
         ...(hotelIds !== undefined && { hotelIds }),
         ...(rentalIds !== undefined && { rentalIds }),
         ...(brandId !== undefined && { brandId }),
+        ...(destinationLink !== undefined && { destinationLink }),
         ...(flightIds !== undefined && {
           flights: {
             set: flightIds.map((id: number) => ({ id })),

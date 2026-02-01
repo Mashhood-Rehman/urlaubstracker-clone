@@ -19,17 +19,11 @@ export async function GET(request: Request) {
 
     const categorySlug = url.searchParams.get("category");
     if (categorySlug) {
-      where.OR = [
-        { hotels: { some: { city: { contains: categorySlug, mode: 'insensitive' } } } }, // Dummy if we filter by city/country as fallback, but let's stick to categories
-        { hotels: { some: { id: { not: undefined } } } }, // This isn't quite right for prisma, need to check if it has hotels/flights/rentals
-      ];
-
-      // More accurate filtering for Prisma:
-      if (categorySlug === 'hotels') {
+      if (categorySlug === 'hotels' || categorySlug === 'hotel') {
         where.hotels = { some: {} };
-      } else if (categorySlug === 'flights') {
+      } else if (categorySlug === 'flights' || categorySlug === 'flight') {
         where.flights = { some: {} };
-      } else if (categorySlug === 'rentals') {
+      } else if (categorySlug === 'rentals' || categorySlug === 'rental') {
         where.rentals = { some: {} };
       } else {
         // Dynamic category
@@ -91,6 +85,7 @@ export async function POST(request: Request) {
       hotelIds = [],
       rentalIds = [],
       brandId,
+      destinationLink,
     } = body;
 
     if (!code || !name || !discountValue || !validFrom || !validUntil) {
@@ -123,6 +118,7 @@ export async function POST(request: Request) {
         hotelIds,
         rentalIds,
         brandId,
+        destinationLink,
         flights: {
           connect: flightIds.map((id: number) => ({ id })),
         },

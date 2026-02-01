@@ -15,6 +15,7 @@ interface Coupon {
   validFrom: string;
   validUntil: string;
   brandId?: number | null;
+  destinationLink?: string | null;
   isActive?: boolean;
 }
 
@@ -36,6 +37,7 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
     maxUses: null,
     validFrom: format(new Date(), 'yyyy-MM-dd'),
     validUntil: format(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd'),
+    destinationLink: '',
   });
 
   const [brands, setBrands] = useState<any[]>([]);
@@ -113,6 +115,7 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
         validFrom: validFromDate.toISOString(),
         validUntil: validUntilDate.toISOString(),
         brandId: formData.brandId || null,
+        destinationLink: formData.destinationLink || null,
       };
 
       if (coupon && coupon.id) {
@@ -133,6 +136,7 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
         });
 
         if (!response.ok) {
+          console.log(response);
           throw new Error('Failed to create coupon');
         }
       }
@@ -231,6 +235,20 @@ export default function CouponForm({ coupon, onSubmit, onCancel }: CouponFormPro
             placeholder="Enter coupon description..."
             rows={3}
             className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) resize-none bg-(--white) text-(--foreground)"
+          />
+        </div>
+        {/* Destination Link */}
+        <div>
+          <label className="block text-sm font-medium text-(--foreground) mb-2">
+            Destination Link (Opens when copied)
+          </label>
+          <input
+            type="url"
+            name="destinationLink"
+            value={formData.destinationLink || ''}
+            onChange={handleChange}
+            placeholder="https://..."
+            className="w-full px-4 py-2 border border-(--gray-300) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--primary) bg-(--white) text-(--foreground)"
           />
         </div>
 

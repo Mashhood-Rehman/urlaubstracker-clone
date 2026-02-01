@@ -19,6 +19,7 @@ interface Coupon {
   validUntil: string;
   isActive: boolean;
   isShowcased: boolean;
+  destinationLink: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -108,7 +109,7 @@ export default function CouponsPage() {
   );
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="px-4 py-2 space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>

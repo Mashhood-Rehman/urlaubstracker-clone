@@ -14,6 +14,7 @@ interface Coupon {
     discountValue: number;
     validFrom: string;
     validUntil: string;
+    destinationLink?: string | null;
     brand?: {
         name: string;
         images: string[];
@@ -48,9 +49,12 @@ function VouchersContent() {
         fetchVouchers();
     }, [category]);
 
-    const copyText = (text: string) => {
-        navigator.clipboard.writeText(text)
+    const copyText = (code: string, destinationLink?: string | null) => {
+        navigator.clipboard.writeText(code)
         toast.success('Code copied to clipboard');
+        if (destinationLink) {
+            window.open(destinationLink, '_blank');
+        }
     }
     if (loading) return <div className='flex items-center justify-center'>
         <Loading variant="container" text="Loading exclusive vouchers..." className='mt-12' />;
@@ -112,7 +116,7 @@ function VouchersContent() {
                                         <code className="text-lg font-black text-(--secondary) tracking-widest uppercase">
                                             {coupon.code}
                                         </code>
-                                        <button onClick={() => copyText(coupon.code)} className="text-xs cursor-pointer font-bold text-(--primary) bg-(--white) px-3 py-1 rounded-lg border border-(--primary)/10 shadow-sm group-hover:bg-(--primary) group-hover:text-(--white) transition-all">
+                                        <button onClick={() => copyText(coupon.code, coupon.destinationLink)} className="text-xs cursor-pointer font-bold text-(--primary) bg-(--white) px-3 py-1 rounded-lg border border-(--primary)/10 shadow-sm group-hover:bg-(--primary) group-hover:text-(--white) transition-all">
                                             Copy Code
                                         </button>
                                     </div>
